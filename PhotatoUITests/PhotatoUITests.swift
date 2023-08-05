@@ -2,7 +2,7 @@
 //  PhotatoUITests.swift
 //  PhotatoUITests
 //
-//  Created by Alexander Strelnikov on 5.08.23.
+//  Created by Alexander Sivko on 5.08.23.
 //
 
 import XCTest
