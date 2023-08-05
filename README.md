@@ -11,6 +11,7 @@ App's design draft in Figma
 Photato app will include next technologies stack:
 - Clean Swift + TDD
 - UIKit
+- MapKit
 - CloudKit
 - Snapkit
 - Alamofire
