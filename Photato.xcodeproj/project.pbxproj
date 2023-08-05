@@ -7,6 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		424528D42A7E99210059246D /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528D32A7E99210059246D /* TabBarController.swift */; };
+		424528E92A7E9A390059246D /* MapPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528E32A7E9A390059246D /* MapPresenter.swift */; };
+		424528EA2A7E9A390059246D /* MapWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528E42A7E9A390059246D /* MapWorker.swift */; };
+		424528EB2A7E9A390059246D /* MapRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528E52A7E9A390059246D /* MapRouter.swift */; };
+		424528EC2A7E9A390059246D /* MapModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528E62A7E9A390059246D /* MapModels.swift */; };
+		424528ED2A7E9A390059246D /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528E72A7E9A390059246D /* MapViewController.swift */; };
+		424528EE2A7E9A390059246D /* MapInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528E82A7E9A390059246D /* MapInteractor.swift */; };
+		424528F62A7E9AB00059246D /* LocationsListPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528F02A7E9AB00059246D /* LocationsListPresenter.swift */; };
+		424528F72A7E9AB00059246D /* LocationsListWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528F12A7E9AB00059246D /* LocationsListWorker.swift */; };
+		424528F82A7E9AB00059246D /* LocationsListRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528F22A7E9AB00059246D /* LocationsListRouter.swift */; };
+		424528F92A7E9AB00059246D /* LocationsListModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528F32A7E9AB00059246D /* LocationsListModels.swift */; };
+		424528FA2A7E9AB00059246D /* LocationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528F42A7E9AB00059246D /* LocationsListViewController.swift */; };
+		424528FB2A7E9AB00059246D /* LocationsListInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528F52A7E9AB00059246D /* LocationsListInteractor.swift */; };
+		424529032A7E9B110059246D /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528FD2A7E9B110059246D /* ProfilePresenter.swift */; };
+		424529042A7E9B110059246D /* ProfileWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528FE2A7E9B110059246D /* ProfileWorker.swift */; };
+		424529052A7E9B110059246D /* ProfileRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424528FF2A7E9B110059246D /* ProfileRouter.swift */; };
+		424529062A7E9B110059246D /* ProfileModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424529002A7E9B110059246D /* ProfileModels.swift */; };
+		424529072A7E9B110059246D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424529012A7E9B110059246D /* ProfileViewController.swift */; };
+		424529082A7E9B110059246D /* ProfileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424529022A7E9B110059246D /* ProfileInteractor.swift */; };
+		424529102A7E9BB30059246D /* LocationDescriptionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290A2A7E9BB30059246D /* LocationDescriptionPresenter.swift */; };
+		424529112A7E9BB30059246D /* LocationDescriptionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290B2A7E9BB30059246D /* LocationDescriptionWorker.swift */; };
+		424529122A7E9BB30059246D /* LocationDescriptionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290C2A7E9BB30059246D /* LocationDescriptionRouter.swift */; };
+		424529132A7E9BB30059246D /* LocationDescriptionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290D2A7E9BB30059246D /* LocationDescriptionModels.swift */; };
+		424529142A7E9BB30059246D /* LocationDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290E2A7E9BB30059246D /* LocationDescriptionViewController.swift */; };
+		424529152A7E9BB30059246D /* LocationDescriptionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290F2A7E9BB30059246D /* LocationDescriptionInteractor.swift */; };
 		42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA56192A7E72BA00144F2A /* AppDelegate.swift */; };
 		42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */; };
 		42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56222A7E72BB00144F2A /* Assets.xcassets */; };
@@ -35,6 +60,31 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		424528D32A7E99210059246D /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		424528E32A7E9A390059246D /* MapPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPresenter.swift; sourceTree = "<group>"; };
+		424528E42A7E9A390059246D /* MapWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapWorker.swift; sourceTree = "<group>"; };
+		424528E52A7E9A390059246D /* MapRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRouter.swift; sourceTree = "<group>"; };
+		424528E62A7E9A390059246D /* MapModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapModels.swift; sourceTree = "<group>"; };
+		424528E72A7E9A390059246D /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		424528E82A7E9A390059246D /* MapInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapInteractor.swift; sourceTree = "<group>"; };
+		424528F02A7E9AB00059246D /* LocationsListPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListPresenter.swift; sourceTree = "<group>"; };
+		424528F12A7E9AB00059246D /* LocationsListWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListWorker.swift; sourceTree = "<group>"; };
+		424528F22A7E9AB00059246D /* LocationsListRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListRouter.swift; sourceTree = "<group>"; };
+		424528F32A7E9AB00059246D /* LocationsListModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListModels.swift; sourceTree = "<group>"; };
+		424528F42A7E9AB00059246D /* LocationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListViewController.swift; sourceTree = "<group>"; };
+		424528F52A7E9AB00059246D /* LocationsListInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListInteractor.swift; sourceTree = "<group>"; };
+		424528FD2A7E9B110059246D /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		424528FE2A7E9B110059246D /* ProfileWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileWorker.swift; sourceTree = "<group>"; };
+		424528FF2A7E9B110059246D /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
+		424529002A7E9B110059246D /* ProfileModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModels.swift; sourceTree = "<group>"; };
+		424529012A7E9B110059246D /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		424529022A7E9B110059246D /* ProfileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInteractor.swift; sourceTree = "<group>"; };
+		4245290A2A7E9BB30059246D /* LocationDescriptionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionPresenter.swift; sourceTree = "<group>"; };
+		4245290B2A7E9BB30059246D /* LocationDescriptionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionWorker.swift; sourceTree = "<group>"; };
+		4245290C2A7E9BB30059246D /* LocationDescriptionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionRouter.swift; sourceTree = "<group>"; };
+		4245290D2A7E9BB30059246D /* LocationDescriptionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionModels.swift; sourceTree = "<group>"; };
+		4245290E2A7E9BB30059246D /* LocationDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionViewController.swift; sourceTree = "<group>"; };
+		4245290F2A7E9BB30059246D /* LocationDescriptionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionInteractor.swift; sourceTree = "<group>"; };
 		42FA56162A7E72BA00144F2A /* Photato.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photato.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FA56192A7E72BA00144F2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,19 +124,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		424528D02A7E97400059246D /* Storyboard */ = {
-			isa = PBXGroup;
-			children = (
-				42FA56242A7E72BB00144F2A /* LaunchScreen.storyboard */,
-			);
-			path = Storyboard;
-			sourceTree = "<group>";
-		};
 		424528D12A7E975C0059246D /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
 				42FA56192A7E72BA00144F2A /* AppDelegate.swift */,
+				424528D32A7E99210059246D /* TabBarController.swift */,
 				42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */,
+				42FA56242A7E72BB00144F2A /* LaunchScreen.storyboard */,
 				42FA56272A7E72BB00144F2A /* Info.plist */,
 			);
 			path = SupportingFiles;
@@ -98,6 +142,58 @@
 				42FA56222A7E72BB00144F2A /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		424528E12A7E997A0059246D /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				424528E72A7E9A390059246D /* MapViewController.swift */,
+				424528E82A7E9A390059246D /* MapInteractor.swift */,
+				424528E32A7E9A390059246D /* MapPresenter.swift */,
+				424528E42A7E9A390059246D /* MapWorker.swift */,
+				424528E52A7E9A390059246D /* MapRouter.swift */,
+				424528E62A7E9A390059246D /* MapModels.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		424528EF2A7E9A870059246D /* LocationsList */ = {
+			isa = PBXGroup;
+			children = (
+				424528F42A7E9AB00059246D /* LocationsListViewController.swift */,
+				424528F52A7E9AB00059246D /* LocationsListInteractor.swift */,
+				424528F02A7E9AB00059246D /* LocationsListPresenter.swift */,
+				424528F12A7E9AB00059246D /* LocationsListWorker.swift */,
+				424528F22A7E9AB00059246D /* LocationsListRouter.swift */,
+				424528F32A7E9AB00059246D /* LocationsListModels.swift */,
+			);
+			path = LocationsList;
+			sourceTree = "<group>";
+		};
+		424528FC2A7E9AF10059246D /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				424529012A7E9B110059246D /* ProfileViewController.swift */,
+				424529022A7E9B110059246D /* ProfileInteractor.swift */,
+				424528FD2A7E9B110059246D /* ProfilePresenter.swift */,
+				424528FE2A7E9B110059246D /* ProfileWorker.swift */,
+				424528FF2A7E9B110059246D /* ProfileRouter.swift */,
+				424529002A7E9B110059246D /* ProfileModels.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		424529092A7E9B920059246D /* LocationDescription */ = {
+			isa = PBXGroup;
+			children = (
+				4245290E2A7E9BB30059246D /* LocationDescriptionViewController.swift */,
+				4245290F2A7E9BB30059246D /* LocationDescriptionInteractor.swift */,
+				4245290A2A7E9BB30059246D /* LocationDescriptionPresenter.swift */,
+				4245290B2A7E9BB30059246D /* LocationDescriptionWorker.swift */,
+				4245290C2A7E9BB30059246D /* LocationDescriptionRouter.swift */,
+				4245290D2A7E9BB30059246D /* LocationDescriptionModels.swift */,
+			);
+			path = LocationDescription;
 			sourceTree = "<group>";
 		};
 		42FA560D2A7E72BA00144F2A = {
@@ -123,7 +219,10 @@
 		42FA56182A7E72BA00144F2A /* Photato */ = {
 			isa = PBXGroup;
 			children = (
-				424528D02A7E97400059246D /* Storyboard */,
+				424528E12A7E997A0059246D /* Map */,
+				424528EF2A7E9A870059246D /* LocationsList */,
+				424528FC2A7E9AF10059246D /* Profile */,
+				424529092A7E9B920059246D /* LocationDescription */,
 				424528D12A7E975C0059246D /* SupportingFiles */,
 				424528D22A7E97860059246D /* Resources */,
 			);
@@ -283,8 +382,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				424529152A7E9BB30059246D /* LocationDescriptionInteractor.swift in Sources */,
+				424529142A7E9BB30059246D /* LocationDescriptionViewController.swift in Sources */,
+				424529122A7E9BB30059246D /* LocationDescriptionRouter.swift in Sources */,
+				424528EE2A7E9A390059246D /* MapInteractor.swift in Sources */,
+				424528EA2A7E9A390059246D /* MapWorker.swift in Sources */,
+				424529072A7E9B110059246D /* ProfileViewController.swift in Sources */,
+				424528D42A7E99210059246D /* TabBarController.swift in Sources */,
+				424528EC2A7E9A390059246D /* MapModels.swift in Sources */,
+				424529112A7E9BB30059246D /* LocationDescriptionWorker.swift in Sources */,
 				42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */,
+				424528F82A7E9AB00059246D /* LocationsListRouter.swift in Sources */,
+				424528F62A7E9AB00059246D /* LocationsListPresenter.swift in Sources */,
+				424528FA2A7E9AB00059246D /* LocationsListViewController.swift in Sources */,
+				424528F72A7E9AB00059246D /* LocationsListWorker.swift in Sources */,
 				42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */,
+				424529042A7E9B110059246D /* ProfileWorker.swift in Sources */,
+				424529102A7E9BB30059246D /* LocationDescriptionPresenter.swift in Sources */,
+				424529032A7E9B110059246D /* ProfilePresenter.swift in Sources */,
+				424529082A7E9B110059246D /* ProfileInteractor.swift in Sources */,
+				424529062A7E9B110059246D /* ProfileModels.swift in Sources */,
+				424529052A7E9B110059246D /* ProfileRouter.swift in Sources */,
+				424529132A7E9BB30059246D /* LocationDescriptionModels.swift in Sources */,
+				424528FB2A7E9AB00059246D /* LocationsListInteractor.swift in Sources */,
+				424528F92A7E9AB00059246D /* LocationsListModels.swift in Sources */,
+				424528E92A7E9A390059246D /* MapPresenter.swift in Sources */,
+				424528EB2A7E9A390059246D /* MapRouter.swift in Sources */,
+				424528ED2A7E9A390059246D /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
