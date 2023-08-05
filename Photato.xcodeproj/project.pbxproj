@@ -32,6 +32,8 @@
 		424529132A7E9BB30059246D /* LocationDescriptionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290D2A7E9BB30059246D /* LocationDescriptionModels.swift */; };
 		424529142A7E9BB30059246D /* LocationDescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290E2A7E9BB30059246D /* LocationDescriptionViewController.swift */; };
 		424529152A7E9BB30059246D /* LocationDescriptionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290F2A7E9BB30059246D /* LocationDescriptionInteractor.swift */; };
+		424529172A7EA3C10059246D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 424529162A7EA3C10059246D /* Main.storyboard */; };
+		4245291A2A7EA5EE0059246D /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424529192A7EA5EE0059246D /* UIColorExtension.swift */; };
 		42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA56192A7E72BA00144F2A /* AppDelegate.swift */; };
 		42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */; };
 		42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56222A7E72BB00144F2A /* Assets.xcassets */; };
@@ -85,6 +87,8 @@
 		4245290D2A7E9BB30059246D /* LocationDescriptionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionModels.swift; sourceTree = "<group>"; };
 		4245290E2A7E9BB30059246D /* LocationDescriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionViewController.swift; sourceTree = "<group>"; };
 		4245290F2A7E9BB30059246D /* LocationDescriptionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionInteractor.swift; sourceTree = "<group>"; };
+		424529162A7EA3C10059246D /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		424529192A7EA5EE0059246D /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		42FA56162A7E72BA00144F2A /* Photato.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photato.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FA56192A7E72BA00144F2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -129,8 +133,8 @@
 			children = (
 				42FA56192A7E72BA00144F2A /* AppDelegate.swift */,
 				424528D32A7E99210059246D /* TabBarController.swift */,
+				424529192A7EA5EE0059246D /* UIColorExtension.swift */,
 				42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */,
-				42FA56242A7E72BB00144F2A /* LaunchScreen.storyboard */,
 				42FA56272A7E72BB00144F2A /* Info.plist */,
 			);
 			path = SupportingFiles;
@@ -196,6 +200,15 @@
 			path = LocationDescription;
 			sourceTree = "<group>";
 		};
+		424529182A7EA5A40059246D /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				42FA56242A7E72BB00144F2A /* LaunchScreen.storyboard */,
+				424529162A7EA3C10059246D /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
 		42FA560D2A7E72BA00144F2A = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +236,7 @@
 				424528EF2A7E9A870059246D /* LocationsList */,
 				424528FC2A7E9AF10059246D /* Profile */,
 				424529092A7E9B920059246D /* LocationDescription */,
+				424529182A7EA5A40059246D /* Storyboard */,
 				424528D12A7E975C0059246D /* SupportingFiles */,
 				424528D22A7E97860059246D /* Resources */,
 			);
@@ -356,6 +370,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				424529172A7EA3C10059246D /* Main.storyboard in Resources */,
 				42FA56262A7E72BB00144F2A /* LaunchScreen.storyboard in Resources */,
 				42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */,
 			);
@@ -397,6 +412,7 @@
 				424528FA2A7E9AB00059246D /* LocationsListViewController.swift in Sources */,
 				424528F72A7E9AB00059246D /* LocationsListWorker.swift in Sources */,
 				42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */,
+				4245291A2A7EA5EE0059246D /* UIColorExtension.swift in Sources */,
 				424529042A7E9B110059246D /* ProfileWorker.swift in Sources */,
 				424529102A7E9BB30059246D /* LocationDescriptionPresenter.swift in Sources */,
 				424529032A7E9B110059246D /* ProfilePresenter.swift in Sources */,
@@ -579,7 +595,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5C3RTUTT2M;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Photato/Info.plist;
+				INFOPLIST_FILE = Photato/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -607,7 +623,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5C3RTUTT2M;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Photato/Info.plist;
+				INFOPLIST_FILE = Photato/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
