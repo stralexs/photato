@@ -34,11 +34,12 @@
 		424529152A7E9BB30059246D /* LocationDescriptionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245290F2A7E9BB30059246D /* LocationDescriptionInteractor.swift */; };
 		424529172A7EA3C10059246D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 424529162A7EA3C10059246D /* Main.storyboard */; };
 		4245291A2A7EA5EE0059246D /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424529192A7EA5EE0059246D /* UIColorExtension.swift */; };
+		4245291E2A7EAB180059246D /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245291D2A7EAB180059246D /* Location.swift */; };
 		42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA56192A7E72BA00144F2A /* AppDelegate.swift */; };
 		42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */; };
 		42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56222A7E72BB00144F2A /* Assets.xcassets */; };
 		42FA56262A7E72BB00144F2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56242A7E72BB00144F2A /* LaunchScreen.storyboard */; };
-		42FA56312A7E72BB00144F2A /* PhotatoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA56302A7E72BB00144F2A /* PhotatoTests.swift */; };
+		42FA56312A7E72BB00144F2A /* LocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA56302A7E72BB00144F2A /* LocationTests.swift */; };
 		42FA563B2A7E72BB00144F2A /* PhotatoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA563A2A7E72BB00144F2A /* PhotatoUITests.swift */; };
 		42FA563D2A7E72BB00144F2A /* PhotatoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA563C2A7E72BB00144F2A /* PhotatoUITestsLaunchTests.swift */; };
 		42FA564B2A7E7A8500144F2A /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 42FA564A2A7E7A8500144F2A /* SnapKit */; };
@@ -89,6 +90,7 @@
 		4245290F2A7E9BB30059246D /* LocationDescriptionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionInteractor.swift; sourceTree = "<group>"; };
 		424529162A7EA3C10059246D /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		424529192A7EA5EE0059246D /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		4245291D2A7EAB180059246D /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		42FA56162A7E72BA00144F2A /* Photato.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photato.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FA56192A7E72BA00144F2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -96,7 +98,7 @@
 		42FA56252A7E72BB00144F2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		42FA56272A7E72BB00144F2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42FA562C2A7E72BB00144F2A /* PhotatoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotatoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		42FA56302A7E72BB00144F2A /* PhotatoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotatoTests.swift; sourceTree = "<group>"; };
+		42FA56302A7E72BB00144F2A /* LocationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTests.swift; sourceTree = "<group>"; };
 		42FA56362A7E72BB00144F2A /* PhotatoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotatoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FA563A2A7E72BB00144F2A /* PhotatoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotatoUITests.swift; sourceTree = "<group>"; };
 		42FA563C2A7E72BB00144F2A /* PhotatoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotatoUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -209,6 +211,22 @@
 			path = Storyboard;
 			sourceTree = "<group>";
 		};
+		4245291B2A7EA9A10059246D /* ModelTests */ = {
+			isa = PBXGroup;
+			children = (
+				42FA56302A7E72BB00144F2A /* LocationTests.swift */,
+			);
+			path = ModelTests;
+			sourceTree = "<group>";
+		};
+		4245291C2A7EAAFA0059246D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4245291D2A7EAB180059246D /* Location.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		42FA560D2A7E72BA00144F2A = {
 			isa = PBXGroup;
 			children = (
@@ -236,9 +254,10 @@
 				424528EF2A7E9A870059246D /* LocationsList */,
 				424528FC2A7E9AF10059246D /* Profile */,
 				424529092A7E9B920059246D /* LocationDescription */,
-				424529182A7EA5A40059246D /* Storyboard */,
 				424528D12A7E975C0059246D /* SupportingFiles */,
+				4245291C2A7EAAFA0059246D /* Model */,
 				424528D22A7E97860059246D /* Resources */,
+				424529182A7EA5A40059246D /* Storyboard */,
 			);
 			path = Photato;
 			sourceTree = "<group>";
@@ -246,7 +265,7 @@
 		42FA562F2A7E72BB00144F2A /* PhotatoTests */ = {
 			isa = PBXGroup;
 			children = (
-				42FA56302A7E72BB00144F2A /* PhotatoTests.swift */,
+				4245291B2A7EA9A10059246D /* ModelTests */,
 			);
 			path = PhotatoTests;
 			sourceTree = "<group>";
@@ -403,6 +422,7 @@
 				424528EE2A7E9A390059246D /* MapInteractor.swift in Sources */,
 				424528EA2A7E9A390059246D /* MapWorker.swift in Sources */,
 				424529072A7E9B110059246D /* ProfileViewController.swift in Sources */,
+				4245291E2A7EAB180059246D /* Location.swift in Sources */,
 				424528D42A7E99210059246D /* TabBarController.swift in Sources */,
 				424528EC2A7E9A390059246D /* MapModels.swift in Sources */,
 				424529112A7E9BB30059246D /* LocationDescriptionWorker.swift in Sources */,
@@ -432,7 +452,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42FA56312A7E72BB00144F2A /* PhotatoTests.swift in Sources */,
+				42FA56312A7E72BB00144F2A /* LocationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
