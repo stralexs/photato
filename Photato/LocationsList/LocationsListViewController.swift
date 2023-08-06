@@ -19,6 +19,7 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
     
     private var locations: [LocationsList.FetchLocations.ViewModel.DisplayedLocation] = []
+    private var filteredLocations: [LocationsList.FetchLocations.ViewModel.DisplayedLocation]!
     
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -69,6 +70,8 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
         title = "Список"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
+        
+        searchController.searchBar.delegate = self
     }
     
     func getLocations() {
@@ -78,6 +81,7 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     
     func displayCourses(viewModel: LocationsList.FetchLocations.ViewModel) {
         locations = viewModel.displayedLocations
+        filteredLocations = locations
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -87,12 +91,12 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     // MARK: - UITableViewDataSource
 extension LocationsListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return locations.count
+        return filteredLocations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationsListTableViewCell.identifier, for: indexPath) as? LocationsListTableViewCell else { return UITableViewCell() }
-        let location = locations[indexPath.row]
+        let location = filteredLocations[indexPath.row]
         cell.configure(with: location)
         return cell
     }
@@ -100,4 +104,23 @@ extension LocationsListViewController: UITableViewDataSource {
     // MARK: -  UITableViewDelegate
 extension LocationsListViewController: UITableViewDelegate {
     
+}
+    
+    // MARK: - UISearchBarDelegate
+extension LocationsListViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredLocations = []
+        
+        if searchText == "" {
+            filteredLocations = locations
+        } else {
+            locations.forEach { location in
+                if location.name.lowercased().contains(searchText.lowercased()) {
+                    filteredLocations.append(location)
+                }
+            }
+        }
+        
+        self.tableView.reloadData()
+    }
 }
