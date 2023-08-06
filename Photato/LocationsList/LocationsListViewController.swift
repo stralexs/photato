@@ -9,15 +9,16 @@ import UIKit
 import SnapKit
 
 protocol LocationsListDisplayLogic: AnyObject {
-    func displaySomething(viewModel: LocationsList.Something.ViewModel)
+    func displayCourses(viewModel: LocationsList.FetchLocations.ViewModel)
 }
 
 class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
-    
-    //@IBOutlet private var nameTextField: UITextField!
+    // MARK: - Variables
     var configurator: LocationsListConfigurator?
     var interactor: LocationsListBusinessLogic?
     var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
+    
+    private var locations: [LocationsList.FetchLocations.ViewModel.DisplayedLocation] = []
     
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -34,16 +35,26 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
         return searchController
     }()
         
-    // MARK: View lifecycle
-    
+    // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configurator = LocationsListConfigurator()
         configurator?.configure(with: self)
         tuneUI()
-        doSomething()
+        getLocations()
     }
     
+    // MARK: - Routing
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let scene = segue.identifier {
+            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
+            if let router = router, router.responds(to: selector) {
+                router.perform(selector, with: segue)
+            }
+        }
+    }
+    
+    // MARK: - Methods
     func tuneUI() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -60,42 +71,31 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
         navigationItem.searchController = searchController
     }
     
-    // MARK: Routing
+    func getLocations() {
+        let request = LocationsList.FetchLocations.Request()
+        interactor?.fetchLocations(request: request)
+    }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scene = segue.identifier {
-            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-            if let router = router, router.responds(to: selector) {
-                router.perform(selector, with: segue)
-            }
+    func displayCourses(viewModel: LocationsList.FetchLocations.ViewModel) {
+        locations = viewModel.displayedLocations
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
-    }
-    
-    // MARK: Do something
-    
-    func doSomething() {
-        let request = LocationsList.Something.Request()
-        interactor?.doSomething(request: request)
-    }
-    
-    func displaySomething(viewModel: LocationsList.Something.ViewModel) {
-        //nameTextField.text = viewModel.name
     }
 }
 
     // MARK: - UITableViewDataSource
 extension LocationsListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return locations.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationsListTableViewCell.identifier, for: indexPath) as? LocationsListTableViewCell else { return UITableViewCell() }
-        cell.textLabel?.text = indexPath.row.description
+        let location = locations[indexPath.row]
+        cell.configure(with: location)
         return cell
     }
-    
-    
 }
     // MARK: -  UITableViewDelegate
 extension LocationsListViewController: UITableViewDelegate {

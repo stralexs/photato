@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class LocationsListTableViewCell: UITableViewCell {
+    // MARK: - Variables
     static let identifier = "LocationsListTableViewCell"
     
     let background: UIView = {
@@ -20,7 +21,6 @@ class LocationsListTableViewCell: UITableViewCell {
         background.layer.shadowOpacity = 0.3
         background.layer.shadowOffset = CGSize(width: 5, height: 5)
         background.layer.shadowRadius = 5
-        background.layer.shouldRasterize = true
         
         return background
     }()
@@ -60,6 +60,7 @@ class LocationsListTableViewCell: UITableViewCell {
         return label
     }()
     
+    // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super .init(style: style, reuseIdentifier: reuseIdentifier)
         tuneUI()
@@ -67,6 +68,13 @@ class LocationsListTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Methods
+    func configure(with location: LocationsList.FetchLocations.ViewModel.DisplayedLocation) {
+        locationNameLabel.text = location.name
+        leftImageView.image = UIImage(data: location.imageData)
+        locationAddressLabel.text = location.address
     }
     
     func tuneUI() {

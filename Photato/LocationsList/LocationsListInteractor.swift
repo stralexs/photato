@@ -8,26 +8,24 @@
 import UIKit
 
 protocol LocationsListBusinessLogic {
-    func doSomething(request: LocationsList.Something.Request)
+    func fetchLocations(request: LocationsList.FetchLocations.Request)
 }
 
 protocol LocationsListDataStore {
-    //var name: String { get set }
+    var locations: [Location] { get }
 }
 
 class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDataStore {
-    
+    var locations: [Location] = []
     var presenter: LocationsListPresentationLogic?
-    var worker: LocationsListWorker?
-    //var name: String = ""
+    var worker: LocationsListInteractorWorker?
     
-    // MARK: Do something
-    
-    func doSomething(request: LocationsList.Something.Request) {
-        worker = LocationsListWorker()
-        worker?.doSomeWork()
+    func fetchLocations(request: LocationsList.FetchLocations.Request) {
+        worker = LocationsListInteractorWorker()
+        guard let worker = worker else { return }
+        locations = worker.fetchLocations()
         
-        let response = LocationsList.Something.Response()
-        presenter?.presentSomething(response: response)
+        let response = LocationsList.FetchLocations.Response(locations: locations)
+        presenter?.presentLocations(response: response)
     }
 }
