@@ -9,7 +9,8 @@ App's design draft in Figma
 </p>
 
 Photato app will include next technologies stack:
-- Clean Swift + TDD
+- Clean Swift
+- Unit tests & UI tests
 - UIKit
 - MapKit
 - CloudKit
