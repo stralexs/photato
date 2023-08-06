@@ -8,9 +8,20 @@
 import UIKit
 
 class LocationsListInteractorWorker {
-    func fetchLocations() -> [Location] {
-        var locations: [Location] = []
-        locations = LocationsManager().defaultLocations
-        return locations
+    func fetchLocations(using searchText: String) -> [Location] {
+        let locations: [Location] = LocationsManager().defaultLocations
+        var filteredLocations: [Location] = []
+        
+        if searchText == "" {
+            filteredLocations = locations
+        } else {
+            locations.forEach { location in
+                if location.name.lowercased().contains(searchText.lowercased()) {
+                    filteredLocations.append(location)
+                }
+            }
+        }
+        
+        return filteredLocations
     }
 }

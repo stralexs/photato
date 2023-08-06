@@ -23,7 +23,7 @@ class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDataStor
     func fetchLocations(request: LocationsList.FetchLocations.Request) {
         worker = LocationsListInteractorWorker()
         guard let worker = worker else { return }
-        locations = worker.fetchLocations()
+        locations = worker.fetchLocations(using: request.searchText)
         
         let response = LocationsList.FetchLocations.Response(locations: locations)
         presenter?.presentLocations(response: response)

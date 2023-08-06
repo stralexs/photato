@@ -10,6 +10,7 @@ import UIKit
 enum LocationsList {
     enum FetchLocations {
         struct Request {
+            var searchText: String
         }
         
         struct Response {
