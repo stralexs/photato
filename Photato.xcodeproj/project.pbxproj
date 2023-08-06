@@ -35,6 +35,9 @@
 		424529172A7EA3C10059246D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 424529162A7EA3C10059246D /* Main.storyboard */; };
 		4245291A2A7EA5EE0059246D /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424529192A7EA5EE0059246D /* UIColorExtension.swift */; };
 		4245291E2A7EAB180059246D /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4245291D2A7EAB180059246D /* Location.swift */; };
+		424529212A7EB8030059246D /* LocationsListConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 424529202A7EB8030059246D /* LocationsListConfigurator.swift */; };
+		4295C8842A7F8BB900447493 /* LocationsListConfiguratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4295C8832A7F8BB900447493 /* LocationsListConfiguratorTests.swift */; };
+		4295C8872A7F940300447493 /* LocationsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4295C8862A7F940300447493 /* LocationsListTableViewCell.swift */; };
 		42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA56192A7E72BA00144F2A /* AppDelegate.swift */; };
 		42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */; };
 		42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56222A7E72BB00144F2A /* Assets.xcassets */; };
@@ -91,6 +94,9 @@
 		424529162A7EA3C10059246D /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		424529192A7EA5EE0059246D /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		4245291D2A7EAB180059246D /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		424529202A7EB8030059246D /* LocationsListConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListConfigurator.swift; sourceTree = "<group>"; };
+		4295C8832A7F8BB900447493 /* LocationsListConfiguratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListConfiguratorTests.swift; sourceTree = "<group>"; };
+		4295C8862A7F940300447493 /* LocationsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListTableViewCell.swift; sourceTree = "<group>"; };
 		42FA56162A7E72BA00144F2A /* Photato.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photato.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FA56192A7E72BA00144F2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -172,6 +178,8 @@
 				424528F12A7E9AB00059246D /* LocationsListWorker.swift */,
 				424528F22A7E9AB00059246D /* LocationsListRouter.swift */,
 				424528F32A7E9AB00059246D /* LocationsListModels.swift */,
+				424529202A7EB8030059246D /* LocationsListConfigurator.swift */,
+				4295C8862A7F940300447493 /* LocationsListTableViewCell.swift */,
 			);
 			path = LocationsList;
 			sourceTree = "<group>";
@@ -227,6 +235,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		4245291F2A7EB7670059246D /* LocationsListTests */ = {
+			isa = PBXGroup;
+			children = (
+				4295C8832A7F8BB900447493 /* LocationsListConfiguratorTests.swift */,
+			);
+			path = LocationsListTests;
+			sourceTree = "<group>";
+		};
 		42FA560D2A7E72BA00144F2A = {
 			isa = PBXGroup;
 			children = (
@@ -265,6 +281,7 @@
 		42FA562F2A7E72BB00144F2A /* PhotatoTests */ = {
 			isa = PBXGroup;
 			children = (
+				4245291F2A7EB7670059246D /* LocationsListTests */,
 				4245291B2A7EA9A10059246D /* ModelTests */,
 			);
 			path = PhotatoTests;
@@ -428,6 +445,7 @@
 				424529112A7E9BB30059246D /* LocationDescriptionWorker.swift in Sources */,
 				42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */,
 				424528F82A7E9AB00059246D /* LocationsListRouter.swift in Sources */,
+				4295C8872A7F940300447493 /* LocationsListTableViewCell.swift in Sources */,
 				424528F62A7E9AB00059246D /* LocationsListPresenter.swift in Sources */,
 				424528FA2A7E9AB00059246D /* LocationsListViewController.swift in Sources */,
 				424528F72A7E9AB00059246D /* LocationsListWorker.swift in Sources */,
@@ -445,6 +463,7 @@
 				424528E92A7E9A390059246D /* MapPresenter.swift in Sources */,
 				424528EB2A7E9A390059246D /* MapRouter.swift in Sources */,
 				424528ED2A7E9A390059246D /* MapViewController.swift in Sources */,
+				424529212A7EB8030059246D /* LocationsListConfigurator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,6 +472,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				42FA56312A7E72BB00144F2A /* LocationTests.swift in Sources */,
+				4295C8842A7F8BB900447493 /* LocationsListConfiguratorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol LocationsListDisplayLogic: AnyObject {
     func displaySomething(viewModel: LocationsList.Something.ViewModel)
@@ -14,27 +15,49 @@ protocol LocationsListDisplayLogic: AnyObject {
 class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     
     //@IBOutlet private var nameTextField: UITextField!
-    
+    var configurator: LocationsListConfigurator?
     var interactor: LocationsListBusinessLogic?
     var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
     
-    // MARK: Object lifecycle
+    let tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.allowsSelection = true
+        tableView.register(LocationsListTableViewCell.self, forCellReuseIdentifier: LocationsListTableViewCell.identifier)
+        tableView.rowHeight = 140
+        return tableView
+    }()
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
-    
+    let searchController: UISearchController = {
+        let searchController = UISearchController()
+        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.setValue("Отмена", forKey: "cancelButtonText")
+        return searchController
+    }()
+        
     // MARK: View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        configurator = LocationsListConfigurator()
+        configurator?.configure(with: self)
+        tuneUI()
         doSomething()
+    }
+    
+    func tuneUI() {
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
+        }
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        title = "Список"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.searchController = searchController
     }
     
     // MARK: Routing
@@ -58,18 +81,23 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     func displaySomething(viewModel: LocationsList.Something.ViewModel) {
         //nameTextField.text = viewModel.name
     }
-    // MARK: Setup
-    
-    private func setup() {
-        let viewController = self
-        let interactor = LocationsListInteractor()
-        let presenter = LocationsListPresenter()
-        let router = LocationsListRouter()
-        viewController.interactor = interactor
-        viewController.router = router
-        interactor.presenter = presenter
-        presenter.viewController = viewController
-        router.viewController = viewController
-        router.dataStore = interactor
+}
+
+    // MARK: - UITableViewDataSource
+extension LocationsListViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 5
     }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationsListTableViewCell.identifier, for: indexPath) as? LocationsListTableViewCell else { return UITableViewCell() }
+        cell.textLabel?.text = indexPath.row.description
+        return cell
+    }
+    
+    
+}
+    // MARK: -  UITableViewDelegate
+extension LocationsListViewController: UITableViewDelegate {
+    
 }

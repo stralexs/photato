@@ -18,5 +18,7 @@ class TabBarController: UITabBarController {
         tabBar.tintColor = .darkOliveGreen
         tabBar.unselectedItemTintColor = .tortilla
         tabBar.backgroundColor = .lightTortilla
+        tabBar.backgroundImage = UIImage()
+        tabBar.shadowImage = UIImage ()
     }
 }
