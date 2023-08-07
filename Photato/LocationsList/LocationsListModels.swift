@@ -9,22 +9,28 @@ import UIKit
 
 enum LocationsList {
     enum FetchLocations {
-        struct Request {
-            var searchText: String
-        }
+        struct Request {}
         
         struct Response {
-            var locations: [Location]
+            let locations: [Location]
         }
         
         struct ViewModel {
-            struct DisplayedLocation {
-                var name: String
-                var address: String
-                var imageData: Data
-            }
-            
-            var displayedLocations: [DisplayedLocation]
+            let locations: [Location]
+        }
+    }
+    
+    enum SearchLocations {
+        struct Request {
+            let searchText: String
+        }
+        
+        struct Response {
+            let locations: [Location]
+        }
+        
+        struct ViewModel {
+            let locations: [Location]
         }
     }
 }

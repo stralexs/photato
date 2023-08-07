@@ -9,6 +9,7 @@ import UIKit
 
 protocol LocationsListBusinessLogic {
     func fetchLocations(request: LocationsList.FetchLocations.Request)
+    func searchLocations(request: LocationsList.SearchLocations.Request)
 }
 
 protocol LocationsListDataStore {
@@ -18,14 +19,19 @@ protocol LocationsListDataStore {
 class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDataStore {
     var locations: [Location] = []
     var presenter: LocationsListPresentationLogic?
-    var worker: LocationsListInteractorWorker?
+    var worker: LocationsListWorkerLogic = LocationsListWorker()
     
     func fetchLocations(request: LocationsList.FetchLocations.Request) {
-        worker = LocationsListInteractorWorker()
-        guard let worker = worker else { return }
-        locations = worker.fetchLocations(using: request.searchText)
+        locations = worker.fetchLocations()
         
         let response = LocationsList.FetchLocations.Response(locations: locations)
         presenter?.presentLocations(response: response)
+    }
+    
+    func searchLocations(request: LocationsList.SearchLocations.Request) {
+        locations = worker.searchLocations(using: request.searchText)
+        
+        let response = LocationsList.SearchLocations.Response(locations: locations)
+        presenter?.presentSearchedLocations(response: response)
     }
 }

@@ -9,16 +9,16 @@ import UIKit
 import SnapKit
 
 protocol LocationsListDisplayLogic: AnyObject {
-    func displayCourses(viewModel: LocationsList.FetchLocations.ViewModel)
+    func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel)
+    func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel)
 }
 
 class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     // MARK: - Variables
-    var configurator: LocationsListConfigurator?
     var interactor: LocationsListBusinessLogic?
     var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
     
-    private var locations: [LocationsList.FetchLocations.ViewModel.DisplayedLocation] = []
+    private var locations: [Location] = []
     
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -39,8 +39,7 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configurator = LocationsListConfigurator()
-        configurator?.configure(with: self)
+        configure(with: self)
         tuneUI()
         getLocations()
     }
@@ -75,13 +74,31 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     }
     
     func getLocations() {
-        let request = LocationsList.FetchLocations.Request(searchText: "")
+        let request = LocationsList.FetchLocations.Request()
         interactor?.fetchLocations(request: request)
     }
     
-    func displayCourses(viewModel: LocationsList.FetchLocations.ViewModel) {
-        locations = viewModel.displayedLocations
+    func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel) {
+        locations = viewModel.locations
         tableView.reloadData()
+    }
+    
+    func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel) {
+        locations = viewModel.locations
+        tableView.reloadData()
+    }
+    
+    func configure(with view: LocationsListViewController) {
+        let viewController = view
+        let interactor = LocationsListInteractor()
+        let presenter = LocationsListPresenter()
+        let router = LocationsListRouter()
+        viewController.interactor = interactor
+        viewController.router = router
+        interactor.presenter = presenter
+        presenter.viewController = viewController
+        router.viewController = viewController
+        router.dataStore = interactor
     }
 }
 
@@ -106,8 +123,8 @@ extension LocationsListViewController: UITableViewDelegate {
     // MARK: - UISearchBarDelegate
 extension LocationsListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let request = LocationsList.FetchLocations.Request(searchText: searchText)
-        interactor?.fetchLocations(request: request)
+        let request = LocationsList.SearchLocations.Request(searchText: searchText)
+        interactor?.searchLocations(request: request)
         tableView.reloadData()
     }
     

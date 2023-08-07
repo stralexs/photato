@@ -71,9 +71,10 @@ class LocationsListTableViewCell: UITableViewCell {
     }
     
     // MARK: - Methods
-    func configure(with location: LocationsList.FetchLocations.ViewModel.DisplayedLocation) {
+    func configure(with location: Location) {
+        guard let firstImageData = location.imagesData.first else { return }
         locationNameLabel.text = location.name
-        leftImageView.image = UIImage(data: location.imageData)
+        leftImageView.image = UIImage(data: firstImageData)
         locationAddressLabel.text = location.address
     }
     

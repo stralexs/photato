@@ -7,8 +7,17 @@
 
 import UIKit
 
-class LocationsListInteractorWorker {
-    func fetchLocations(using searchText: String) -> [Location] {
+protocol LocationsListWorkerLogic {
+    func fetchLocations() -> [Location]
+    func searchLocations(using searchText: String) -> [Location]
+}
+
+class LocationsListWorker: LocationsListWorkerLogic {
+    func fetchLocations() -> [Location] {
+        return LocationsManager().defaultLocations
+    }
+    
+    func searchLocations(using searchText: String) -> [Location] {
         let locations: [Location] = LocationsManager().defaultLocations
         var filteredLocations: [Location] = []
         
