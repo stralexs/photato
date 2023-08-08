@@ -27,7 +27,7 @@
         <!--Locations List View Controller-->
         <scene sceneID="i3G-8O-8pV">
             <objects>
-                <viewController id="V8m-I7-ggv" customClass="LocationsListViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LocationsListViewController" id="V8m-I7-ggv" customClass="LocationsListViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7Ns-jk-3e2">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol LocationsListWorkerLogic {
+protocol LocationsListWorkingLogic {
     func fetchLocations() -> [Location]
     func searchLocations(using searchText: String) -> [Location]
 }
 
-class LocationsListWorker: LocationsListWorkerLogic {
+class LocationsListWorker: LocationsListWorkingLogic {
     func fetchLocations() -> [Location] {
         return LocationsManager().defaultLocations
     }

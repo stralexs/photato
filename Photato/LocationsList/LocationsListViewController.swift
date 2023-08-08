@@ -18,9 +18,9 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     var interactor: LocationsListBusinessLogic?
     var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
     
-    private var locations: [Location] = []
+    var locations: [Location] = []
     
-    let tableView: UITableView = {
+    var tableView: UITableView = {
         let tableView = UITableView()
         tableView.allowsSelection = true
         tableView.register(LocationsListTableViewCell.self, forCellReuseIdentifier: LocationsListTableViewCell.identifier)

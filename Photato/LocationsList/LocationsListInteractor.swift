@@ -19,7 +19,7 @@ protocol LocationsListDataStore {
 class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDataStore {
     var locations: [Location] = []
     var presenter: LocationsListPresentationLogic?
-    var worker: LocationsListWorkerLogic = LocationsListWorker()
+    var worker: LocationsListWorkingLogic = LocationsListWorker()
     
     func fetchLocations(request: LocationsList.FetchLocations.Request) {
         locations = worker.fetchLocations()

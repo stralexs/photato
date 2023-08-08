@@ -17,10 +17,10 @@ class LocationsListTableViewCell: UITableViewCell {
         background.backgroundColor = .systemGray5
         background.layer.cornerRadius = 5
         
-//        background.layer.shadowColor = UIColor.black.cgColor
-//        background.layer.shadowOpacity = 0.3
-//        background.layer.shadowOffset = CGSize(width: 5, height: 5)
-//        background.layer.shadowRadius = 5
+        background.layer.shadowColor = UIColor.black.cgColor
+        background.layer.shadowOpacity = 0.3
+        background.layer.shadowOffset = CGSize(width: 5, height: 5)
+        background.layer.shadowRadius = 5
         
         return background
     }()
