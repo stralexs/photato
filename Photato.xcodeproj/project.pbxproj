@@ -50,8 +50,7 @@
 		42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */; };
 		42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56222A7E72BB00144F2A /* Assets.xcassets */; };
 		42FA56262A7E72BB00144F2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56242A7E72BB00144F2A /* LaunchScreen.storyboard */; };
-		42FA563B2A7E72BB00144F2A /* PhotatoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA563A2A7E72BB00144F2A /* PhotatoUITests.swift */; };
-		42FA563D2A7E72BB00144F2A /* PhotatoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA563C2A7E72BB00144F2A /* PhotatoUITestsLaunchTests.swift */; };
+		42FA563B2A7E72BB00144F2A /* LocationsListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA563A2A7E72BB00144F2A /* LocationsListUITests.swift */; };
 		42FA564B2A7E7A8500144F2A /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 42FA564A2A7E7A8500144F2A /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -120,8 +119,7 @@
 		42FA56272A7E72BB00144F2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42FA562C2A7E72BB00144F2A /* PhotatoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotatoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FA56362A7E72BB00144F2A /* PhotatoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotatoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		42FA563A2A7E72BB00144F2A /* PhotatoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotatoUITests.swift; sourceTree = "<group>"; };
-		42FA563C2A7E72BB00144F2A /* PhotatoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotatoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		42FA563A2A7E72BB00144F2A /* LocationsListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -319,8 +317,7 @@
 		42FA56392A7E72BB00144F2A /* PhotatoUITests */ = {
 			isa = PBXGroup;
 			children = (
-				42FA563A2A7E72BB00144F2A /* PhotatoUITests.swift */,
-				42FA563C2A7E72BB00144F2A /* PhotatoUITestsLaunchTests.swift */,
+				42FA563A2A7E72BB00144F2A /* LocationsListUITests.swift */,
 			);
 			path = PhotatoUITests;
 			sourceTree = "<group>";
@@ -516,8 +513,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				42FA563D2A7E72BB00144F2A /* PhotatoUITestsLaunchTests.swift in Sources */,
-				42FA563B2A7E72BB00144F2A /* PhotatoUITests.swift in Sources */,
+				42FA563B2A7E72BB00144F2A /* LocationsListUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
