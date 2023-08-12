@@ -24,6 +24,7 @@ class LocationsListRouter: NSObject, LocationsListRoutingLogic, LocationsListDat
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let destinationVC = storyboard.instantiateViewController(withIdentifier: "LocationDescriptionViewController") as! LocationDescriptionViewController
         var destinationDS = destinationVC.router!.dataStore!
+        destinationVC.hidesBottomBarWhenPushed = true
         passDataToLocationDescription(source: dataStore!, destination: &destinationDS)
         navigateToLocationDescription(source: viewController!, destination: destinationVC)
     }

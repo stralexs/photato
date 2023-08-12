@@ -28,7 +28,6 @@ class LocationsListTableViewCell: UITableViewCell {
     let leftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
-        imageView.image = UIImage(named: "BotanicalGarden1")
         imageView.layer.masksToBounds = true
         imageView.layer.cornerRadius = 8
         return imageView
@@ -39,7 +38,6 @@ class LocationsListTableViewCell: UITableViewCell {
         label.textColor = .black
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.text = "Наименование локации"
         return label
     }()
     
@@ -56,7 +54,6 @@ class LocationsListTableViewCell: UITableViewCell {
         label.textColor = .black
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 16, weight: .light)
-        label.text = "ул. Такая-то, 10"
         return label
     }()
     
