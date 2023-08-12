@@ -8,7 +8,7 @@
 import UIKit
 
 @objc protocol LocationsListRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func routeToLocationDescription()
 }
 
 protocol LocationsListDataPassing {
@@ -16,35 +16,26 @@ protocol LocationsListDataPassing {
 }
 
 class LocationsListRouter: NSObject, LocationsListRoutingLogic, LocationsListDataPassing {
-    
     weak var viewController: LocationsListViewController?
     var dataStore: LocationsListDataStore?
     
-    // MARK: Routing
+    // MARK: - Routing
+    func routeToLocationDescription() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "LocationDescriptionViewController") as! LocationDescriptionViewController
+        var destinationDS = destinationVC.router!.dataStore!
+        passDataToLocationDescription(source: dataStore!, destination: &destinationDS)
+        navigateToLocationDescription(source: viewController!, destination: destinationVC)
+    }
     
-    //func routeToSomewhere(segue: UIStoryboardSegue?) {
-    //  if let segue = segue {
-    //    let destinationVC = segue.destination as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //  } else {
-    //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-    //  }
-    //}
+    // MARK: - Navigation
+    func navigateToLocationDescription(source: LocationsListViewController, destination: LocationDescriptionViewController) {
+        source.show(destination, sender: nil)
+    }
     
-    // MARK: Navigation
-    
-    //func navigateToSomewhere(source: LocationsListViewController, destination: SomewhereViewController) {
-    //  source.show(destination, sender: nil)
-    //}
-    
-    // MARK: Passing data
-    
-    //func passDataToSomewhere(source: LocationsListDataStore, destination: inout SomewhereDataStore) {
-    //  destination.name = source.name
-    //}
+    // MARK: - Passing data
+    func passDataToLocationDescription(source: LocationsListDataStore, destination: inout LocationDescriptionDataStore) {
+        guard let indexPath = viewController?.tableView.indexPathForSelectedRow else { return }
+        destination.location = source.locations[indexPath.row]
+    }
 }

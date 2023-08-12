@@ -11,7 +11,7 @@
         <!--Карта-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" customClass="MapViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MapViewController" id="Y6W-OH-hqX" customClass="MapViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -38,12 +38,28 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ala-ZC-YgS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="984" y="1060"/>
+            <point key="canvasLocation" x="963" y="1083"/>
+        </scene>
+        <!--Location Description View Controller-->
+        <scene sceneID="rW8-4R-o9f">
+            <objects>
+                <viewController storyboardIdentifier="LocationDescriptionViewController" id="uQH-SD-AZ6" customClass="LocationDescriptionViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6cX-6X-YTa">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="QhY-Sr-I40"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="f1t-uP-WhC"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dLY-gc-QDh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="963" y="1797"/>
         </scene>
         <!--Профиль-->
         <scene sceneID="JKv-q2-ZgQ">
             <objects>
-                <viewController id="InB-wT-55L" customClass="ProfileViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="InB-wT-55L" customClass="ProfileViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="YXH-MQ-RQ4">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

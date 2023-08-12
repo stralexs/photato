@@ -12,15 +12,15 @@ protocol LocationDescriptionBusinessLogic {
 }
 
 protocol LocationDescriptionDataStore {
-    //var name: String { get set }
+    var location: Location! { get set }
 }
 
 class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationDescriptionDataStore {
     
     var presenter: LocationDescriptionPresentationLogic?
     var worker: LocationDescriptionWorker?
-    //var name: String = ""
-    
+    var location: Location!
+
     // MARK: Do something
     
     func doSomething(request: LocationDescription.Something.Request) {
