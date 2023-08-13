@@ -35,4 +35,8 @@ enum LocationDescription {
         
         struct ViewModel {}
     }
+    
+    enum OpenLocationInMaps {
+        struct Request {}
+    }
 }

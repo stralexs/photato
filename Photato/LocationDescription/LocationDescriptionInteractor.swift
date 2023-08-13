@@ -10,6 +10,7 @@ import UIKit
 protocol LocationDescriptionBusinessLogic {
     func showLocationDescription(request: LocationDescription.ShowLocationDescription.Request)
     func copyCoordinatesToClipboard(request: LocationDescription.CopyCoordinatesToClipboard.Request)
+    func openLocationInMaps(request: LocationDescription.OpenLocationInMaps.Request)
 }
 
 protocol LocationDescriptionDataStore {
@@ -17,14 +18,13 @@ protocol LocationDescriptionDataStore {
 }
 
 class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationDescriptionDataStore {
+    // MARK: - Properties
     var presenter: LocationDescriptionPresentationLogic?
-    var worker: LocationDescriptionWorker?
+    var worker: LocationDescriptionWorkingLogic
     var location: Location!
     
+    // MARK: - Methods
     func showLocationDescription(request: LocationDescription.ShowLocationDescription.Request) {
-        worker = LocationDescriptionWorker()
-        worker?.doSomeWork()
-            
         let response = LocationDescription.ShowLocationDescription.Response(location: location)
         presenter?.presentLocationDescription(response: response)
     }
@@ -35,5 +35,14 @@ class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationD
         
         let response = LocationDescription.CopyCoordinatesToClipboard.Response()
         presenter?.presentCopiedToClipboardMessage(response: response)
+    }
+    
+    func openLocationInMaps(request: LocationDescription.OpenLocationInMaps.Request) {
+        worker.openInMaps(for: location)
+    }
+    
+    // MARK: - Initialization
+    init(worker: LocationDescriptionWorkingLogic) {
+        self.worker = worker
     }
 }

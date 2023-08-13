@@ -19,7 +19,7 @@ class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
         guard let imageData = response.location.imagesData.first else { return }
         let longitude = round(100_000 * response.location.coordinates.longitude) / 100_000
         let latitude = round(100_000 * response.location.coordinates.latitude) / 100_000
-        let coordinates = "\(longitude), \(latitude)"
+        let coordinates = "\(latitude), \(longitude)"
         
         let displayedLocation = LocationDescription.ShowLocationDescription.ViewModel.DisplayedLocation(
                 name: response.location.name,

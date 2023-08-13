@@ -101,13 +101,14 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return copyCoordinatesButton
     }()
     
-    let openInMapsButton: UIButton = {
+    lazy var openInMapsButton: UIButton = {
         let openInMapsButton = UIButton()
         let image = UIImage(systemName: "location.circle")
         openInMapsButton.setImage(image, for: .normal)
         openInMapsButton.imageView?.contentMode = .scaleAspectFit
         openInMapsButton.contentHorizontalAlignment = .fill
         openInMapsButton.contentVerticalAlignment = .fill
+        openInMapsButton.addTarget(self, action: #selector(openLocationInMaps), for: .touchUpInside)
         openInMapsButton.tintColor = .darkOliveGreen
         return openInMapsButton
     }()
@@ -275,7 +276,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     
     private func setup() {
         let viewController = self
-        let interactor = LocationDescriptionInteractor()
+        let interactor = LocationDescriptionInteractor(worker: LocationDescriptionWorker())
         let presenter = LocationDescriptionPresenter()
         let router = LocationDescriptionRouter()
         viewController.interactor = interactor
@@ -289,6 +290,11 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     @objc private func copyCoordinatesToClipboard() {
         let request = LocationDescription.CopyCoordinatesToClipboard.Request()
         interactor?.copyCoordinatesToClipboard(request: request)
+    }
+    
+    @objc private func openLocationInMaps() {
+        let request = LocationDescription.OpenLocationInMaps.Request()
+        interactor?.openLocationInMaps(request: request)
     }
     
     // MARK: - Public Methods

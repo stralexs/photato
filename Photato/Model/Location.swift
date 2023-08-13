@@ -9,8 +9,8 @@ import Foundation
 
 struct Location {
     struct Coordinates {
-        var longitude: Double
         var latitude: Double
+        var longitude: Double
     }
     
     var name: String
