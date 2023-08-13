@@ -9,6 +9,7 @@ import UIKit
 
 protocol LocationDescriptionPresentationLogic {
     func presentLocationDescription(response: LocationDescription.ShowLocationDescription.Response)
+    func presentCopiedToClipboardMessage(response: LocationDescription.CopyCoordinatesToClipboard.Response)
 }
 
 class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
@@ -28,5 +29,10 @@ class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
         
         let viewModel = LocationDescription.ShowLocationDescription.ViewModel(displayedLocation: displayedLocation)
         viewController?.displayLocationDescription(viewModel: viewModel)
+    }
+    
+    func presentCopiedToClipboardMessage(response: LocationDescription.CopyCoordinatesToClipboard.Response) {
+        let viewModel = LocationDescription.CopyCoordinatesToClipboard.ViewModel()
+        viewController?.displayCopiedToClipboardMessage(viewModel: viewModel)
     }
 }

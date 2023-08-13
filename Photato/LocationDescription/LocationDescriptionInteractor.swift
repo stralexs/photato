@@ -9,6 +9,7 @@ import UIKit
 
 protocol LocationDescriptionBusinessLogic {
     func showLocationDescription(request: LocationDescription.ShowLocationDescription.Request)
+    func copyCoordinatesToClipboard(request: LocationDescription.CopyCoordinatesToClipboard.Request)
 }
 
 protocol LocationDescriptionDataStore {
@@ -26,5 +27,13 @@ class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationD
             
         let response = LocationDescription.ShowLocationDescription.Response(location: location)
         presenter?.presentLocationDescription(response: response)
+    }
+    
+    func copyCoordinatesToClipboard(request: LocationDescription.CopyCoordinatesToClipboard.Request) {
+        let location = "\(location.coordinates.longitude), \(location.coordinates.latitude)"
+        UIPasteboard.general.string = location
+        
+        let response = LocationDescription.CopyCoordinatesToClipboard.Response()
+        presenter?.presentCopiedToClipboardMessage(response: response)
     }
 }

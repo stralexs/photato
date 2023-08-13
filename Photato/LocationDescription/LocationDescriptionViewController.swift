@@ -9,6 +9,7 @@ import UIKit
 
 protocol LocationDescriptionDisplayLogic: AnyObject {
     func displayLocationDescription(viewModel: LocationDescription.ShowLocationDescription.ViewModel)
+    func displayCopiedToClipboardMessage(viewModel: LocationDescription.CopyCoordinatesToClipboard.ViewModel)
 }
 
 class LocationDescriptionViewController: UIViewController, LocationDescriptionDisplayLogic {
@@ -28,7 +29,6 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
-        label.text = "Lorem ipsum"
         label.font = .systemFont(ofSize: 35, weight: .bold)
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -85,18 +85,18 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
-        label.text = "53.97528, 27.44942"
         label.font = .systemFont(ofSize: 16, weight: .light)
         return label
     }()
     
-    let copyCoordinatesButton: UIButton = {
+    lazy var copyCoordinatesButton: UIButton = {
         let copyCoordinatesButton = UIButton()
         let image = UIImage(systemName: "square.on.square")
         copyCoordinatesButton.setImage(image, for: .normal)
         copyCoordinatesButton.imageView?.contentMode = .scaleAspectFit
         copyCoordinatesButton.contentHorizontalAlignment = .fill
         copyCoordinatesButton.contentVerticalAlignment = .fill
+        copyCoordinatesButton.addTarget(self, action: #selector(copyCoordinatesToClipboard), for: .touchUpInside)
         copyCoordinatesButton.tintColor = .darkOliveGreen
         return copyCoordinatesButton
     }()
@@ -110,6 +110,23 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         openInMapsButton.contentVerticalAlignment = .fill
         openInMapsButton.tintColor = .darkOliveGreen
         return openInMapsButton
+    }()
+    
+    let copiedToClipboardMessageBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .tortilla
+        view.layer.cornerRadius = 20
+        view.alpha = 0
+        return view
+    }()
+    
+    let copiedToClipboardMessage: UILabel = {
+        let message = UILabel()
+        message.text = "Координаты скопированы в буфер обмена"
+        message.font = .systemFont(ofSize: 16, weight: .light)
+        message.textAlignment = .center
+        message.textColor = .white
+        return message
     }()
     
     let downloadImageButton: UIButton = {
@@ -152,7 +169,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         tuneUI()
     }
     
-    // MARK: - Methods
+    // MARK: - Private Methods
     private func tuneUI() {
         view.backgroundColor = .lightTortilla
         navigationController?.navigationBar.tintColor = .white
@@ -240,8 +257,41 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
             make.right.equalToSuperview().inset(15)
             make.bottom.equalTo(downloadImageButton.snp.top).offset(-10)
         }
+        
+        view.addSubview(copiedToClipboardMessageBackgroundView)
+        copiedToClipboardMessageBackgroundView.snp.makeConstraints { make in
+            make.left.equalToSuperview().inset(20)
+            make.right.equalToSuperview().inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
+            make.height.equalTo(60)
+        }
+        
+        copiedToClipboardMessageBackgroundView.addSubview(copiedToClipboardMessage)
+        copiedToClipboardMessage.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+        }
     }
     
+    private func setup() {
+        let viewController = self
+        let interactor = LocationDescriptionInteractor()
+        let presenter = LocationDescriptionPresenter()
+        let router = LocationDescriptionRouter()
+        viewController.interactor = interactor
+        viewController.router = router
+        interactor.presenter = presenter
+        presenter.viewController = viewController
+        router.viewController = viewController
+        router.dataStore = interactor
+    }
+    
+    @objc private func copyCoordinatesToClipboard() {
+        let request = LocationDescription.CopyCoordinatesToClipboard.Request()
+        interactor?.copyCoordinatesToClipboard(request: request)
+    }
+    
+    // MARK: - Public Methods
     func showLocationDescription() {
         let request = LocationDescription.ShowLocationDescription.Request()
         interactor?.showLocationDescription(request: request)
@@ -256,17 +306,15 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         locationCoordinatesLabel.text = viewModel.displayedLocation.coordinates
     }
     
-    private func setup() {
-        let viewController = self
-        let interactor = LocationDescriptionInteractor()
-        let presenter = LocationDescriptionPresenter()
-        let router = LocationDescriptionRouter()
-        viewController.interactor = interactor
-        viewController.router = router
-        interactor.presenter = presenter
-        presenter.viewController = viewController
-        router.viewController = viewController
-        router.dataStore = interactor
+    func displayCopiedToClipboardMessage(viewModel: LocationDescription.CopyCoordinatesToClipboard.ViewModel) {
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.copiedToClipboardMessageBackgroundView.alpha = 1.0
+        }
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.copiedToClipboardMessageBackgroundView.alpha = 0
+            }
+        }
     }
     
     // MARK: - Routing

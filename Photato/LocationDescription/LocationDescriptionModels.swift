@@ -27,4 +27,12 @@ enum LocationDescription {
             let displayedLocation: DisplayedLocation
         }
     }
+    
+    enum CopyCoordinatesToClipboard {
+        struct Request {}
+        
+        struct Response {}
+        
+        struct ViewModel {}
+    }
 }
