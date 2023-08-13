@@ -8,7 +8,7 @@
 import Foundation
 
 struct Location {
-    struct Coordinates: Equatable {
+    struct Coordinates {
         var longitude: Double
         var latitude: Double
     }

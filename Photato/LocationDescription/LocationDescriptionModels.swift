@@ -7,17 +7,24 @@
 
 import UIKit
 
-enum LocationDescription {
-    // MARK: Use cases
-    
-    enum Something {
-        struct Request {
-        }
+enum LocationDescription {    
+    enum ShowLocationDescription {
+        struct Request {}
         
         struct Response {
+            let location: Location
         }
         
         struct ViewModel {
+            struct DisplayedLocation {
+                let name: String
+                let description: String
+                let address: String
+                let coordinates: String
+                let imagesData: [Data]
+            }
+            
+            let displayedLocation: DisplayedLocation
         }
     }
 }

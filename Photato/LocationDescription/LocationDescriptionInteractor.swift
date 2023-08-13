@@ -8,7 +8,7 @@
 import UIKit
 
 protocol LocationDescriptionBusinessLogic {
-    func doSomething(request: LocationDescription.Something.Request)
+    func showLocationDescription(request: LocationDescription.ShowLocationDescription.Request)
 }
 
 protocol LocationDescriptionDataStore {
@@ -16,18 +16,15 @@ protocol LocationDescriptionDataStore {
 }
 
 class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationDescriptionDataStore {
-    
     var presenter: LocationDescriptionPresentationLogic?
     var worker: LocationDescriptionWorker?
     var location: Location!
-
-    // MARK: Do something
     
-    func doSomething(request: LocationDescription.Something.Request) {
+    func showLocationDescription(request: LocationDescription.ShowLocationDescription.Request) {
         worker = LocationDescriptionWorker()
         worker?.doSomeWork()
-        
-        let response = LocationDescription.Something.Response()
-        presenter?.presentSomething(response: response)
+            
+        let response = LocationDescription.ShowLocationDescription.Response(location: location)
+        presenter?.presentLocationDescription(response: response)
     }
 }

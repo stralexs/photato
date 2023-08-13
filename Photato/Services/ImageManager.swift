@@ -5,7 +5,6 @@
 //  Created by Alexander Strelnikov on 6.08.23.
 //
 
-import Foundation
 import UIKit
 
 protocol ImageManagerLogic {

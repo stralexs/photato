@@ -8,17 +8,15 @@
 import UIKit
 
 protocol LocationDescriptionDisplayLogic: AnyObject {
-    func displaySomething(viewModel: LocationDescription.Something.ViewModel)
+    func displayLocationDescription(viewModel: LocationDescription.ShowLocationDescription.ViewModel)
 }
 
 class LocationDescriptionViewController: UIViewController, LocationDescriptionDisplayLogic {
-    
-    //@IBOutlet private var nameTextField: UITextField!
-    
+    // MARK: - Properties
     var interactor: LocationDescriptionBusinessLogic?
     var router: (NSObjectProtocol & LocationDescriptionRoutingLogic & LocationDescriptionDataPassing)?
     
-    let imageView: UIImageView = {
+    let locationImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.image = UIImage(named: "OktyabrskayaStreet1")
@@ -49,7 +47,6 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         let textView = UITextView()
         textView.textColor = .white
         textView.textAlignment = .left
-        textView.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum"
         textView.font = .systemFont(ofSize: 17, weight: .light)
         textView.layer.cornerRadius = 10
         textView.isEditable = false
@@ -70,7 +67,6 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
-        label.text = "Lorem ipsum dolor sit amet"
         label.font = .systemFont(ofSize: 16, weight: .light)
         label.adjustsFontSizeToFitWidth = true
         return label
@@ -85,7 +81,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return view
     }()
     
-    let coordinatesLabel: UILabel = {
+    let locationCoordinatesLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
@@ -137,9 +133,8 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         addToFavouritesButton.tintColor = .tortilla
         return addToFavouritesButton
     }()
-    
-    // MARK: Object lifecycle
-    
+
+    // MARK: - Object Lifecycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         setup()
@@ -150,20 +145,20 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         setup()
     }
     
-    // MARK: View lifecycle
-    
+    // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        doSomething()
+        showLocationDescription()
         tuneUI()
     }
     
+    // MARK: - Methods
     private func tuneUI() {
         view.backgroundColor = .lightTortilla
         navigationController?.navigationBar.tintColor = .white
         
-        view.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
+        view.addSubview(locationImageView)
+        locationImageView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.top.equalToSuperview()
@@ -173,7 +168,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         view.addSubview(locationNameLabel)
         locationNameLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(15)
-            make.top.equalTo(imageView.snp.bottom)
+            make.top.equalTo(locationImageView.snp.bottom)
             make.right.equalToSuperview().inset(15)
             make.height.equalToSuperview().multipliedBy(0.07)
         }
@@ -186,8 +181,8 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
             make.width.equalTo(170)
         }
         
-        coordinatesBackgroundView.addSubview(coordinatesLabel)
-        coordinatesLabel.snp.makeConstraints { make in
+        coordinatesBackgroundView.addSubview(locationCoordinatesLabel)
+        locationCoordinatesLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
         }
@@ -247,28 +242,19 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         }
     }
     
-    // MARK: Routing
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scene = segue.identifier {
-            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-            if let router = router, router.responds(to: selector) {
-                router.perform(selector, with: segue)
-            }
-        }
+    func showLocationDescription() {
+        let request = LocationDescription.ShowLocationDescription.Request()
+        interactor?.showLocationDescription(request: request)
     }
     
-    // MARK: Do something
-    
-    func doSomething() {
-        let request = LocationDescription.Something.Request()
-        interactor?.doSomething(request: request)
+    func displayLocationDescription(viewModel: LocationDescription.ShowLocationDescription.ViewModel) {
+        guard let imageData = viewModel.displayedLocation.imagesData.first else { return }
+        locationImageView.image = UIImage(data: imageData)
+        locationNameLabel.text = viewModel.displayedLocation.name
+        locationAddressLabel.text = viewModel.displayedLocation.address
+        locationDescriptionTextView.text = viewModel.displayedLocation.description
+        locationCoordinatesLabel.text = viewModel.displayedLocation.coordinates
     }
-    
-    func displaySomething(viewModel: LocationDescription.Something.ViewModel) {
-        //nameTextField.text = viewModel.name
-    }
-    // MARK: Setup
     
     private func setup() {
         let viewController = self
@@ -281,5 +267,15 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
+    }
+    
+    // MARK: - Routing
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let scene = segue.identifier {
+            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
+            if let router = router, router.responds(to: selector) {
+                router.perform(selector, with: segue)
+            }
+        }
     }
 }

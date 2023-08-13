@@ -14,7 +14,7 @@ protocol LocationsListDisplayLogic: AnyObject {
 }
 
 class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
-    // MARK: - Variables
+    // MARK: - Properties
     var interactor: LocationsListBusinessLogic?
     var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
     
@@ -78,9 +78,9 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
         tableView.reloadData()
     }
     
-    func configure(with view: LocationsListViewController) {
+    private func configure(with view: LocationsListViewController) {
         let viewController = view
-        let interactor = LocationsListInteractor()
+        let interactor = LocationsListInteractor(worker: LocationsListWorker())
         let presenter = LocationsListPresenter()
         let router = LocationsListRouter()
         viewController.interactor = interactor

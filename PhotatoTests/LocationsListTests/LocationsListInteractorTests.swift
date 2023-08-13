@@ -17,9 +17,9 @@ final class LocationsListInteractorTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         
-        let locationsListInteractor = LocationsListInteractor()
-        let locationsListPresenter = LocationsListPresentationLogicSpy()
         let locationsListWorker = LocationsListWorkingLogicSpy()
+        let locationsListInteractor = LocationsListInteractor(worker: locationsListWorker)
+        let locationsListPresenter = LocationsListPresentationLogicSpy()
         
         locationsListInteractor.presenter = locationsListPresenter
         locationsListInteractor.worker = locationsListWorker
