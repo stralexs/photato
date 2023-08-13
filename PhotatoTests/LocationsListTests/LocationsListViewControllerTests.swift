@@ -29,8 +29,8 @@ final class LocationsListViewControllerTests: XCTestCase {
         sut = locationsListViewController
         interactor = locationsListInteractor
         tableViewSpy = LocationsListTableViewSpy()
-        location1 = Location(name: "Foo", description: "Bar", address: "Baz", coordinates: Location.Coordinates(longitude: 0.0, latitude: 0.0), imagesData: [Data()])
-        location2 = Location(name: "Baz", description: "Foo", address: "Bar", coordinates: Location.Coordinates(longitude: 0.0, latitude: 0.0), imagesData: [Data()])
+        location1 = Location(name: "Foo", description: "Bar", address: "Baz", coordinates: Location.Coordinates(latitude: 0.0, longitude: 0.0), imagesData: [Data()])
+        location2 = Location(name: "Baz", description: "Foo", address: "Bar", coordinates: Location.Coordinates(latitude: 0.0, longitude: 0.0), imagesData: [Data()])
         locations = [location1, location2]
 
         sut.loadViewIfNeeded()

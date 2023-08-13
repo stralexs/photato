@@ -30,7 +30,7 @@ class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationD
     }
     
     func copyCoordinatesToClipboard(request: LocationDescription.CopyCoordinatesToClipboard.Request) {
-        let location = "\(location.coordinates.longitude), \(location.coordinates.latitude)"
+        let location = "\(location.coordinates.latitude), \(location.coordinates.longitude)"
         UIPasteboard.general.string = location
         
         let response = LocationDescription.CopyCoordinatesToClipboard.Response()

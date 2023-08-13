@@ -20,7 +20,6 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     let locationImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
-        imageView.image = UIImage(named: "OktyabrskayaStreet1")
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -292,7 +291,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         interactor?.copyCoordinatesToClipboard(request: request)
     }
     
-    @objc private func openLocationInMaps() {
+    @objc func openLocationInMaps() {
         let request = LocationDescription.OpenLocationInMaps.Request()
         interactor?.openLocationInMaps(request: request)
     }

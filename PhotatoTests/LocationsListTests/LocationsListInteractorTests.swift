@@ -28,7 +28,7 @@ final class LocationsListInteractorTests: XCTestCase {
         presenter = locationsListPresenter
         worker = locationsListWorker
         
-        location = Location(name: "Foo", description: "Bar", address: "Baz", coordinates: Location.Coordinates(longitude: 0.0, latitude: 0.0), imagesData: [Data()])
+        location = Location(name: "Foo", description: "Bar", address: "Baz", coordinates: Location.Coordinates(latitude: 0.0, longitude: 0.0), imagesData: [Data()])
     }
 
     override func tearDownWithError() throws {
