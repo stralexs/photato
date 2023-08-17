@@ -8,26 +8,37 @@
 import UIKit
 
 protocol MapBusinessLogic {
-    func doSomething(request: Map.Something.Request)
+    func checkLocationServicesEnabled(request: Map.CheckLocationServicesEnabled.Request)
+    func setupLocationManager(request: Map.SetupLocationManager.Request)
+    func checkAuthorizationStatus(request: Map.CheckAuthorizationStatus.Request)
 }
 
 protocol MapDataStore {
-    //var name: String { get set }
+    
 }
 
 class MapInteractor: MapBusinessLogic, MapDataStore {
-    
     var presenter: MapPresentationLogic?
-    var worker: MapWorker?
-    //var name: String = ""
-    
-    // MARK: Do something
-    
-    func doSomething(request: Map.Something.Request) {
-        worker = MapWorker()
-        worker?.doSomeWork()
+    var worker: MapWorkingLogic
         
-        let response = Map.Something.Response()
-        presenter?.presentSomething(response: response)
+    func checkLocationServicesEnabled(request: Map.CheckLocationServicesEnabled.Request) {
+        let isLocationServicesEnabled = worker.checkLocationServicesStatus()
+        
+        let response = Map.CheckLocationServicesEnabled.Response(isLocationServicesEnabled: isLocationServicesEnabled)
+        presenter?.presentLocationServicesStatus(response: response)
+    }
+    
+    func setupLocationManager(request: Map.SetupLocationManager.Request) {
+        worker.setupLocationManager()
+    }
+    
+    func checkAuthorizationStatus(request: Map.CheckAuthorizationStatus.Request) {
+        let authorizationStatus = worker.checkAuthorizationStatus()
+        let response = Map.CheckAuthorizationStatus.Response(locationAuthorizationStatus: authorizationStatus)
+        presenter?.presentAuthorizationStatus(response: response)
+    }
+    
+    init(worker: MapWorkingLogic) {
+        self.worker = worker
     }
 }

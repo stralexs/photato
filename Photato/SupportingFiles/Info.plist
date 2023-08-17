@@ -21,5 +21,7 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Пожалуйста, предоставьте доступ для просмотра текущего местоположения</string>
 </dict>
 </plist>

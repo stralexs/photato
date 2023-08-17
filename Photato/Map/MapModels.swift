@@ -8,16 +8,31 @@
 import UIKit
 
 enum Map {
-    // MARK: Use cases
-    
-    enum Something {
-        struct Request {
-        }
+    enum CheckLocationServicesEnabled {
+        struct Request {}
         
         struct Response {
+            let isLocationServicesEnabled: Bool
         }
         
         struct ViewModel {
+            let isLocationServicesEnabled: Bool
+        }
+    }
+    
+    enum SetupLocationManager {
+        struct Request {}
+    }
+    
+    enum CheckAuthorizationStatus {
+        struct Request {}
+        
+        struct Response {
+            let locationAuthorizationStatus: Bool?
+        }
+        
+        struct ViewModel {
+            let locationAuthorizationStatus: Bool?
         }
     }
 }
