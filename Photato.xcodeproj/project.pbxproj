@@ -53,6 +53,13 @@
 		429F1D842A892B5C00EB5C77 /* LocationDescriptionViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429F1D832A892B5C00EB5C77 /* LocationDescriptionViewControllerTests.swift */; };
 		429F1D862A892E4300EB5C77 /* LocationDescriptionInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429F1D852A892E4300EB5C77 /* LocationDescriptionInteractorTests.swift */; };
 		429F1D882A89390600EB5C77 /* LocationDescriptionPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429F1D872A89390600EB5C77 /* LocationDescriptionPresenterTests.swift */; };
+		42AA842F2AA32344004884BB /* MapViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA842E2AA32344004884BB /* MapViewControllerTests.swift */; };
+		42AA84322AA32388004884BB /* MapBusinessLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA84312AA32388004884BB /* MapBusinessLogicSpy.swift */; };
+		42AA84352AA323BF004884BB /* MapPresentationLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA84342AA323BF004884BB /* MapPresentationLogicSpy.swift */; };
+		42AA84372AA323D5004884BB /* MapDisplayLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA84362AA323D5004884BB /* MapDisplayLogicSpy.swift */; };
+		42AA84392AA323E7004884BB /* MapWorkingLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA84382AA323E7004884BB /* MapWorkingLogicSpy.swift */; };
+		42AA843B2AA323FF004884BB /* MapInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA843A2AA323FF004884BB /* MapInteractorTests.swift */; };
+		42AA843D2AA32415004884BB /* MapPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA843C2AA32415004884BB /* MapPresenterTests.swift */; };
 		42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA56192A7E72BA00144F2A /* AppDelegate.swift */; };
 		42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */; };
 		42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56222A7E72BB00144F2A /* Assets.xcassets */; };
@@ -125,6 +132,13 @@
 		429F1D832A892B5C00EB5C77 /* LocationDescriptionViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionViewControllerTests.swift; sourceTree = "<group>"; };
 		429F1D852A892E4300EB5C77 /* LocationDescriptionInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionInteractorTests.swift; sourceTree = "<group>"; };
 		429F1D872A89390600EB5C77 /* LocationDescriptionPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionPresenterTests.swift; sourceTree = "<group>"; };
+		42AA842E2AA32344004884BB /* MapViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewControllerTests.swift; sourceTree = "<group>"; };
+		42AA84312AA32388004884BB /* MapBusinessLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapBusinessLogicSpy.swift; sourceTree = "<group>"; };
+		42AA84342AA323BF004884BB /* MapPresentationLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPresentationLogicSpy.swift; sourceTree = "<group>"; };
+		42AA84362AA323D5004884BB /* MapDisplayLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDisplayLogicSpy.swift; sourceTree = "<group>"; };
+		42AA84382AA323E7004884BB /* MapWorkingLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapWorkingLogicSpy.swift; sourceTree = "<group>"; };
+		42AA843A2AA323FF004884BB /* MapInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapInteractorTests.swift; sourceTree = "<group>"; };
+		42AA843C2AA32415004884BB /* MapPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPresenterTests.swift; sourceTree = "<group>"; };
 		42FA56162A7E72BA00144F2A /* Photato.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photato.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42FA56192A7E72BA00144F2A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -306,6 +320,28 @@
 			path = TestsSpies;
 			sourceTree = "<group>";
 		};
+		42AA84302AA32347004884BB /* MapTests */ = {
+			isa = PBXGroup;
+			children = (
+				42AA842E2AA32344004884BB /* MapViewControllerTests.swift */,
+				42AA843A2AA323FF004884BB /* MapInteractorTests.swift */,
+				42AA843C2AA32415004884BB /* MapPresenterTests.swift */,
+				42AA84332AA3238D004884BB /* TestSpies */,
+			);
+			path = MapTests;
+			sourceTree = "<group>";
+		};
+		42AA84332AA3238D004884BB /* TestSpies */ = {
+			isa = PBXGroup;
+			children = (
+				42AA84312AA32388004884BB /* MapBusinessLogicSpy.swift */,
+				42AA84342AA323BF004884BB /* MapPresentationLogicSpy.swift */,
+				42AA84362AA323D5004884BB /* MapDisplayLogicSpy.swift */,
+				42AA84382AA323E7004884BB /* MapWorkingLogicSpy.swift */,
+			);
+			path = TestSpies;
+			sourceTree = "<group>";
+		};
 		42FA560D2A7E72BA00144F2A = {
 			isa = PBXGroup;
 			children = (
@@ -345,6 +381,7 @@
 		42FA562F2A7E72BB00144F2A /* PhotatoTests */ = {
 			isa = PBXGroup;
 			children = (
+				42AA84302AA32347004884BB /* MapTests */,
 				429F1D772A89262700EB5C77 /* LocationDescriptionTests */,
 				4245291F2A7EB7670059246D /* LocationsListTests */,
 			);
@@ -535,16 +572,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				42AA84392AA323E7004884BB /* MapWorkingLogicSpy.swift in Sources */,
+				42AA843B2AA323FF004884BB /* MapInteractorTests.swift in Sources */,
 				4272C15A2A8157AE00E2AD47 /* LocationsListBusinessLogicSpy.swift in Sources */,
 				429F1D7E2A8928B300EB5C77 /* LocationDescriptionPresentationLogicSpy.swift in Sources */,
 				425867352A823BD200BB39A7 /* LocationsListInteractorTests.swift in Sources */,
 				425867332A823B3C00BB39A7 /* LocationsListPresentationLogicSpy.swift in Sources */,
 				4272C1562A8156E900E2AD47 /* LocationsListViewControllerTests.swift in Sources */,
+				42AA84322AA32388004884BB /* MapBusinessLogicSpy.swift in Sources */,
 				4272C1512A8154ED00E2AD47 /* LocationsListTableViewSpy.swift in Sources */,
+				42AA843D2AA32415004884BB /* MapPresenterTests.swift in Sources */,
 				429F1D882A89390600EB5C77 /* LocationDescriptionPresenterTests.swift in Sources */,
+				42AA842F2AA32344004884BB /* MapViewControllerTests.swift in Sources */,
 				429F1D842A892B5C00EB5C77 /* LocationDescriptionViewControllerTests.swift in Sources */,
+				42AA84372AA323D5004884BB /* MapDisplayLogicSpy.swift in Sources */,
 				429F1D802A892A1000EB5C77 /* LocationDescriptionDisplayLogicSpy.swift in Sources */,
 				429F1D862A892E4300EB5C77 /* LocationDescriptionInteractorTests.swift in Sources */,
+				42AA84352AA323BF004884BB /* MapPresentationLogicSpy.swift in Sources */,
 				429F1D822A892AB700EB5C77 /* LocationDescriptionWorkingLogicSpy.swift in Sources */,
 				425867392A8257E100BB39A7 /* LocationsListPresenterTests.swift in Sources */,
 				4272C1532A81555C00E2AD47 /* LocationsListDisplayLogicSpy.swift in Sources */,
