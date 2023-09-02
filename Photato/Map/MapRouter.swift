@@ -8,7 +8,7 @@
 import UIKit
 
 @objc protocol MapRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func routeToLocationDescription(with name: String?)
 }
 
 protocol MapDataPassing {
@@ -16,35 +16,28 @@ protocol MapDataPassing {
 }
 
 class MapRouter: NSObject, MapRoutingLogic, MapDataPassing {
-    
     weak var viewController: MapViewController?
     var dataStore: MapDataStore?
     
-    // MARK: Routing
+    // MARK: - Routing
+    func routeToLocationDescription(with name: String?) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "LocationDescriptionViewController") as! LocationDescriptionViewController
+        var destinationDS = destinationVC.router!.dataStore!
+        destinationVC.hidesBottomBarWhenPushed = true
+        passDataToLocationDescription(source: dataStore!, destination: &destinationDS, name: name)
+        navigateToLocationDescription(source: viewController!, destination: destinationVC)
+    }
     
-    //func routeToSomewhere(segue: UIStoryboardSegue?) {
-    //  if let segue = segue {
-    //    let destinationVC = segue.destination as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //  } else {
-    //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-    //  }
-    //}
+    // MARK: - Navigation
+    func navigateToLocationDescription(source: MapViewController, destination: LocationDescriptionViewController) {
+        source.show(destination, sender: nil)
+    }
     
-    // MARK: Navigation
-    
-    //func navigateToSomewhere(source: MapViewController, destination: SomewhereViewController) {
-    //  source.show(destination, sender: nil)
-    //}
-    
-    // MARK: Passing data
-    
-    //func passDataToSomewhere(source: MapDataStore, destination: inout SomewhereDataStore) {
-    //  destination.name = source.name
-    //}
+    // MARK: - Passing data
+    func passDataToLocationDescription(source: MapDataStore, destination: inout LocationDescriptionDataStore, name: String?) {
+        guard let name = name else { return }
+        
+        destination.location = source.locations.first(where: { $0.name == name })
+    }
 }

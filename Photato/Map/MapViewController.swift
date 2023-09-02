@@ -12,6 +12,7 @@ import SnapKit
 protocol MapDisplayLogic: AnyObject {
     func displayLocationServicesStatus(viewModel: Map.CheckLocationServicesEnabled.ViewModel)
     func displayAuthorizationStatus(viewModel: Map.CheckAuthorizationStatus.ViewModel)
+    func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel)
 }
 
 class MapViewController: UIViewController, MapDisplayLogic {
@@ -34,6 +35,7 @@ class MapViewController: UIViewController, MapDisplayLogic {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkLocationServicesEnabled()
+        getLocationsAnnotations()
     }
     
     // MARK: - Methods
@@ -71,12 +73,25 @@ class MapViewController: UIViewController, MapDisplayLogic {
         }
     }
     
+    func getLocationsAnnotations() {
+        let request = Map.GetLocationsAnnotations.Request()
+        interactor?.fetchLocations(request: request)
+    }
+    
+    func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel) {
+        viewModel.annotations.forEach { annotation in
+            mapView.addAnnotation(annotation)
+        }
+    }
+    
     func tuneUI() {
         view.addSubview(mapView)
         mapView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+        
+        mapView.delegate = self
     }
     
     private func showAlertAction(title: String, message: String?) {
@@ -120,11 +135,50 @@ extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last?.coordinate {
             let region = MKCoordinateRegion(center: location, latitudinalMeters: 5000, longitudinalMeters: 5000)
-            mapView.setRegion(region, animated: true)
+            mapView.setRegion(region, animated: false)
         }
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkAthorizationStatus()
+    }
+}
+
+extension MapViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard !(annotation is MKUserLocation) else { return nil }
+        
+        let identifier = "Location"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        
+        if annotationView == nil {
+            let markerAnnotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            markerAnnotationView.glyphImage = UIImage(systemName: "camera")
+            markerAnnotationView.markerTintColor = .tortilla
+            
+            annotationView = markerAnnotationView
+            
+            annotationView?.canShowCallout = true
+            
+            let button = UIButton(type: .detailDisclosure)
+            let image = UIImage(systemName: "info.circle.fill")
+            button.setImage(image, for: .normal)
+            button.tintColor = .darkOliveGreen
+            annotationView?.rightCalloutAccessoryView = button
+        } else {
+            let markerAnnotationView = MKMarkerAnnotationView()
+            markerAnnotationView.glyphImage = UIImage(systemName: "camera")
+            markerAnnotationView.markerTintColor = .tortilla
+            
+            annotationView = markerAnnotationView
+            annotationView?.annotation = annotation
+        }
+                
+        return annotationView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        guard let locationName = view.annotation?.title else { return }
+        router?.routeToLocationDescription(with: locationName)
     }
 }

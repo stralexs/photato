@@ -11,16 +11,20 @@ protocol MapBusinessLogic {
     func checkLocationServicesEnabled(request: Map.CheckLocationServicesEnabled.Request)
     func setupLocationManager(request: Map.SetupLocationManager.Request)
     func checkAuthorizationStatus(request: Map.CheckAuthorizationStatus.Request)
+    func fetchLocations(request: Map.GetLocationsAnnotations.Request)
 }
 
 protocol MapDataStore {
-    
+    var locations: [Location] { get }
 }
 
 class MapInteractor: MapBusinessLogic, MapDataStore {
+    //MARK: - Properties
+    var locations: [Location] = []
     var presenter: MapPresentationLogic?
     var worker: MapWorkingLogic
-        
+    
+    //MARK: - Methods
     func checkLocationServicesEnabled(request: Map.CheckLocationServicesEnabled.Request) {
         let isLocationServicesEnabled = worker.checkLocationServicesStatus()
         
@@ -38,6 +42,14 @@ class MapInteractor: MapBusinessLogic, MapDataStore {
         presenter?.presentAuthorizationStatus(response: response)
     }
     
+    func fetchLocations(request: Map.GetLocationsAnnotations.Request) {
+        locations = worker.fetchLocations()
+        
+        let response = Map.GetLocationsAnnotations.Response(locations: locations)
+        presenter?.presentLocationsAnnotations(response: response)
+    }
+    
+    //MARK: - Initialization
     init(worker: MapWorkingLogic) {
         self.worker = worker
     }

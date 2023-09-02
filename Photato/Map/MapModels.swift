@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MapKit
 
 enum Map {
     enum CheckLocationServicesEnabled {
@@ -33,6 +34,18 @@ enum Map {
         
         struct ViewModel {
             let locationAuthorizationStatus: Bool?
+        }
+    }
+    
+    enum GetLocationsAnnotations {
+        struct Request {}
+        
+        struct Response {
+            let locations: [Location]
+        }
+        
+        struct ViewModel {
+            let annotations: [MKAnnotation]
         }
     }
 }
