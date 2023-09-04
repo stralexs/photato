@@ -56,7 +56,7 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
         tableView.delegate = self
         tableView.dataSource = self
         
-        title = "Список"
+        title = "Локации"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
         

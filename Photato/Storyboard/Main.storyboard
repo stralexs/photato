@@ -92,11 +92,11 @@
             </objects>
             <point key="canvasLocation" x="932" y="-343"/>
         </scene>
-        <!--Список-->
+        <!--Локации-->
         <scene sceneID="nCf-6o-Fm9">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AIJ-qy-3f0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Список" image="list.bullet" catalog="system" id="iUr-6m-la8"/>
+                    <tabBarItem key="tabBarItem" title="Локации" image="list.bullet" catalog="system" id="iUr-6m-la8"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uUN-Ys-a6k">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>

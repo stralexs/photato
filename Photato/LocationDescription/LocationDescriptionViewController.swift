@@ -122,7 +122,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     
     let copiedToClipboardMessage: UILabel = {
         let message = UILabel()
-        message.text = "Координаты скопированы в буфер обмена"
+        message.text = "Координаты скопированы"
         message.font = .systemFont(ofSize: 16, weight: .light)
         message.textAlignment = .center
         message.textColor = .white
@@ -131,7 +131,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     
     let downloadImageButton: UIButton = {
         let downloadImageButton = UIButton()
-        let image = UIImage(systemName: "square.and.arrow.down")
+        let image = UIImage(systemName: "sun.max")
         downloadImageButton.setImage(image, for: .normal)
         downloadImageButton.imageView?.contentMode = .scaleAspectFit
         downloadImageButton.contentHorizontalAlignment = .fill
@@ -260,8 +260,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         
         view.addSubview(copiedToClipboardMessageBackgroundView)
         copiedToClipboardMessageBackgroundView.snp.makeConstraints { make in
-            make.left.equalToSuperview().inset(20)
-            make.right.equalToSuperview().inset(20)
+            make.left.right.equalToSuperview().inset(70)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
             make.height.equalTo(60)
         }
@@ -292,8 +291,16 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     }
     
     @objc func openLocationInMaps() {
-        let request = LocationDescription.OpenLocationInMaps.Request()
-        interactor?.openLocationInMaps(request: request)
+        let alert = UIAlertController(title: "Открыть локацию в приложении Карты?", message: nil, preferredStyle: .alert)
+        let settingsAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            let request = LocationDescription.OpenLocationInMaps.Request()
+            self?.interactor?.openLocationInMaps(request: request)
+        }
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(settingsAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
     }
     
     // MARK: - Public Methods
