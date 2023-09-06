@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>393523124371-o1o2khcvu4lntu8em0ofcb3j00uk5vc5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.393523124371-o1o2khcvu4lntu8em0ofcb3j00uk5vc5</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDMdlcMmqkWrwFmRatV4f_uN0bEPoWQ9P4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>393523124371</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.alexander-developer.Photato</string>
+	<key>PROJECT_ID</key>
+	<string>photato-60c40</string>
+	<key>STORAGE_BUCKET</key>
+	<string>photato-60c40.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:393523124371:ios:ee64c3b36d16c8aa829566</string>
+</dict>
+</plist>
