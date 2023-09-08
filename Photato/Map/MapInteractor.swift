@@ -43,10 +43,12 @@ class MapInteractor: MapBusinessLogic, MapDataStore {
     }
     
     func fetchLocations(request: Map.GetLocationsAnnotations.Request) {
-        locations = worker.fetchLocations()
-        
-        let response = Map.GetLocationsAnnotations.Response(locations: locations)
-        presenter?.presentLocationsAnnotations(response: response)
+        worker.fetchLocations(completion: { [weak self] locations in
+            self?.locations = locations
+            
+            let response = Map.GetLocationsAnnotations.Response(locations: locations)
+            self?.presenter?.presentLocationsAnnotations(response: response)
+        })
     }
     
     //MARK: - Initialization

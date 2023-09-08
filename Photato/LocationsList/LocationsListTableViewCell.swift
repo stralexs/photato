@@ -53,7 +53,7 @@ class LocationsListTableViewCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
-        label.font = .systemFont(ofSize: 16, weight: .light)
+        label.font = .systemFont(ofSize: 14, weight: .light)
         return label
     }()
     
@@ -93,13 +93,13 @@ class LocationsListTableViewCell: UITableViewCell {
         
         background.addSubview(locationNameLabel)
         locationNameLabel.snp.makeConstraints { make in
-            make.left.equalTo(leftImageView).inset(105)
+            make.left.equalTo(leftImageView).inset(100)
             make.top.equalToSuperview().inset(15)
         }
         
         background.addSubview(locationAddressImageView)
         locationAddressImageView.snp.makeConstraints { make in
-            make.left.equalTo(leftImageView).inset(105)
+            make.left.equalTo(leftImageView).inset(100)
             make.top.equalTo(locationNameLabel).inset(25)
             make.height.width.equalTo(25)
         }
@@ -107,7 +107,7 @@ class LocationsListTableViewCell: UITableViewCell {
         background.addSubview(locationAddressLabel)
         locationAddressLabel.snp.makeConstraints { make in
             make.left.equalTo(locationAddressImageView).inset(30)
-            make.top.equalTo(locationNameLabel).inset(25)
+            make.top.equalTo(locationNameLabel).inset(28)
         }
     }
 }

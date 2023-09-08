@@ -12,6 +12,7 @@ import FirebaseStorage
 protocol FirebaseManagerLogic {
     func retrieveLocations(completion: @escaping ([Location]) -> Void)
     func retrieveFirstImageData(for locationName: String, completion: @escaping (Data) -> Void)
+    func retrieveImagesCount(for locationName: String, completion: @escaping (Int) -> ())
     func retrieveAllImages(for locationName: String, completion: @escaping ([Data]) -> Void)
 }
 
@@ -40,6 +41,25 @@ class FirebaseManager: FirebaseManagerLogic {
             }
         
             completion(locations)
+        }
+    }
+    
+    func retrieveImagesCount(for locationName: String, completion: @escaping (Int) -> ()) {
+        let db = Firestore.firestore()
+        
+        db.collection("locations").getDocuments { snapshot, error in
+            guard error == nil,
+                  snapshot != nil,
+                  let snapshot = snapshot else { return }
+            
+            snapshot.documents.forEach { document in
+                let documentName = document.get("name") as! String
+                let imagesPaths = document.get("imagesUrls") as! [String]
+                
+                if documentName == locationName {
+                    completion(imagesPaths.count)
+                }
+            }
         }
     }
     

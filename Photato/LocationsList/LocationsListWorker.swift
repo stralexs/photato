@@ -14,11 +14,11 @@ protocol LocationsListWorkingLogic {
 
 class LocationsListWorker: LocationsListWorkingLogic {
     func fetchLocations() -> [Location] {
-        return LocationsManager().defaultLocations
+        return LocationsManager.shared.locations
     }
     
     func searchLocations(using searchText: String) -> [Location] {
-        let locations: [Location] = LocationsManager().defaultLocations
+        let locations: [Location] = LocationsManager.shared.locations
         var filteredLocations: [Location] = []
         
         if searchText == "" {
