@@ -10,6 +10,8 @@ import UIKit
 protocol LocationDescriptionPresentationLogic {
     func presentLocationDescription(response: LocationDescription.ShowLocationDescription.Response)
     func presentCopiedToClipboardMessage(response: LocationDescription.CopyCoordinatesToClipboard.Response)
+    func presentLocationImagesCount(response: LocationDescription.GetLocationImagesCount.Response)
+    func presentLocationAllImages(response: LocationDescription.GetLocationAllImages.Response)
 }
 
 class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
@@ -34,5 +36,15 @@ class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
     func presentCopiedToClipboardMessage(response: LocationDescription.CopyCoordinatesToClipboard.Response) {
         let viewModel = LocationDescription.CopyCoordinatesToClipboard.ViewModel()
         viewController?.displayCopiedToClipboardMessage(viewModel: viewModel)
+    }
+    
+    func presentLocationImagesCount(response: LocationDescription.GetLocationImagesCount.Response) {
+        let viewModel = LocationDescription.GetLocationImagesCount.ViewModel(imagesCount: response.imagesCount)
+        viewController?.displayLocationImagesCount(viewModel: viewModel)
+    }
+    
+    func presentLocationAllImages(response: LocationDescription.GetLocationAllImages.Response) {
+        let viewModel = LocationDescription.GetLocationAllImages.ViewModel(imagesData: response.imagesData)
+        viewController?.displayLocationAllImages(viewModel: viewModel)
     }
 }

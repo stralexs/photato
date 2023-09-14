@@ -28,6 +28,30 @@ enum LocationDescription {
         }
     }
     
+    enum GetLocationImagesCount {
+        struct Request {}
+        
+        struct Response {
+            let imagesCount: Int?
+        }
+        
+        struct ViewModel {
+            let imagesCount: Int?
+        }
+    }
+    
+    enum GetLocationAllImages {
+        struct Request {}
+        
+        struct Response {
+            let imagesData: [Data]
+        }
+        
+        struct ViewModel {
+            let imagesData: [Data]
+        }
+    }
+    
     enum CopyCoordinatesToClipboard {
         struct Request {}
         

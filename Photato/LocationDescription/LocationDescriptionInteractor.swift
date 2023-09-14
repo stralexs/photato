@@ -11,6 +11,8 @@ protocol LocationDescriptionBusinessLogic {
     func showLocationDescription(request: LocationDescription.ShowLocationDescription.Request)
     func copyCoordinatesToClipboard(request: LocationDescription.CopyCoordinatesToClipboard.Request)
     func openLocationInMaps(request: LocationDescription.OpenLocationInMaps.Request)
+    func getLocationImagesCount(request: LocationDescription.GetLocationImagesCount.Request)
+    func getLocationAllImages(request: LocationDescription.GetLocationAllImages.Request)
 }
 
 protocol LocationDescriptionDataStore {
@@ -39,6 +41,31 @@ class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationD
     
     func openLocationInMaps(request: LocationDescription.OpenLocationInMaps.Request) {
         worker.openInMaps(for: location)
+    }
+    
+    func getLocationImagesCount(request: LocationDescription.GetLocationImagesCount.Request) {
+        if location.imagesData.count == 1 {
+            LocationsManager.shared.downloadImagesCount(for: location.name) { [presenter] imagesCount in
+                let response = LocationDescription.GetLocationImagesCount.Response(imagesCount: imagesCount)
+                presenter?.presentLocationImagesCount(response: response)
+            }
+        } else {
+            let response = LocationDescription.GetLocationImagesCount.Response(imagesCount: nil)
+            presenter?.presentLocationImagesCount(response: response)
+        }
+    }
+    
+    func getLocationAllImages(request: LocationDescription.GetLocationAllImages.Request) {
+        if location.imagesData.count == 1 {
+            LocationsManager.shared.downloadAllImages(for: location.name) { [weak self] imagesData in
+                self?.location.imagesData = imagesData
+                let response = LocationDescription.GetLocationAllImages.Response(imagesData: imagesData)
+                self?.presenter?.presentLocationAllImages(response: response)
+            }
+        } else {
+            let response = LocationDescription.GetLocationAllImages.Response(imagesData: location.imagesData)
+            presenter?.presentLocationAllImages(response: response)
+        }
     }
     
     // MARK: - Initialization

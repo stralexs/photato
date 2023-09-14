@@ -50,8 +50,8 @@ class LocationsManager {
                 dispatchGroup.enter()
                 if value.name == locationName {
                     locationsVar[index].imagesData = imagesData
-                    dispatchGroup.leave()
                 }
+                dispatchGroup.leave()
             }
             
             dispatchGroup.notify(queue: .main) {

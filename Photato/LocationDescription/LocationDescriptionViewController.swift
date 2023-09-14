@@ -10,6 +10,8 @@ import UIKit
 protocol LocationDescriptionDisplayLogic: AnyObject {
     func displayLocationDescription(viewModel: LocationDescription.ShowLocationDescription.ViewModel)
     func displayCopiedToClipboardMessage(viewModel: LocationDescription.CopyCoordinatesToClipboard.ViewModel)
+    func displayLocationImagesCount(viewModel: LocationDescription.GetLocationImagesCount.ViewModel)
+    func displayLocationAllImages(viewModel: LocationDescription.GetLocationAllImages.ViewModel)
 }
 
 class LocationDescriptionViewController: UIViewController, LocationDescriptionDisplayLogic {
@@ -17,11 +19,18 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     var interactor: LocationDescriptionBusinessLogic?
     var router: (NSObjectProtocol & LocationDescriptionRoutingLogic & LocationDescriptionDataPassing)?
     
-    let locationImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleToFill
-        imageView.layer.masksToBounds = true
-        return imageView
+    let pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.currentPageIndicatorTintColor = .white
+        return pageControl
+    }()
+    
+    let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.isPagingEnabled = true
+        scrollView.backgroundColor = .blue
+        scrollView.showsHorizontalScrollIndicator = false
+        return scrollView
     }()
     
     let locationNameLabel: UILabel = {
@@ -154,38 +163,49 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     // MARK: - Object Lifecycle
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
+        configure()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup()
+        configure()
     }
     
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         showLocationDescription()
+        getLocationImagesCount()
+        getLocationAllImages()
         tuneUI()
     }
     
     // MARK: - Private Methods
     private func tuneUI() {
         view.backgroundColor = .lightTortilla
-        navigationController?.navigationBar.tintColor = .white
         
-        view.addSubview(locationImageView)
-        locationImageView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.top.equalToSuperview()
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.left.top.right.equalToSuperview()
+            make.bottom.equalToSuperview().multipliedBy(0.35)
+        }
+        scrollView.delegate = self
+        
+        view.addSubview(pageControl)
+        pageControl.snp.makeConstraints { make in
+            make.left.right.equalToSuperview()
             make.bottom.equalToSuperview().multipliedBy(0.35)
         }
         
         view.addSubview(locationNameLabel)
         locationNameLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(15)
-            make.top.equalTo(locationImageView.snp.bottom)
+            make.top.equalTo(scrollView.snp.bottom)
             make.right.equalToSuperview().inset(15)
             make.height.equalToSuperview().multipliedBy(0.07)
         }
@@ -272,7 +292,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         }
     }
     
-    private func setup() {
+    private func configure() {
         let viewController = self
         let interactor = LocationDescriptionInteractor(worker: LocationDescriptionWorker())
         let presenter = LocationDescriptionPresenter()
@@ -309,9 +329,42 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         interactor?.showLocationDescription(request: request)
     }
     
+    private func getLocationImagesCount() {
+        let request = LocationDescription.GetLocationImagesCount.Request()
+        interactor?.getLocationImagesCount(request: request)
+    }
+    
+    func displayLocationImagesCount(viewModel: LocationDescription.GetLocationImagesCount.ViewModel) {
+        guard let imagesCount = viewModel.imagesCount else { return }
+        pageControl.numberOfPages = imagesCount
+//        scrollView.contentSize = CGSize(width: Double(UIScreen.main.bounds.width) * Double(imagesCount), height: scrollView.frame.height)
+    }
+    
+    private func getLocationAllImages() {
+        let request = LocationDescription.GetLocationAllImages.Request()
+        interactor?.getLocationAllImages(request: request)
+    }
+    
+    func displayLocationAllImages(viewModel: LocationDescription.GetLocationAllImages.ViewModel) {
+        let imagesData = viewModel.imagesData
+        let imagesCount = imagesData.count
+        
+        for x in 0..<imagesCount {
+            let imageView = UIImageView()
+            imageView.image = UIImage(data: imagesData[x])
+            imageView.clipsToBounds = true
+            let xPosition = view.frame.width * CGFloat(x)
+            imageView.frame = CGRect(x: xPosition,
+                                     y: -115,
+                                     width: scrollView.frame.width,
+                                     height: scrollView.frame.height)
+            imageView.contentMode = .scaleAspectFill
+            scrollView.contentSize.width = scrollView.frame.width * CGFloat(x + 1)
+            scrollView.addSubview(imageView)
+        }
+    }
+    
     func displayLocationDescription(viewModel: LocationDescription.ShowLocationDescription.ViewModel) {
-        guard let imageData = viewModel.displayedLocation.imagesData.first else { return }
-        locationImageView.image = UIImage(data: imageData)
         locationNameLabel.text = viewModel.displayedLocation.name
         locationAddressLabel.text = viewModel.displayedLocation.address
         locationDescriptionTextView.text = viewModel.displayedLocation.description
@@ -337,5 +390,11 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
                 router.perform(selector, with: segue)
             }
         }
+    }
+}
+
+extension LocationDescriptionViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        pageControl.currentPage = Int(scrollView.contentOffset.x / UIScreen.main.bounds.width)
     }
 }
