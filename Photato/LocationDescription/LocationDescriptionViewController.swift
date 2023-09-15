@@ -28,8 +28,8 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
-        scrollView.backgroundColor = .blue
         scrollView.showsHorizontalScrollIndicator = false
+        scrollView.contentInsetAdjustmentBehavior = .automatic
         return scrollView
     }()
     
@@ -204,7 +204,6 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     func displayLocationImagesCount(viewModel: LocationDescription.GetLocationImagesCount.ViewModel) {
         guard let imagesCount = viewModel.imagesCount else { return }
         pageControl.numberOfPages = imagesCount
-//        scrollView.contentSize = CGSize(width: Double(UIScreen.main.bounds.width) * Double(imagesCount), height: scrollView.frame.height)
     }
     
     // MARK: GetLocationAllImages Use case
@@ -223,11 +222,13 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
             imageView.clipsToBounds = true
             let xPosition = view.frame.width * CGFloat(x)
             imageView.frame = CGRect(x: xPosition,
-                                     y: -115,
+                                     y: 0,
                                      width: scrollView.frame.width,
                                      height: scrollView.frame.height)
             imageView.contentMode = .scaleAspectFill
+
             scrollView.contentSize.width = scrollView.frame.width * CGFloat(x + 1)
+            scrollView.contentSize.height = imageView.frame.height
             scrollView.addSubview(imageView)
         }
     }
@@ -270,7 +271,8 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.isTranslucent = false
+        self.extendedLayoutIncludesOpaqueBars = true
         
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in

@@ -44,6 +44,11 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
         getLocations()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isTranslucent = true
+    }
+    
     // MARK: - Methods
     
     // MARK: FetchLocations Use case
