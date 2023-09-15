@@ -9,14 +9,22 @@ import Foundation
 
 struct Location {
     struct Coordinates {
-        var latitude: Double
-        var longitude: Double
+        let latitude: Double
+        let longitude: Double
     }
     
-    var name: String
-    var description: String
-    var address: String
-    var coordinates: Coordinates
-    var imagesData: [Data]
+    let name: String
+    let description: String
+    let address: String
+    let coordinates: Coordinates
+    let imagesData: [Data]
+    
+    func addNewImagesData(data: [Data]) -> Self {
+        .init(name: name,
+              description: description,
+              address: address,
+              coordinates: coordinates,
+              imagesData: data)
+    }
 }
 

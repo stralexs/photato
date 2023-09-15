@@ -13,14 +13,14 @@ protocol LocationsListDisplayLogic: AnyObject {
     func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel)
 }
 
-class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
+final class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     // MARK: - Properties
     var interactor: LocationsListBusinessLogic?
     var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
     
-    var locations: [Location] = []
+    private var locations = [Location]()
     
-    var tableView: UITableView = {
+    let tableView: UITableView = {
         let tableView = UITableView()
         tableView.allowsSelection = true
         tableView.register(LocationsListTableViewCell.self, forCellReuseIdentifier: LocationsListTableViewCell.identifier)
@@ -28,7 +28,7 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
         return tableView
     }()
     
-    let searchController: UISearchController = {
+    private let searchController: UISearchController = {
         let searchController = UISearchController()
         searchController.searchBar.placeholder = "Поиск"
         searchController.searchBar.setValue("Отмена", forKey: "cancelButtonText")
@@ -45,7 +45,26 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     }
     
     // MARK: - Methods
-    func tuneUI() {
+    
+    // MARK: FetchLocations Use case
+    private func getLocations() {
+        let request = LocationsList.FetchLocations.Request()
+        interactor?.fetchLocations(request: request)
+    }
+    
+    func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel) {
+        locations = viewModel.locations
+        tableView.reloadData()
+    }
+    
+    // MARK: SearchLocations Use case
+    func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel) {
+        locations = viewModel.locations
+        tableView.reloadData()
+    }
+    
+    // MARK: Other methods
+    private func tuneUI() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.left.equalToSuperview()
@@ -61,21 +80,6 @@ class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
         navigationItem.searchController = searchController
         
         searchController.searchBar.delegate = self
-    }
-    
-    func getLocations() {
-        let request = LocationsList.FetchLocations.Request()
-        interactor?.fetchLocations(request: request)
-    }
-    
-    func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
-    }
-    
-    func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
     }
     
     private func configure(with view: LocationsListViewController) {

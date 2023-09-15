@@ -9,15 +9,14 @@ import UIKit
 import MapKit
 
 protocol MapWorkingLogic {
-    var locationManager: CLLocationManager { get }
     func checkLocationServicesStatus() -> Bool
     func setupLocationManager()
     func checkAuthorizationStatus() -> Bool?
     func fetchLocations(completion: @escaping ([Location]) -> Void)
 }
 
-class MapWorker: NSObject, MapWorkingLogic {
-    let locationManager: CLLocationManager = CLLocationManager()
+final class MapWorker: NSObject, MapWorkingLogic {
+    private let locationManager: CLLocationManager = CLLocationManager()
     
     func checkLocationServicesStatus() -> Bool {
         return CLLocationManager.locationServicesEnabled()

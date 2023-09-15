@@ -14,7 +14,7 @@ protocol MapPresentationLogic {
     func presentLocationsAnnotations(response: Map.GetLocationsAnnotations.Response)
 }
 
-class MapPresenter: MapPresentationLogic {
+final class MapPresenter: MapPresentationLogic {
     weak var viewController: MapDisplayLogic?
         
     func presentLocationServicesStatus(response: Map.CheckLocationServicesEnabled.Response) {
@@ -30,15 +30,13 @@ class MapPresenter: MapPresentationLogic {
     }
     
     func presentLocationsAnnotations(response: Map.GetLocationsAnnotations.Response) {
-        var locationsAnnotations: [MKAnnotation] = []
-        
-        response.locations.forEach { location in
+        let locationsAnnotations = response.locations.map { location in
             let annotation = MKPointAnnotation()
             annotation.title = location.name
             annotation.subtitle = location.address
             let coordinate = CLLocationCoordinate2D(latitude: location.coordinates.latitude, longitude: location.coordinates.longitude)
             annotation.coordinate = coordinate
-            locationsAnnotations.append(annotation)
+            return annotation
         }
         
         let viewModel = Map.GetLocationsAnnotations.ViewModel(annotations: locationsAnnotations)

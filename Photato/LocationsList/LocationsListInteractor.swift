@@ -17,14 +17,14 @@ protocol LocationsListDataStore {
     var selectedLocation: Location? { get }
 }
 
-class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDataStore {
+final class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDataStore {
     //MARK: - Properties
-    var locations: [Location] = []
+    var locations = [Location]()
     var selectedLocation: Location?
     var presenter: LocationsListPresentationLogic?
     var worker: LocationsListWorkingLogic
     
-    //MARK: - Public Methods
+    //MARK: - Methods
     func fetchLocations(request: LocationsList.FetchLocations.Request) {
         locations = worker.fetchLocations()
         locations = sortLocations()
@@ -41,7 +41,6 @@ class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDataStor
         presenter?.presentSearchedLocations(response: response)
     }
     
-    //MARK: - Private Method
     private func sortLocations() -> [Location] {
         return locations.sorted { $0.name < $1.name }
     }

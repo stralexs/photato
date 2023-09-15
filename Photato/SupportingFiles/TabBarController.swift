@@ -7,14 +7,13 @@
 
 import UIKit
 
-class TabBarController: UITabBarController {
-
+final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setTabBarAppearance()
     }
     
-    func setTabBarAppearance() {
+    private func setTabBarAppearance() {
         tabBar.tintColor = .darkOliveGreen
         tabBar.unselectedItemTintColor = .tortilla
         tabBar.backgroundColor = .lightTortilla

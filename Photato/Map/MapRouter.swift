@@ -15,7 +15,7 @@ protocol MapDataPassing {
     var dataStore: MapDataStore? { get }
 }
 
-class MapRouter: NSObject, MapRoutingLogic, MapDataPassing {
+final class MapRouter: NSObject, MapRoutingLogic, MapDataPassing {
     weak var viewController: MapViewController?
     var dataStore: MapDataStore?
     

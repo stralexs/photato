@@ -14,22 +14,15 @@ protocol LocationDescriptionPresentationLogic {
     func presentLocationAllImages(response: LocationDescription.GetLocationAllImages.Response)
 }
 
-class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
+final class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
     weak var viewController: LocationDescriptionDisplayLogic?
     
     func presentLocationDescription(response: LocationDescription.ShowLocationDescription.Response) {
-        guard let imageData = response.location.imagesData.first else { return }
         let longitude = round(100_000 * response.location.coordinates.longitude) / 100_000
         let latitude = round(100_000 * response.location.coordinates.latitude) / 100_000
         let coordinates = "\(latitude), \(longitude)"
         
-        let displayedLocation = LocationDescription.ShowLocationDescription.ViewModel.DisplayedLocation(
-                name: response.location.name,
-                description: response.location.description,
-                address: response.location.address,
-                coordinates: coordinates, imagesData: [imageData])
-        
-        let viewModel = LocationDescription.ShowLocationDescription.ViewModel(displayedLocation: displayedLocation)
+        let viewModel = LocationDescription.ShowLocationDescription.ViewModel(location: response.location, stringLocationCoordinates: coordinates)
         viewController?.displayLocationDescription(viewModel: viewModel)
     }
     

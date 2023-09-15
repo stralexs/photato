@@ -12,7 +12,7 @@ protocol LocationsListPresentationLogic {
     func presentSearchedLocations(response: LocationsList.SearchLocations.Response)
 }
 
-class LocationsListPresenter: LocationsListPresentationLogic {
+final class LocationsListPresenter: LocationsListPresentationLogic {
     weak var viewController: LocationsListDisplayLogic?
     
     func presentLocations(response: LocationsList.FetchLocations.Response) {

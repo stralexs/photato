@@ -15,7 +15,7 @@ protocol LocationDescriptionDataPassing {
     var dataStore: LocationDescriptionDataStore? { get }
 }
 
-class LocationDescriptionRouter: NSObject, LocationDescriptionRoutingLogic, LocationDescriptionDataPassing {
+final class LocationDescriptionRouter: NSObject, LocationDescriptionRoutingLogic, LocationDescriptionDataPassing {
     
     weak var viewController: LocationDescriptionViewController?
     var dataStore: LocationDescriptionDataStore?

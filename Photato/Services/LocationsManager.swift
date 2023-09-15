@@ -7,22 +7,25 @@
 
 import Foundation
 
-class LocationsManager {
+final class LocationsManager {
     static let shared = LocationsManager(firebaseManager: FirebaseManager())
     
     private init(firebaseManager: FirebaseManagerLogic) {
         self.firebaseManager = firebaseManager
     }
     
+    private let firebaseManager: FirebaseManagerLogic
+    var locations = [Location]()
+    
     func downloadLocations(completion: @escaping ([Location]) -> Void) {
         firebaseManager.retrieveLocations { [weak self] locations in
             var locationsVar = locations
             let dispatchGroup = DispatchGroup()
-                   
+            
             for (index, value) in locations.enumerated() {
                 dispatchGroup.enter()
                 self?.firebaseManager.retrieveFirstImageData(for: value.name) { data in
-                    locationsVar[index].imagesData.append(data)
+                    locationsVar[index] = locationsVar[index].addNewImagesData(data: [data])
                     dispatchGroup.leave()
                 }
             }
@@ -43,24 +46,11 @@ class LocationsManager {
     func downloadAllImages(for locationName: String, completion: @escaping ([Data]) -> ()) {
         firebaseManager.retrieveAllImages(for: locationName) { [weak self] imagesData in
             guard let self = self else { return }
-            var locationsVar = self.locations
-            let dispatchGroup = DispatchGroup()
+            let locationWithImages: [Location] = self.locations.filter { $0.name == locationName }
+                                                               .map { $0.addNewImagesData(data: imagesData) }
             
-            for (index, value) in self.locations.enumerated() {
-                dispatchGroup.enter()
-                if value.name == locationName {
-                    locationsVar[index].imagesData = imagesData
-                }
-                dispatchGroup.leave()
-            }
-            
-            dispatchGroup.notify(queue: .main) {
-                self.locations = locationsVar
-                completion(imagesData)
-            }
+            self.locations = locationWithImages
+            completion(imagesData)
         }
     }
-    
-    var firebaseManager: FirebaseManagerLogic
-    var locations: [Location] = []
 }

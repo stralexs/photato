@@ -16,15 +16,8 @@ enum LocationDescription {
         }
         
         struct ViewModel {
-            struct DisplayedLocation {
-                let name: String
-                let description: String
-                let address: String
-                let coordinates: String
-                let imagesData: [Data]
-            }
-            
-            let displayedLocation: DisplayedLocation
+            let location: Location
+            let stringLocationCoordinates: String
         }
     }
     

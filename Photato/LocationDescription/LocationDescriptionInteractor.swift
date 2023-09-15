@@ -16,34 +16,38 @@ protocol LocationDescriptionBusinessLogic {
 }
 
 protocol LocationDescriptionDataStore {
-    var location: Location! { get set }
+    var location: Location? { get set }
 }
 
-class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationDescriptionDataStore {
+final class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationDescriptionDataStore {
     // MARK: - Properties
     var presenter: LocationDescriptionPresentationLogic?
     var worker: LocationDescriptionWorkingLogic
-    var location: Location!
+    var location: Location?
     
     // MARK: - Methods
     func showLocationDescription(request: LocationDescription.ShowLocationDescription.Request) {
+        guard let location = location else { return }
         let response = LocationDescription.ShowLocationDescription.Response(location: location)
         presenter?.presentLocationDescription(response: response)
     }
     
     func copyCoordinatesToClipboard(request: LocationDescription.CopyCoordinatesToClipboard.Request) {
-        let location = "\(location.coordinates.latitude), \(location.coordinates.longitude)"
-        UIPasteboard.general.string = location
+        guard let location = location else { return }
+        let pasteboardLocation = "\(location.coordinates.latitude), \(location.coordinates.longitude)"
+        UIPasteboard.general.string = pasteboardLocation
         
         let response = LocationDescription.CopyCoordinatesToClipboard.Response()
         presenter?.presentCopiedToClipboardMessage(response: response)
     }
     
     func openLocationInMaps(request: LocationDescription.OpenLocationInMaps.Request) {
+        guard let location = location else { return }
         worker.openInMaps(for: location)
     }
     
     func getLocationImagesCount(request: LocationDescription.GetLocationImagesCount.Request) {
+        guard let location = location else { return }
         if location.imagesData.count == 1 {
             LocationsManager.shared.downloadImagesCount(for: location.name) { [presenter] imagesCount in
                 let response = LocationDescription.GetLocationImagesCount.Response(imagesCount: imagesCount)
@@ -56,9 +60,10 @@ class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, LocationD
     }
     
     func getLocationAllImages(request: LocationDescription.GetLocationAllImages.Request) {
+        guard var location = location else { return }
         if location.imagesData.count == 1 {
             LocationsManager.shared.downloadAllImages(for: location.name) { [weak self] imagesData in
-                self?.location.imagesData = imagesData
+                location = location.addNewImagesData(data: imagesData)
                 let response = LocationDescription.GetLocationAllImages.Response(imagesData: imagesData)
                 self?.presenter?.presentLocationAllImages(response: response)
             }

@@ -15,7 +15,7 @@ protocol LocationsListDataPassing {
     var dataStore: LocationsListDataStore? { get }
 }
 
-class LocationsListRouter: NSObject, LocationsListRoutingLogic, LocationsListDataPassing {
+final class LocationsListRouter: NSObject, LocationsListRoutingLogic, LocationsListDataPassing {
     weak var viewController: LocationsListViewController?
     var dataStore: LocationsListDataStore?
     

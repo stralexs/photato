@@ -15,12 +15,12 @@ protocol MapDisplayLogic: AnyObject {
     func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel)
 }
 
-class MapViewController: UIViewController, MapDisplayLogic {
+final class MapViewController: UIViewController, MapDisplayLogic {
     // MARK: - Properties
-    var interactor: MapBusinessLogic?
-    var router: (NSObjectProtocol & MapRoutingLogic & MapDataPassing)?
+    private var interactor: MapBusinessLogic?
+    private var router: (NSObjectProtocol & MapRoutingLogic & MapDataPassing)?
     
-    let mapView: MKMapView = {
+    private let mapView: MKMapView = {
         let mapView = MKMapView()
         return mapView
     }()
@@ -39,7 +39,9 @@ class MapViewController: UIViewController, MapDisplayLogic {
     }
     
     // MARK: - Methods
-    func checkLocationServicesEnabled() {
+    
+    // MARK: CheckLocationServicesEnabled Use case
+    private func checkLocationServicesEnabled() {
         let request = Map.CheckLocationServicesEnabled.Request()
         interactor?.checkLocationServicesEnabled(request: request)
     }
@@ -54,12 +56,14 @@ class MapViewController: UIViewController, MapDisplayLogic {
         }
     }
     
-    func setupLocationManager() {
+    // MARK: SetupLocationManager Use case
+    private func setupLocationManager() {
         let request = Map.SetupLocationManager.Request()
         interactor?.setupLocationManager(request: request)
     }
     
-    func checkAthorizationStatus() {
+    // MARK: CheckAuthorizationStatus Use case
+    private func checkAthorizationStatus() {
         let request = Map.CheckAuthorizationStatus.Request()
         interactor?.checkAuthorizationStatus(request: request)
     }
@@ -73,7 +77,8 @@ class MapViewController: UIViewController, MapDisplayLogic {
         }
     }
     
-    func getLocationsAnnotations() {
+    // MARK: GetLocationsAnnotations Use case
+    private func getLocationsAnnotations() {
         let request = Map.GetLocationsAnnotations.Request()
         interactor?.fetchLocations(request: request)
     }
@@ -84,7 +89,8 @@ class MapViewController: UIViewController, MapDisplayLogic {
         }
     }
     
-    func tuneUI() {
+    // MARK: Other Methods
+    private func tuneUI() {
         view.addSubview(mapView)
         mapView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
@@ -131,6 +137,8 @@ class MapViewController: UIViewController, MapDisplayLogic {
     }
 }
 
+
+    // MARK: - CLLocationManagerDelegate
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last?.coordinate {
@@ -144,6 +152,7 @@ extension MapViewController: CLLocationManagerDelegate {
     }
 }
 
+    // MARK: - MKMapViewDelegate
 extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard !(annotation is MKUserLocation) else { return nil }

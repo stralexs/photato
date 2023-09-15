@@ -12,23 +12,19 @@ protocol LocationsListWorkingLogic {
     func searchLocations(using searchText: String) -> [Location]
 }
 
-class LocationsListWorker: LocationsListWorkingLogic {
+final class LocationsListWorker: LocationsListWorkingLogic {
     func fetchLocations() -> [Location] {
         return LocationsManager.shared.locations
     }
     
     func searchLocations(using searchText: String) -> [Location] {
         let locations: [Location] = LocationsManager.shared.locations
-        var filteredLocations: [Location] = []
+        var filteredLocations = [Location]()
         
         if searchText == "" {
             filteredLocations = locations
         } else {
-            locations.forEach { location in
-                if location.name.lowercased().contains(searchText.lowercased()) {
-                    filteredLocations.append(location)
-                }
-            }
+            filteredLocations = locations.filter { $0.name.lowercased().contains(searchText.lowercased()) }
         }
         
         return filteredLocations

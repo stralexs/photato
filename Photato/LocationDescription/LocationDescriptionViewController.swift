@@ -14,18 +14,18 @@ protocol LocationDescriptionDisplayLogic: AnyObject {
     func displayLocationAllImages(viewModel: LocationDescription.GetLocationAllImages.ViewModel)
 }
 
-class LocationDescriptionViewController: UIViewController, LocationDescriptionDisplayLogic {
+final class LocationDescriptionViewController: UIViewController, LocationDescriptionDisplayLogic {
     // MARK: - Properties
     var interactor: LocationDescriptionBusinessLogic?
     var router: (NSObjectProtocol & LocationDescriptionRoutingLogic & LocationDescriptionDataPassing)?
     
-    let pageControl: UIPageControl = {
+    private let pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.currentPageIndicatorTintColor = .white
         return pageControl
     }()
     
-    let scrollView: UIScrollView = {
+    private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.isPagingEnabled = true
         scrollView.backgroundColor = .blue
@@ -33,7 +33,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return scrollView
     }()
     
-    let locationNameLabel: UILabel = {
+    private let locationNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
@@ -42,7 +42,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return label
     }()
     
-    let locationDescriptionHeaderLabel: UILabel = {
+    private let locationDescriptionHeaderLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
@@ -51,7 +51,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return label
     }()
     
-    let locationDescriptionTextView: UITextView = {
+    private let locationDescriptionTextView: UITextView = {
         let textView = UITextView()
         textView.textColor = .white
         textView.textAlignment = .left
@@ -62,7 +62,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return textView
     }()
     
-    let locationAddressHeaderLabel: UILabel = {
+    private let locationAddressHeaderLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
@@ -71,7 +71,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return label
     }()
     
-    let locationAddressLabel: UILabel = {
+    private let locationAddressLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
@@ -80,7 +80,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return label
     }()
     
-    let coordinatesBackgroundView: UIView = {
+    private let coordinatesBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .tortilla
         view.layer.cornerRadius = 5
@@ -89,7 +89,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return view
     }()
     
-    let locationCoordinatesLabel: UILabel = {
+    private let locationCoordinatesLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
@@ -97,7 +97,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return label
     }()
     
-    lazy var copyCoordinatesButton: UIButton = {
+    private lazy var copyCoordinatesButton: UIButton = {
         let copyCoordinatesButton = UIButton()
         let image = UIImage(systemName: "square.on.square")
         copyCoordinatesButton.setImage(image, for: .normal)
@@ -109,7 +109,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return copyCoordinatesButton
     }()
     
-    lazy var openInMapsButton: UIButton = {
+    private lazy var openInMapsButton: UIButton = {
         let openInMapsButton = UIButton()
         let image = UIImage(systemName: "location.circle")
         openInMapsButton.setImage(image, for: .normal)
@@ -121,7 +121,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return openInMapsButton
     }()
     
-    let copiedToClipboardMessageBackgroundView: UIView = {
+    private let copiedToClipboardMessageBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .tortilla
         view.layer.cornerRadius = 20
@@ -129,7 +129,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return view
     }()
     
-    let copiedToClipboardMessage: UILabel = {
+    private let copiedToClipboardMessage: UILabel = {
         let message = UILabel()
         message.text = "Координаты скопированы"
         message.font = .systemFont(ofSize: 16, weight: .light)
@@ -138,7 +138,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return message
     }()
     
-    let downloadImageButton: UIButton = {
+    private let downloadImageButton: UIButton = {
         let downloadImageButton = UIButton()
         let image = UIImage(systemName: "sun.max")
         downloadImageButton.setImage(image, for: .normal)
@@ -149,7 +149,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return downloadImageButton
     }()
     
-    let addToFavouritesButton: UIButton = {
+    private let addToFavouritesButton: UIButton = {
         let addToFavouritesButton = UIButton()
         let image = UIImage(systemName: "heart")
         addToFavouritesButton.setImage(image, for: .normal)
@@ -160,7 +160,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         return addToFavouritesButton
     }()
 
-    // MARK: - Object Lifecycle
+    // MARK: - Initialization
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         configure()
@@ -180,7 +180,90 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         tuneUI()
     }
     
-    // MARK: - Private Methods
+    // MARK: - Methods
+    
+    // MARK: ShowLocationDescription Use case
+    private func showLocationDescription() {
+        let request = LocationDescription.ShowLocationDescription.Request()
+        interactor?.showLocationDescription(request: request)
+    }
+    
+    func displayLocationDescription(viewModel: LocationDescription.ShowLocationDescription.ViewModel) {
+        locationNameLabel.text = viewModel.location.name
+        locationAddressLabel.text = viewModel.location.address
+        locationDescriptionTextView.text = viewModel.location.description
+        locationCoordinatesLabel.text = viewModel.stringLocationCoordinates
+    }
+    
+    // MARK: GetLocationImagesCount Use case
+    private func getLocationImagesCount() {
+        let request = LocationDescription.GetLocationImagesCount.Request()
+        interactor?.getLocationImagesCount(request: request)
+    }
+    
+    func displayLocationImagesCount(viewModel: LocationDescription.GetLocationImagesCount.ViewModel) {
+        guard let imagesCount = viewModel.imagesCount else { return }
+        pageControl.numberOfPages = imagesCount
+//        scrollView.contentSize = CGSize(width: Double(UIScreen.main.bounds.width) * Double(imagesCount), height: scrollView.frame.height)
+    }
+    
+    // MARK: GetLocationAllImages Use case
+    private func getLocationAllImages() {
+        let request = LocationDescription.GetLocationAllImages.Request()
+        interactor?.getLocationAllImages(request: request)
+    }
+    
+    func displayLocationAllImages(viewModel: LocationDescription.GetLocationAllImages.ViewModel) {
+        let imagesData = viewModel.imagesData
+        let imagesCount = imagesData.count
+        
+        for x in 0..<imagesCount {
+            let imageView = UIImageView()
+            imageView.image = UIImage(data: imagesData[x])
+            imageView.clipsToBounds = true
+            let xPosition = view.frame.width * CGFloat(x)
+            imageView.frame = CGRect(x: xPosition,
+                                     y: -115,
+                                     width: scrollView.frame.width,
+                                     height: scrollView.frame.height)
+            imageView.contentMode = .scaleAspectFill
+            scrollView.contentSize.width = scrollView.frame.width * CGFloat(x + 1)
+            scrollView.addSubview(imageView)
+        }
+    }
+    
+    // MARK: CopyCoordinatesToClipboard Use case
+    @objc private func copyCoordinatesToClipboard() {
+        let request = LocationDescription.CopyCoordinatesToClipboard.Request()
+        interactor?.copyCoordinatesToClipboard(request: request)
+    }
+    
+    func displayCopiedToClipboardMessage(viewModel: LocationDescription.CopyCoordinatesToClipboard.ViewModel) {
+        UIView.animate(withDuration: 0.2) { [weak self] in
+            self?.copiedToClipboardMessageBackgroundView.alpha = 1.0
+        }
+        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
+            UIView.animate(withDuration: 0.2) { [weak self] in
+                self?.copiedToClipboardMessageBackgroundView.alpha = 0
+            }
+        }
+    }
+    
+    // MARK: OpenLocationInMaps Use case
+    @objc private func openLocationInMaps() {
+        let alert = UIAlertController(title: "Открыть локацию в приложении Карты?", message: nil, preferredStyle: .alert)
+        let settingsAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+            let request = LocationDescription.OpenLocationInMaps.Request()
+            self?.interactor?.openLocationInMaps(request: request)
+        }
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        
+        alert.addAction(settingsAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+    }
+    
+    // MARK: Other methods
     private func tuneUI() {
         view.backgroundColor = .lightTortilla
         
@@ -305,83 +388,6 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
         router.dataStore = interactor
     }
     
-    @objc private func copyCoordinatesToClipboard() {
-        let request = LocationDescription.CopyCoordinatesToClipboard.Request()
-        interactor?.copyCoordinatesToClipboard(request: request)
-    }
-    
-    @objc func openLocationInMaps() {
-        let alert = UIAlertController(title: "Открыть локацию в приложении Карты?", message: nil, preferredStyle: .alert)
-        let settingsAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
-            let request = LocationDescription.OpenLocationInMaps.Request()
-            self?.interactor?.openLocationInMaps(request: request)
-        }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
-        
-        alert.addAction(settingsAction)
-        alert.addAction(cancelAction)
-        present(alert, animated: true)
-    }
-    
-    // MARK: - Public Methods
-    func showLocationDescription() {
-        let request = LocationDescription.ShowLocationDescription.Request()
-        interactor?.showLocationDescription(request: request)
-    }
-    
-    private func getLocationImagesCount() {
-        let request = LocationDescription.GetLocationImagesCount.Request()
-        interactor?.getLocationImagesCount(request: request)
-    }
-    
-    func displayLocationImagesCount(viewModel: LocationDescription.GetLocationImagesCount.ViewModel) {
-        guard let imagesCount = viewModel.imagesCount else { return }
-        pageControl.numberOfPages = imagesCount
-//        scrollView.contentSize = CGSize(width: Double(UIScreen.main.bounds.width) * Double(imagesCount), height: scrollView.frame.height)
-    }
-    
-    private func getLocationAllImages() {
-        let request = LocationDescription.GetLocationAllImages.Request()
-        interactor?.getLocationAllImages(request: request)
-    }
-    
-    func displayLocationAllImages(viewModel: LocationDescription.GetLocationAllImages.ViewModel) {
-        let imagesData = viewModel.imagesData
-        let imagesCount = imagesData.count
-        
-        for x in 0..<imagesCount {
-            let imageView = UIImageView()
-            imageView.image = UIImage(data: imagesData[x])
-            imageView.clipsToBounds = true
-            let xPosition = view.frame.width * CGFloat(x)
-            imageView.frame = CGRect(x: xPosition,
-                                     y: -115,
-                                     width: scrollView.frame.width,
-                                     height: scrollView.frame.height)
-            imageView.contentMode = .scaleAspectFill
-            scrollView.contentSize.width = scrollView.frame.width * CGFloat(x + 1)
-            scrollView.addSubview(imageView)
-        }
-    }
-    
-    func displayLocationDescription(viewModel: LocationDescription.ShowLocationDescription.ViewModel) {
-        locationNameLabel.text = viewModel.displayedLocation.name
-        locationAddressLabel.text = viewModel.displayedLocation.address
-        locationDescriptionTextView.text = viewModel.displayedLocation.description
-        locationCoordinatesLabel.text = viewModel.displayedLocation.coordinates
-    }
-    
-    func displayCopiedToClipboardMessage(viewModel: LocationDescription.CopyCoordinatesToClipboard.ViewModel) {
-        UIView.animate(withDuration: 0.2) { [weak self] in
-            self?.copiedToClipboardMessageBackgroundView.alpha = 1.0
-        }
-        Timer.scheduledTimer(withTimeInterval: 2, repeats: false) { _ in
-            UIView.animate(withDuration: 0.2) { [weak self] in
-                self?.copiedToClipboardMessageBackgroundView.alpha = 0
-            }
-        }
-    }
-    
     // MARK: - Routing
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let scene = segue.identifier {
@@ -393,6 +399,7 @@ class LocationDescriptionViewController: UIViewController, LocationDescriptionDi
     }
 }
 
+    // MARK: - UIScrollViewDelegate
 extension LocationDescriptionViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         pageControl.currentPage = Int(scrollView.contentOffset.x / UIScreen.main.bounds.width)

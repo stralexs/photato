@@ -18,9 +18,9 @@ protocol MapDataStore {
     var locations: [Location] { get }
 }
 
-class MapInteractor: MapBusinessLogic, MapDataStore {
+final class MapInteractor: MapBusinessLogic, MapDataStore {
     //MARK: - Properties
-    var locations: [Location] = []
+    var locations = [Location]()
     var presenter: MapPresentationLogic?
     var worker: MapWorkingLogic
     

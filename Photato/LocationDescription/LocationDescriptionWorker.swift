@@ -12,7 +12,7 @@ protocol LocationDescriptionWorkingLogic {
     func openInMaps(for location: Location)
 }
 
-class LocationDescriptionWorker: LocationDescriptionWorkingLogic {
+final class LocationDescriptionWorker: LocationDescriptionWorkingLogic {
     func openInMaps(for location: Location) {
         let latitude: CLLocationDegrees = location.coordinates.latitude
         let longitude: CLLocationDegrees = location.coordinates.longitude

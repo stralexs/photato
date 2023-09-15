@@ -8,11 +8,11 @@
 import UIKit
 import SnapKit
 
-class LocationsListTableViewCell: UITableViewCell {
-    // MARK: - Variables
+final class LocationsListTableViewCell: UITableViewCell {
+    // MARK: - Properties
     static let identifier = "LocationsListTableViewCell"
     
-    let background: UIView = {
+    private let background: UIView = {
         let background = UIView()
         background.backgroundColor = .systemGray5
         background.layer.cornerRadius = 5
@@ -25,7 +25,7 @@ class LocationsListTableViewCell: UITableViewCell {
         return background
     }()
     
-    let leftImageView: UIImageView = {
+    private let leftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
         imageView.layer.masksToBounds = true
@@ -33,7 +33,7 @@ class LocationsListTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    let locationNameLabel: UILabel = {
+    private let locationNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
@@ -41,7 +41,7 @@ class LocationsListTableViewCell: UITableViewCell {
         return label
     }()
     
-    let locationAddressImageView: UIImageView = {
+    private let locationAddressImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(systemName: "location.circle")
@@ -49,7 +49,7 @@ class LocationsListTableViewCell: UITableViewCell {
         return imageView
     }()
     
-    let locationAddressLabel: UILabel = {
+    private let locationAddressLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
@@ -75,7 +75,7 @@ class LocationsListTableViewCell: UITableViewCell {
         locationAddressLabel.text = location.address
     }
     
-    func tuneUI() {
+    private func tuneUI() {
         contentView.addSubview(background)
         background.snp.makeConstraints { make in
             make.left.equalToSuperview().inset(20)
