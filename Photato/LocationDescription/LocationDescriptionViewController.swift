@@ -33,6 +33,8 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         return scrollView
     }()
     
+    private let activityIndicator = UIActivityIndicatorView()
+    
     private let locationNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -202,12 +204,12 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     }
     
     func displayLocationImagesCount(viewModel: LocationDescription.GetLocationImagesCount.ViewModel) {
-        guard let imagesCount = viewModel.imagesCount else { return }
-        pageControl.numberOfPages = imagesCount
+        pageControl.numberOfPages = viewModel.imagesCount
     }
     
     // MARK: GetLocationAllImages Use case
     private func getLocationAllImages() {
+        activityIndicator.startAnimating()
         let request = LocationDescription.GetLocationAllImages.Request()
         interactor?.getLocationAllImages(request: request)
     }
@@ -216,20 +218,25 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         let imagesData = viewModel.imagesData
         let imagesCount = imagesData.count
         
-        for x in 0..<imagesCount {
-            let imageView = UIImageView()
-            imageView.image = UIImage(data: imagesData[x])
-            imageView.clipsToBounds = true
-            let xPosition = view.frame.width * CGFloat(x)
-            imageView.frame = CGRect(x: xPosition,
-                                     y: 0,
-                                     width: scrollView.frame.width,
-                                     height: scrollView.frame.height)
-            imageView.contentMode = .scaleAspectFill
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            for x in 0..<imagesCount {
+                let imageView = UIImageView()
+                imageView.image = UIImage(data: imagesData[x])
+                imageView.clipsToBounds = true
+                let xPosition = self.view.frame.width * CGFloat(x)
+                imageView.frame = CGRect(x: xPosition,
+                                         y: 0,
+                                         width: self.scrollView.frame.width,
+                                         height: self.scrollView.frame.height)
+                imageView.contentMode = .scaleAspectFill
 
-            scrollView.contentSize.width = scrollView.frame.width * CGFloat(x + 1)
-            scrollView.contentSize.height = imageView.frame.height
-            scrollView.addSubview(imageView)
+                self.scrollView.contentSize.width = self.scrollView.frame.width * CGFloat(x + 1)
+                self.scrollView.contentSize.height = imageView.frame.height
+                self.scrollView.addSubview(imageView)
+                activityIndicator.stopAnimating()
+            }
         }
     }
     
@@ -273,6 +280,12 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = false
         self.extendedLayoutIncludesOpaqueBars = true
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints { make in
+            make.left.top.right.equalToSuperview()
+            make.bottom.equalToSuperview().multipliedBy(0.35)
+        }
         
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in

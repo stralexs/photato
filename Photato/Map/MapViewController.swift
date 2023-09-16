@@ -36,6 +36,7 @@ final class MapViewController: UIViewController, MapDisplayLogic {
         super.viewDidAppear(animated)
         checkLocationServicesEnabled()
         getLocationsAnnotations()
+        refreshLocations()
     }
     
     // MARK: - Methods
@@ -87,6 +88,12 @@ final class MapViewController: UIViewController, MapDisplayLogic {
         viewModel.annotations.forEach { annotation in
             mapView.addAnnotation(annotation)
         }
+    }
+    
+    // MARK: RefreshLocations Use case
+    private func refreshLocations() {
+        let request = Map.RefreshLocations.Request()
+        interactor?.refreshLocations(request: request)
     }
     
     // MARK: Other Methods

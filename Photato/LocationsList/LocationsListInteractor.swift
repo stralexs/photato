@@ -10,6 +10,7 @@ import UIKit
 protocol LocationsListBusinessLogic {
     func fetchLocations(request: LocationsList.FetchLocations.Request)
     func searchLocations(request: LocationsList.SearchLocations.Request)
+    func refreshLocations(requst: LocationsList.RefreshLocations.Requst)
 }
 
 protocol LocationsListDataStore {
@@ -39,6 +40,12 @@ final class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDa
         
         let response = LocationsList.SearchLocations.Response(locations: locations)
         presenter?.presentSearchedLocations(response: response)
+    }
+    
+    func refreshLocations(requst: LocationsList.RefreshLocations.Requst) {
+        locations = LocationsManager.shared.locations
+        let response = LocationsList.RefreshLocations.Response(locations: locations)
+        presenter?.presentRefreshedLocations(response: response)
     }
     
     private func sortLocations() -> [Location] {

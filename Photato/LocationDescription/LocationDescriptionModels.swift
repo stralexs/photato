@@ -25,11 +25,11 @@ enum LocationDescription {
         struct Request {}
         
         struct Response {
-            let imagesCount: Int?
+            let imagesCount: Int
         }
         
         struct ViewModel {
-            let imagesCount: Int?
+            let imagesCount: Int
         }
     }
     

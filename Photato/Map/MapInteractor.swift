@@ -12,6 +12,7 @@ protocol MapBusinessLogic {
     func setupLocationManager(request: Map.SetupLocationManager.Request)
     func checkAuthorizationStatus(request: Map.CheckAuthorizationStatus.Request)
     func fetchLocations(request: Map.GetLocationsAnnotations.Request)
+    func refreshLocations(request: Map.RefreshLocations.Request)
 }
 
 protocol MapDataStore {
@@ -49,6 +50,10 @@ final class MapInteractor: MapBusinessLogic, MapDataStore {
             let response = Map.GetLocationsAnnotations.Response(locations: locations)
             self?.presenter?.presentLocationsAnnotations(response: response)
         })
+    }
+    
+    func refreshLocations(request: Map.RefreshLocations.Request) {
+        locations = LocationsManager.shared.locations
     }
     
     //MARK: - Initialization

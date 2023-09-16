@@ -48,4 +48,8 @@ enum Map {
             let annotations: [MKAnnotation]
         }
     }
+    
+    enum RefreshLocations {
+        struct Request {}
+    }
 }

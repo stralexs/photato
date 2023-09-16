@@ -46,11 +46,23 @@ final class LocationsManager {
     func downloadAllImages(for locationName: String, completion: @escaping ([Data]) -> ()) {
         firebaseManager.retrieveAllImages(for: locationName) { [weak self] imagesData in
             guard let self = self else { return }
-            let locationWithImages: [Location] = self.locations.filter { $0.name == locationName }
-                                                               .map { $0.addNewImagesData(data: imagesData) }
+            var imagesDataWithCorrectFirstImage = imagesData
             
-            self.locations = locationWithImages
-            completion(imagesData)
+            locations = locations.map { location in
+                var locationWithImages = location
+                
+                if location.name == locationName {
+                    guard let firstImage = location.imagesData.first else { return location }
+                    
+                    imagesDataWithCorrectFirstImage = imagesData.filter { $0 != firstImage }
+                    imagesDataWithCorrectFirstImage.insert(firstImage, at: 0)
+                    locationWithImages = location.addNewImagesData(data: imagesDataWithCorrectFirstImage)
+                }
+                
+                return locationWithImages
+            }
+            
+            completion(imagesDataWithCorrectFirstImage)
         }
     }
 }

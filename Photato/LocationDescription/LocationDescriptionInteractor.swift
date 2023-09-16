@@ -54,7 +54,7 @@ final class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, Loc
                 presenter?.presentLocationImagesCount(response: response)
             }
         } else {
-            let response = LocationDescription.GetLocationImagesCount.Response(imagesCount: nil)
+            let response = LocationDescription.GetLocationImagesCount.Response(imagesCount: location.imagesData.count)
             presenter?.presentLocationImagesCount(response: response)
         }
     }

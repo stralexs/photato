@@ -10,6 +10,7 @@ import UIKit
 protocol LocationsListPresentationLogic {
     func presentLocations(response: LocationsList.FetchLocations.Response)
     func presentSearchedLocations(response: LocationsList.SearchLocations.Response)
+    func presentRefreshedLocations(response: LocationsList.RefreshLocations.Response)
 }
 
 final class LocationsListPresenter: LocationsListPresentationLogic {
@@ -23,5 +24,10 @@ final class LocationsListPresenter: LocationsListPresentationLogic {
     func presentSearchedLocations(response: LocationsList.SearchLocations.Response) {
         let viewModel = LocationsList.SearchLocations.ViewModel(locations: response.locations)
         viewController?.displaySearchedLocations(viewModel: viewModel)
+    }
+    
+    func presentRefreshedLocations(response: LocationsList.RefreshLocations.Response) {
+        let viewModel = LocationsList.RefreshLocations.ViewModel(locations: response.locations)
+        viewController?.displayRefreshedLocations(viewModel: viewModel)
     }
 }

@@ -11,6 +11,7 @@ import SnapKit
 protocol LocationsListDisplayLogic: AnyObject {
     func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel)
     func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel)
+    func displayRefreshedLocations(viewModel: LocationsList.RefreshLocations.ViewModel)
 }
 
 final class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
@@ -35,7 +36,7 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
         searchController.searchBar.tintColor = .tortilla
         return searchController
     }()
-        
+    
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +47,7 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        refreshLocations()
         navigationController?.navigationBar.isTranslucent = true
     }
     
@@ -64,6 +66,17 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
     
     // MARK: SearchLocations Use case
     func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel) {
+        locations = viewModel.locations
+        tableView.reloadData()
+    }
+    
+    // MARK: RefreshLocations Use case
+    func refreshLocations() {
+        let request = LocationsList.RefreshLocations.Requst()
+        interactor?.refreshLocations(requst: request)
+    }
+    
+    func displayRefreshedLocations(viewModel: LocationsList.RefreshLocations.ViewModel) {
         locations = viewModel.locations
         tableView.reloadData()
     }

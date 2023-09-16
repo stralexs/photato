@@ -33,4 +33,16 @@ enum LocationsList {
             let locations: [Location]
         }
     }
+    
+    enum RefreshLocations {
+        struct Requst {}
+        
+        struct Response {
+            let locations: [Location]
+        }
+        
+        struct ViewModel {
+            let locations: [Location]
+        }
+    }
 }
