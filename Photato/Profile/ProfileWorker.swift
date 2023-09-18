@@ -7,7 +7,12 @@
 
 import UIKit
 
-class ProfileWorker {
-    func doSomeWork() {
+protocol ProfileWorkingLogic {
+    func fetchUserFavouriteLocations() -> [Location]
+}
+
+final class ProfileWorker: ProfileWorkingLogic {
+    func fetchUserFavouriteLocations() -> [Location] {
+        return LocationsManager.shared.locations
     }
 }

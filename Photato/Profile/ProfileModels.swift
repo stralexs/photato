@@ -8,16 +8,15 @@
 import UIKit
 
 enum Profile {
-    // MARK: Use cases
-    
-    enum Something {
-        struct Request {
-        }
+    enum GetUserFavouriteLocations {
+        struct Request {}
         
         struct Response {
+            let locations: [Location]
         }
         
         struct ViewModel {
+            let locations: [Location]
         }
     }
 }

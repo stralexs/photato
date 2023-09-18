@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Карта-->
+        <!--Map View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController storyboardIdentifier="MapViewController" id="Y6W-OH-hqX" customClass="MapViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
@@ -18,11 +18,11 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Карта" image="map.circle.fill" catalog="system" id="w4I-Nu-cH3"/>
+                    <navigationItem key="navigationItem" id="jcs-0W-k4Z"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="127" y="404"/>
+            <point key="canvasLocation" x="-141" y="1082"/>
         </scene>
         <!--Locations List View Controller-->
         <scene sceneID="i3G-8O-8pV">
@@ -56,7 +56,7 @@
             </objects>
             <point key="canvasLocation" x="963" y="1797"/>
         </scene>
-        <!--Профиль-->
+        <!--Profile View Controller-->
         <scene sceneID="JKv-q2-ZgQ">
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" id="InB-wT-55L" customClass="ProfileViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
@@ -66,11 +66,11 @@
                         <viewLayoutGuide key="safeArea" id="i1G-44-Itd"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Профиль" image="person.circle.fill" catalog="system" id="3bH-0s-yHn"/>
+                    <navigationItem key="navigationItem" id="lzi-Gi-Msh"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y7G-md-XgP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2004" y="404"/>
+            <point key="canvasLocation" x="2004" y="1082"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="U58-gE-TEx">
@@ -83,9 +83,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="viewControllers" id="nMi-cr-URm"/>
+                        <segue destination="Yky-aj-fdR" kind="relationship" relationship="viewControllers" id="nMi-cr-URm"/>
                         <segue destination="AIJ-qy-3f0" kind="relationship" relationship="viewControllers" id="yOA-A6-9wA"/>
-                        <segue destination="InB-wT-55L" kind="relationship" relationship="viewControllers" id="SoD-Vg-p9Z"/>
+                        <segue destination="GVK-gs-11c" kind="relationship" relationship="viewControllers" id="SoD-Vg-p9Z"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eoC-Of-3yw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -109,7 +109,45 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HXf-EJ-zvD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="962.59541984732823" y="403.52112676056339"/>
+            <point key="canvasLocation" x="931" y="404"/>
+        </scene>
+        <!--Профиль-->
+        <scene sceneID="Kqx-gF-u9Y">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GVK-gs-11c" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Профиль" image="person.circle.fill" catalog="system" id="3bH-0s-yHn"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="uLr-0L-yU5">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="InB-wT-55L" kind="relationship" relationship="rootViewController" id="v9S-ky-QjP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qvh-1K-p2n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2004" y="404"/>
+        </scene>
+        <!--Карта-->
+        <scene sceneID="aSh-Qz-Ieg">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Yky-aj-fdR" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Карта" image="map.circle.fill" catalog="system" id="w4I-Nu-cH3"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="aCa-jx-MSy">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="nPk-aY-cip"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ddM-Jy-BzD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-141" y="404"/>
         </scene>
     </scenes>
     <resources>

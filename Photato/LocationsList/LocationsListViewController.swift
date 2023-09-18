@@ -24,7 +24,7 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
     let tableView: UITableView = {
         let tableView = UITableView()
         tableView.allowsSelection = true
-        tableView.register(LocationsListTableViewCell.self, forCellReuseIdentifier: LocationsListTableViewCell.identifier)
+        tableView.register(LocationTableViewCell.self, forCellReuseIdentifier: LocationTableViewCell.identifier)
         tableView.rowHeight = 140
         return tableView
     }()
@@ -121,7 +121,7 @@ extension LocationsListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationsListTableViewCell.identifier, for: indexPath) as? LocationsListTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LocationTableViewCell.identifier, for: indexPath) as? LocationTableViewCell else { return UITableViewCell() }
         let location = locations[indexPath.row]
         cell.configure(with: location)
         return cell

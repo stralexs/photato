@@ -8,26 +8,29 @@
 import UIKit
 
 protocol ProfileBusinessLogic {
-    func doSomething(request: Profile.Something.Request)
+    func getUserFavouriteLocations(request: Profile.GetUserFavouriteLocations.Request)
 }
 
 protocol ProfileDataStore {
-    //var name: String { get set }
+    var locations: [Location] { get }
 }
 
-class ProfileInteractor: ProfileBusinessLogic, ProfileDataStore {
-    
+final class ProfileInteractor: ProfileBusinessLogic, ProfileDataStore {
+    //MARK: - Properties
     var presenter: ProfilePresentationLogic?
-    var worker: ProfileWorker?
-    //var name: String = ""
+    var worker: ProfileWorkingLogic
+    var locations = [Location]()
     
-    // MARK: Do something
-    
-    func doSomething(request: Profile.Something.Request) {
-        worker = ProfileWorker()
-        worker?.doSomeWork()
+    //MARK: - Methods
+    func getUserFavouriteLocations(request: Profile.GetUserFavouriteLocations.Request) {
+        locations = worker.fetchUserFavouriteLocations().sorted { $0.name < $1.name }
         
-        let response = Profile.Something.Response()
-        presenter?.presentSomething(response: response)
+        let response = Profile.GetUserFavouriteLocations.Response(locations: locations)
+        presenter?.presentUserFavouriteLocations(response: response)
+    }
+    
+    //MARK: - Initialization
+    init(worker: ProfileWorkingLogic) {
+        self.worker = worker
     }
 }

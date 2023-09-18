@@ -49,7 +49,7 @@
 		4280755A2AA5B3D4003C8848 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 428075592AA5B3D4003C8848 /* FirebaseFirestore */; };
 		4280755C2AA5B3D4003C8848 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4280755B2AA5B3D4003C8848 /* FirebaseStorage */; };
 		4280755E2AA5BB6A003C8848 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280755D2AA5BB6A003C8848 /* FirebaseManager.swift */; };
-		4295C8872A7F940300447493 /* LocationsListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4295C8862A7F940300447493 /* LocationsListTableViewCell.swift */; };
+		4295C8872A7F940300447493 /* LocationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4295C8862A7F940300447493 /* LocationTableViewCell.swift */; };
 		4295C88C2A7FB28800447493 /* LocationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4295C88B2A7FB28800447493 /* LocationsManager.swift */; };
 		429F1D7C2A8927DE00EB5C77 /* LocationDescriptionBusinessLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429F1D7B2A8927DE00EB5C77 /* LocationDescriptionBusinessLogicSpy.swift */; };
 		429F1D7E2A8928B300EB5C77 /* LocationDescriptionPresentationLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429F1D7D2A8928B300EB5C77 /* LocationDescriptionPresentationLogicSpy.swift */; };
@@ -129,7 +129,7 @@
 		4272C1592A8157AE00E2AD47 /* LocationsListBusinessLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListBusinessLogicSpy.swift; sourceTree = "<group>"; };
 		428075522AA5AEF0003C8848 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4280755D2AA5BB6A003C8848 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
-		4295C8862A7F940300447493 /* LocationsListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListTableViewCell.swift; sourceTree = "<group>"; };
+		4295C8862A7F940300447493 /* LocationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTableViewCell.swift; sourceTree = "<group>"; };
 		4295C88B2A7FB28800447493 /* LocationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsManager.swift; sourceTree = "<group>"; };
 		429F1D7B2A8927DE00EB5C77 /* LocationDescriptionBusinessLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionBusinessLogicSpy.swift; sourceTree = "<group>"; };
 		429F1D7D2A8928B300EB5C77 /* LocationDescriptionPresentationLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDescriptionPresentationLogicSpy.swift; sourceTree = "<group>"; };
@@ -193,6 +193,7 @@
 				424528D32A7E99210059246D /* TabBarController.swift */,
 				424529192A7EA5EE0059246D /* UIColorExtension.swift */,
 				42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */,
+				4295C8862A7F940300447493 /* LocationTableViewCell.swift */,
 				42FA56272A7E72BB00144F2A /* Info.plist */,
 				428075522AA5AEF0003C8848 /* GoogleService-Info.plist */,
 			);
@@ -229,7 +230,6 @@
 				424528F12A7E9AB00059246D /* LocationsListWorker.swift */,
 				424528F22A7E9AB00059246D /* LocationsListRouter.swift */,
 				424528F32A7E9AB00059246D /* LocationsListModels.swift */,
-				4295C8862A7F940300447493 /* LocationsListTableViewCell.swift */,
 			);
 			path = LocationsList;
 			sourceTree = "<group>";
@@ -562,7 +562,7 @@
 				424529112A7E9BB30059246D /* LocationDescriptionWorker.swift in Sources */,
 				42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */,
 				424528F82A7E9AB00059246D /* LocationsListRouter.swift in Sources */,
-				4295C8872A7F940300447493 /* LocationsListTableViewCell.swift in Sources */,
+				4295C8872A7F940300447493 /* LocationTableViewCell.swift in Sources */,
 				424528F62A7E9AB00059246D /* LocationsListPresenter.swift in Sources */,
 				4280755E2AA5BB6A003C8848 /* FirebaseManager.swift in Sources */,
 				424528FA2A7E9AB00059246D /* LocationsListViewController.swift in Sources */,

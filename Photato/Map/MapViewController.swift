@@ -32,6 +32,11 @@ final class MapViewController: UIViewController, MapDisplayLogic {
         tuneUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isTranslucent = true
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkLocationServicesEnabled()
@@ -98,6 +103,8 @@ final class MapViewController: UIViewController, MapDisplayLogic {
     
     // MARK: Other Methods
     private func tuneUI() {
+        navigationItem.backButtonTitle = "Карта"
+        
         view.addSubview(mapView)
         mapView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()

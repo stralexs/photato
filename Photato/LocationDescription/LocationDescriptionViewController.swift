@@ -140,7 +140,7 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         return message
     }()
     
-    private let downloadImageButton: UIButton = {
+    private let weatherButton: UIButton = {
         let downloadImageButton = UIButton()
         let image = UIImage(systemName: "sun.max")
         downloadImageButton.setImage(image, for: .normal)
@@ -348,8 +348,8 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
             make.top.equalTo(locationAddressHeaderLabel.snp.bottom).inset(-5)
         }
         
-        view.addSubview(downloadImageButton)
-        downloadImageButton.snp.makeConstraints { make in
+        view.addSubview(weatherButton)
+        weatherButton.snp.makeConstraints { make in
             make.height.width.equalTo(30)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-10)
             make.centerX.equalToSuperview().offset(-100)
@@ -373,7 +373,7 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
             make.left.equalToSuperview().inset(15)
             make.top.equalTo(locationDescriptionHeaderLabel.snp.bottom).inset(-5)
             make.right.equalToSuperview().inset(15)
-            make.bottom.equalTo(downloadImageButton.snp.top).offset(-10)
+            make.bottom.equalTo(weatherButton.snp.top).offset(-10)
         }
         
         view.addSubview(copiedToClipboardMessageBackgroundView)

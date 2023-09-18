@@ -8,17 +8,14 @@
 import UIKit
 
 protocol ProfilePresentationLogic {
-    func presentSomething(response: Profile.Something.Response)
+    func presentUserFavouriteLocations(response: Profile.GetUserFavouriteLocations.Response)
 }
 
-class ProfilePresenter: ProfilePresentationLogic {
-    
+final class ProfilePresenter: ProfilePresentationLogic {
     weak var viewController: ProfileDisplayLogic?
-    
-    // MARK: Do something
-    
-    func presentSomething(response: Profile.Something.Response) {
-        let viewModel = Profile.Something.ViewModel()
-        viewController?.displaySomething(viewModel: viewModel)
+        
+    func presentUserFavouriteLocations(response: Profile.GetUserFavouriteLocations.Response) {
+        let viewModel = Profile.GetUserFavouriteLocations.ViewModel(locations: response.locations)
+        viewController?.displayUserFavouriteLocations(viewModel: viewModel)
     }
 }
