@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QkZ-JA-Kyw">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="l08-Q2-BFS">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
@@ -71,6 +71,82 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y7G-md-XgP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2004" y="1082"/>
+        </scene>
+        <!--Sign Up View Controller-->
+        <scene sceneID="5jX-D9-QnY">
+            <objects>
+                <viewController storyboardIdentifier="SignUpViewController" id="mrI-DF-Quu" customClass="SignUpViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xGG-7D-hWy">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="J9w-fg-7Cw"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xIB-gI-jgx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-378" y="-1073"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="y2C-zp-un2">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="9nr-Cy-8tg" customClass="LoginViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rQd-40-80K">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Uya-tO-vCA"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C1z-7O-3lf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="477" y="-1072"/>
+        </scene>
+        <!--Loading View Controller-->
+        <scene sceneID="n15-u7-zlv">
+            <objects>
+                <viewController storyboardIdentifier="LoadingViewController" id="Sp8-iz-L5L" customClass="LoadingViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PUB-gJ-6xT">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="a0I-lO-xCa"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wpd-rj-EvM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2004" y="-1361"/>
+        </scene>
+        <!--User Validation View Controller-->
+        <scene sceneID="gBl-Oc-4Qz">
+            <objects>
+                <viewController storyboardIdentifier="UserValidationViewController" id="Ywh-Qg-Wd7" customClass="UserValidationViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jeO-tL-1Ra">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="tFd-QZ-c59"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EOd-uZ-Bi3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="60" y="-1770"/>
+        </scene>
+        <!--Opening View Controller-->
+        <scene sceneID="7Si-lA-NOz">
+            <objects>
+                <viewController storyboardIdentifier="OpeningViewController" id="ds6-hX-beR" customClass="OpeningViewController" customModule="Photato" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ajQ-e5-HhM">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="4my-Ky-FD2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="AXO-ah-GRW"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WRO-Zb-4Zt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="931" y="-2469"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="U58-gE-TEx">
@@ -148,6 +224,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ddM-Jy-BzD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-141" y="404"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="WOy-ad-oe7">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="l08-Q2-BFS" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fm3-12-rKr">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="ds6-hX-beR" kind="relationship" relationship="rootViewController" id="Xt2-hs-rCa"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xhE-8V-xlc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="931" y="-3162"/>
         </scene>
     </scenes>
     <resources>
