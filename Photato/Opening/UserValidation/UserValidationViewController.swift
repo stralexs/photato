@@ -40,7 +40,7 @@ final class UserValidationViewController: UIViewController {
     
     private lazy var loginButton: UIButton = {
         let loginButton = UIButton()
-        loginButton.setTitle("Войти", for: .normal)
+        loginButton.setTitle("Login", for: .normal)
         loginButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .regular)
         loginButton.backgroundColor = .darkOliveGreen
         loginButton.addTarget(self, action: #selector(loginUser), for: .touchUpInside)
@@ -49,7 +49,7 @@ final class UserValidationViewController: UIViewController {
     
     private lazy var signUpButton: UIButton = {
         let signUpButton = UIButton()
-        signUpButton.setTitle("Зарегистрироваться", for: .normal)
+        signUpButton.setTitle("Sign up", for: .normal)
         signUpButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .regular)
         signUpButton.backgroundColor = .darkOliveGreen
         signUpButton.addTarget(self, action: #selector(signUpUser), for: .touchUpInside)

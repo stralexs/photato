@@ -27,10 +27,10 @@ final class MapInteractor: MapBusinessLogic, MapDataStore {
     
     //MARK: - Methods
     func checkLocationServicesEnabled(request: Map.CheckLocationServicesEnabled.Request) {
-        let isLocationServicesEnabled = worker.checkLocationServicesStatus()
-        
-        let response = Map.CheckLocationServicesEnabled.Response(isLocationServicesEnabled: isLocationServicesEnabled)
-        presenter?.presentLocationServicesStatus(response: response)
+        worker.checkLocationServicesStatus { [weak self] isEnabled in
+            let response = Map.CheckLocationServicesEnabled.Response(isLocationServicesEnabled: isEnabled)
+            self?.presenter?.presentLocationServicesStatus(response: response)
+        }
     }
     
     func setupLocationManager(request: Map.SetupLocationManager.Request) {

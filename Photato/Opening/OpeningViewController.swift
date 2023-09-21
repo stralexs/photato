@@ -63,7 +63,6 @@ final class OpeningViewController: UIViewController, OpeningDisplayLogic {
     }
     
     private func tuneUI() {
-        navigationItem.backButtonTitle = "Назад"
         navigationController?.navigationBar.tintColor = .tortilla
     }
     

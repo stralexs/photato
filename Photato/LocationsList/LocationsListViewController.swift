@@ -31,8 +31,6 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
     
     private let searchController: UISearchController = {
         let searchController = UISearchController()
-        searchController.searchBar.placeholder = "Поиск"
-        searchController.searchBar.setValue("Отмена", forKey: "cancelButtonText")
         searchController.searchBar.tintColor = .tortilla
         return searchController
     }()
@@ -93,7 +91,7 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
         tableView.delegate = self
         tableView.dataSource = self
         
-        title = "Локации"
+        title = "Locations"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.searchController = searchController
         

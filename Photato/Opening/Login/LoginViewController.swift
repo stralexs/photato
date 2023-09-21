@@ -167,7 +167,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         
         appIconImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(200)
+            make.width.height.equalTo(180)
         }
         
         emailTextField.snp.makeConstraints { make in

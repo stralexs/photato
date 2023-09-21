@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="l08-Q2-BFS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QkZ-JA-Kyw">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
@@ -168,11 +168,11 @@
             </objects>
             <point key="canvasLocation" x="932" y="-343"/>
         </scene>
-        <!--Локации-->
+        <!--Locations-->
         <scene sceneID="nCf-6o-Fm9">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="AIJ-qy-3f0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Локации" image="list.bullet" catalog="system" id="iUr-6m-la8"/>
+                    <tabBarItem key="tabBarItem" title="Locations" image="list.bullet" catalog="system" id="iUr-6m-la8"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uUN-Ys-a6k">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -187,11 +187,11 @@
             </objects>
             <point key="canvasLocation" x="931" y="404"/>
         </scene>
-        <!--Профиль-->
+        <!--Profile-->
         <scene sceneID="Kqx-gF-u9Y">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GVK-gs-11c" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Профиль" image="person.circle.fill" catalog="system" id="3bH-0s-yHn"/>
+                    <tabBarItem key="tabBarItem" title="Profile" image="person.circle.fill" catalog="system" id="3bH-0s-yHn"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="uLr-0L-yU5">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
@@ -206,11 +206,11 @@
             </objects>
             <point key="canvasLocation" x="2004" y="404"/>
         </scene>
-        <!--Карта-->
+        <!--Map-->
         <scene sceneID="aSh-Qz-Ieg">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Yky-aj-fdR" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Карта" image="map.circle.fill" catalog="system" id="w4I-Nu-cH3"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map.circle.fill" catalog="system" id="w4I-Nu-cH3"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="aCa-jx-MSy">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>

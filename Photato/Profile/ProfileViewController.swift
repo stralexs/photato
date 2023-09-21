@@ -83,7 +83,7 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         tableViewLabel.textColor = .black
         tableViewLabel.textAlignment = .left
         tableViewLabel.font = .systemFont(ofSize: 30, weight: .heavy)
-        tableViewLabel.text = "Избранное"
+        tableViewLabel.text = "Favorites"
         tableViewLabel.adjustsFontSizeToFitWidth = true
         return tableViewLabel
     }()
@@ -136,7 +136,7 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
     private func tuneUI() {
         view.backgroundColor = .lightTortilla
 
-        navigationItem.backButtonTitle = "Профиль"
+        navigationItem.backButtonTitle = "Profile"
         
         view.addSubview(topContainerView)
         topContainerView.translatesAutoresizingMaskIntoConstraints = false

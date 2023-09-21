@@ -48,7 +48,7 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
-        label.text = "Описание"
+        label.text = "Description"
         label.font = .systemFont(ofSize: 18, weight: .semibold)
         return label
     }()
@@ -68,7 +68,7 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .left
-        label.text = "Адрес"
+        label.text = "Address"
         label.font = .systemFont(ofSize: 18, weight: .semibold)
         return label
     }()
@@ -133,7 +133,7 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     
     private let copiedToClipboardMessage: UILabel = {
         let message = UILabel()
-        message.text = "Координаты скопированы"
+        message.text = "Coordinates copied"
         message.font = .systemFont(ofSize: 16, weight: .light)
         message.textAlignment = .center
         message.textColor = .white
@@ -259,12 +259,12 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     
     // MARK: OpenLocationInMaps Use case
     @objc private func openLocationInMaps() {
-        let alert = UIAlertController(title: "Открыть локацию в приложении Карты?", message: nil, preferredStyle: .alert)
-        let settingsAction = UIAlertAction(title: "Да", style: .default) { [weak self] _ in
+        let alert = UIAlertController(title: "Open location in Maps?", message: nil, preferredStyle: .alert)
+        let settingsAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
             let request = LocationDescription.OpenLocationInMaps.Request()
             self?.interactor?.openLocationInMaps(request: request)
         }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         
         alert.addAction(settingsAction)
         alert.addAction(cancelAction)

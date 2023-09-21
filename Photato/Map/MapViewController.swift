@@ -58,7 +58,7 @@ final class MapViewController: UIViewController, MapDisplayLogic {
             setupLocationManager()
             checkAthorizationStatus()
         } else {
-            showAlertAction(title: "Включите Службы геолокации, чтобы позволить \"Photato\" определять ваше местоположение", message: nil)
+            showAlertAction(title: "Turn on Location Services to allow \"Photato\" to determine your location", message: nil)
         }
     }
     
@@ -79,7 +79,7 @@ final class MapViewController: UIViewController, MapDisplayLogic {
         if authorizationStatus {
             mapView.showsUserLocation = true
         } else {
-            showAlertAction(title: "Вы запретили использование местоположения", message: "Хотите это изменить?")
+            showAlertAction(title: "You have blocked the use of Location Services", message: "Do you want to change this?")
         }
     }
     
@@ -103,7 +103,7 @@ final class MapViewController: UIViewController, MapDisplayLogic {
     
     // MARK: Other Methods
     private func tuneUI() {
-        navigationItem.backButtonTitle = "Карта"
+        navigationItem.backButtonTitle = "Map"
         
         view.addSubview(mapView)
         mapView.snp.makeConstraints { make in
@@ -116,11 +116,11 @@ final class MapViewController: UIViewController, MapDisplayLogic {
     
     private func showAlertAction(title: String, message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let settingsAction = UIAlertAction(title: "Настройки", style: .default) { _ in
+        let settingsAction = UIAlertAction(title: "Settings", style: .default) { _ in
             guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
             UIApplication.shared.open(url)
         }
-        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         
         alert.addAction(settingsAction)
         alert.addAction(cancelAction)
@@ -138,16 +138,6 @@ final class MapViewController: UIViewController, MapDisplayLogic {
         presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
-    }
-    
-    // MARK: - Routing
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scene = segue.identifier {
-            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-            if let router = router, router.responds(to: selector) {
-                router.perform(selector, with: segue)
-            }
-        }
     }
 }
 
