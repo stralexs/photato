@@ -11,7 +11,7 @@ protocol OpeningPresentationLogic {
     func presentIsUserLoggedIn(response: Opening.CheckIsUserLoggedIn.Response)
 }
 
-class OpeningPresenter: OpeningPresentationLogic {
+final class OpeningPresenter: OpeningPresentationLogic {
     weak var viewController: OpeningDisplayLogic?
     
     func presentIsUserLoggedIn(response: Opening.CheckIsUserLoggedIn.Response) {

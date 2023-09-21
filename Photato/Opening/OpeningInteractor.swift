@@ -13,7 +13,7 @@ protocol OpeningBusinessLogic {
 
 protocol OpeningDataStore {}
 
-class OpeningInteractor: OpeningBusinessLogic, OpeningDataStore {
+final class OpeningInteractor: OpeningBusinessLogic, OpeningDataStore {
     var presenter: OpeningPresentationLogic?
         
     func checkIsUserLoggedIn(request: Opening.CheckIsUserLoggedIn.Request) {

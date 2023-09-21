@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SignUpWorker {
+final class SignUpWorker {
     func doSomeWork() {
     }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginWorker {
+final class LoginWorker {
     func doSomeWork() {
     }
 }

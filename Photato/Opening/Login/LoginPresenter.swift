@@ -11,7 +11,7 @@ protocol LoginPresentationLogic {
     func presentSomething(response: Login.Something.Response)
 }
 
-class LoginPresenter: LoginPresentationLogic {
+final class LoginPresenter: LoginPresentationLogic {
     
     weak var viewController: LoginDisplayLogic?
     

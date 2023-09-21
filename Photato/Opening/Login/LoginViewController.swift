@@ -11,7 +11,7 @@ protocol LoginDisplayLogic: AnyObject {
     func displaySomething(viewModel: Login.Something.ViewModel)
 }
 
-class LoginViewController: UIViewController, LoginDisplayLogic {
+final class LoginViewController: UIViewController, LoginDisplayLogic {
     
     //@IBOutlet private var nameTextField: UITextField!
     

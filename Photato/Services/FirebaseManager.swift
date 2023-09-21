@@ -44,7 +44,7 @@ final class FirebaseManager: FirebaseManagerLogic {
         }
     }
     
-    func retrieveImagesCount(for locationName: String, completion: @escaping (Int) -> ()) {
+    func retrieveImagesCount(for locationName: String, completion: @escaping (Int) -> Void) {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")

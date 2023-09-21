@@ -15,7 +15,7 @@ protocol SignUpDataPassing {
     var dataStore: SignUpDataStore? { get }
 }
 
-class SignUpRouter: NSObject, SignUpRoutingLogic, SignUpDataPassing {
+final class SignUpRouter: NSObject, SignUpRoutingLogic, SignUpDataPassing {
     
     weak var viewController: SignUpViewController?
     var dataStore: SignUpDataStore?

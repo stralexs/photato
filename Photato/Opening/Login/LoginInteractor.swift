@@ -15,7 +15,7 @@ protocol LoginDataStore {
     //var name: String { get set }
 }
 
-class LoginInteractor: LoginBusinessLogic, LoginDataStore {
+final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     
     var presenter: LoginPresentationLogic?
     var worker: LoginWorker?

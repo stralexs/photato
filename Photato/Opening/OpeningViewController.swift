@@ -11,8 +11,9 @@ protocol OpeningDisplayLogic: AnyObject {
     func displayIsUserLoggedIn(viewModel: Opening.CheckIsUserLoggedIn.ViewModel)
 }
 
-class OpeningViewController: UIViewController, OpeningDisplayLogic {
-    var interactor: OpeningBusinessLogic?
+final class OpeningViewController: UIViewController, OpeningDisplayLogic {
+    // MARK: - Properties
+    private var interactor: OpeningBusinessLogic?
     
     private let userValidationViewController = UserValidationViewController()
     private let loadingViewController = LoadingViewController()

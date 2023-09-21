@@ -12,7 +12,7 @@ import UIKit
     func routeToSignUp()
 }
 
-class UserValidationRouter: NSObject, UserValidationRoutingLogic {
+final class UserValidationRouter: NSObject, UserValidationRoutingLogic {
     weak var viewController: UserValidationViewController?
     
     // MARK: - Routing

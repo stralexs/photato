@@ -7,7 +7,8 @@
 
 import UIKit
 
-class UserValidationViewController: UIViewController {
+final class UserValidationViewController: UIViewController {
+    // MARK: - Properties
     var router: (NSObjectProtocol & UserValidationRoutingLogic)?
     
     private let gradient = CAGradientLayer()
@@ -41,7 +42,6 @@ class UserValidationViewController: UIViewController {
         let loginButton = UIButton()
         loginButton.setTitle("Войти", for: .normal)
         loginButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .regular)
-        loginButton.titleLabel?.textColor = .white
         loginButton.backgroundColor = .darkOliveGreen
         loginButton.addTarget(self, action: #selector(loginUser), for: .touchUpInside)
         return loginButton
@@ -51,7 +51,6 @@ class UserValidationViewController: UIViewController {
         let signUpButton = UIButton()
         signUpButton.setTitle("Зарегистрироваться", for: .normal)
         signUpButton.titleLabel?.font = .systemFont(ofSize: 24, weight: .regular)
-        signUpButton.titleLabel?.textColor = .white
         signUpButton.backgroundColor = .darkOliveGreen
         signUpButton.addTarget(self, action: #selector(signUpUser), for: .touchUpInside)
         return signUpButton
@@ -139,13 +138,13 @@ class UserValidationViewController: UIViewController {
             make.width.equalToSuperview()
             make.height.equalTo(50)
         }
-        loginButton.layer.cornerRadius = 10
+        loginButton.layer.cornerRadius = 5
         
         signUpButton.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(50)
         }
-        signUpButton.layer.cornerRadius = 10
+        signUpButton.layer.cornerRadius = 5
     }
     
     private func configure() {

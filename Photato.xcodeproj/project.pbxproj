@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		42023CE32ABADDF200950E97 /* UITextFieldExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42023CE22ABADDF200950E97 /* UITextFieldExtension.swift */; };
 		422259FC2AB9850300274737 /* LoadingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422259F62AB9850300274737 /* LoadingPresenter.swift */; };
 		422259FD2AB9850300274737 /* LoadingWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422259F72AB9850300274737 /* LoadingWorker.swift */; };
 		422259FE2AB9850300274737 /* LoadingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 422259F82AB9850300274737 /* LoadingRouter.swift */; };
@@ -115,6 +116,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		42023CE22ABADDF200950E97 /* UITextFieldExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldExtension.swift; sourceTree = "<group>"; };
 		422259F62AB9850300274737 /* LoadingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPresenter.swift; sourceTree = "<group>"; };
 		422259F72AB9850300274737 /* LoadingWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingWorker.swift; sourceTree = "<group>"; };
 		422259F82AB9850300274737 /* LoadingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingRouter.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 				42FA56192A7E72BA00144F2A /* AppDelegate.swift */,
 				424528D32A7E99210059246D /* TabBarController.swift */,
 				424529192A7EA5EE0059246D /* UIColorExtension.swift */,
+				42023CE22ABADDF200950E97 /* UITextFieldExtension.swift */,
 				42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */,
 				4295C8862A7F940300447493 /* LocationTableViewCell.swift */,
 				42FA56272A7E72BB00144F2A /* Info.plist */,
@@ -378,8 +381,8 @@
 				429162A52AB8D35600E7361C /* OpeningPresenter.swift */,
 				429162A82AB8D35600E7361C /* OpeningModels.swift */,
 				42225A022AB9878300274737 /* UserValidation */,
-				429162A32AB8D31600E7361C /* Login */,
 				429162A42AB8D32200E7361C /* SignUp */,
+				429162A32AB8D31600E7361C /* Login */,
 				422259F52AB984F100274737 /* Loading */,
 			);
 			path = Opening;
@@ -693,6 +696,7 @@
 				429162C42AB8D39200E7361C /* SignUpWorker.swift in Sources */,
 				424528F72A7E9AB00059246D /* LocationsListWorker.swift in Sources */,
 				429162B72AB8D37600E7361C /* LoginPresenter.swift in Sources */,
+				42023CE32ABADDF200950E97 /* UITextFieldExtension.swift in Sources */,
 				429162AF2AB8D35600E7361C /* OpeningViewController.swift in Sources */,
 				42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */,
 				4245291A2A7EA5EE0059246D /* UIColorExtension.swift in Sources */,

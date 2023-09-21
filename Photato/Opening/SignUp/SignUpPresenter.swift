@@ -8,17 +8,26 @@
 import UIKit
 
 protocol SignUpPresentationLogic {
-    func presentSomething(response: SignUp.Something.Response)
+    func presentNameTextFieldValidation(response: SignUp.ValidateNameTextField.Response)
+    func presentEmailTextFieldValidation(response: SignUp.ValidateEmailTextField.Response)
+    func presentPasswordTextFieldValidation(response: SignUp.ValidatePasswordTextField.Response)
 }
 
-class SignUpPresenter: SignUpPresentationLogic {
-    
+final class SignUpPresenter: SignUpPresentationLogic {
     weak var viewController: SignUpDisplayLogic?
     
-    // MARK: Do something
+    func presentNameTextFieldValidation(response: SignUp.ValidateNameTextField.Response) {
+        let viewModel = SignUp.ValidateNameTextField.ViewModel(isNameTextFieldValid: response.isNameTextFieldValid)
+        viewController?.displayNameTextFieldValidation(viewModel: viewModel)
+    }
     
-    func presentSomething(response: SignUp.Something.Response) {
-        let viewModel = SignUp.Something.ViewModel()
-        viewController?.displaySomething(viewModel: viewModel)
+    func presentEmailTextFieldValidation(response: SignUp.ValidateEmailTextField.Response) {
+        let viewModel = SignUp.ValidateEmailTextField.ViewModel(isEmailTextFieldValid: response.isEmailTextFieldValid)
+        viewController?.displayEmailTextFieldValidation(viewModel: viewModel)
+    }
+    
+    func presentPasswordTextFieldValidation(response: SignUp.ValidatePasswordTextField.Response) {
+        let viewModel = SignUp.ValidatePasswordTextField.ViewModel(isPasswordTextFieldValid: response.isPasswordTextFieldValid)
+        viewController?.displayPasswordTextFieldValidation(viewModel: viewModel)
     }
 }
