@@ -8,17 +8,23 @@
 import UIKit
 import Firebase
 import FirebaseStorage
+import FirebaseAuth
 import OSLog
 
-protocol FirebaseManagerLogic {
+protocol FirebaseLocationsLogic {
     func retrieveLocations(completion: @escaping ([Location]) -> Void)
     func retrieveFirstImageData(for locationName: String, completion: @escaping (Data) -> Void)
     func retrieveImagesCount(for locationName: String, completion: @escaping (Int) -> ())
     func retrieveAllImages(for locationName: String, completion: @escaping ([Data]) -> Void)
 }
 
-final class FirebaseManager: FirebaseManagerLogic {
+protocol FirebaseAuthenticationLogic {
+    func signUpUser(_ name: String, _ email: String, _ password: String, _profilePicture: Data) throws -> Void
+}
+
+final class FirebaseManager: FirebaseLocationsLogic {
     private let db = Firestore.firestore()
+    private let storageRef = Storage.storage().reference()
     private let logger = Logger()
     
     func retrieveLocations(completion: @escaping ([Location]) -> Void) {
@@ -85,10 +91,9 @@ final class FirebaseManager: FirebaseManagerLogic {
                 }
             }
             
-            guard let firstPath = firstPath else { return }
+            guard let firstPath = firstPath,
+                  let fileRef = self?.storageRef.child(firstPath) else { return }
             let defaultImage = UIImage(named: "DefaultImage")!.pngData()!
-            let storageRef = Storage.storage().reference()
-            let fileRef = storageRef.child(firstPath)
             
             fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                 if let error {
@@ -124,13 +129,12 @@ final class FirebaseManager: FirebaseManagerLogic {
             
             guard let imagesUrls = imagesUrls?.sorted() else { return }
             let defaultImage = UIImage(named: "DefaultImage")!.pngData()!
-            let storageRef = Storage.storage().reference()
             var locationImagesData = [Data]()
             
             let dispatchGroup = DispatchGroup()
             
             imagesUrls.forEach { url in
-                let fileRef = storageRef.child(url)
+                guard let fileRef = self?.storageRef.child(url) else { return }
                 dispatchGroup.enter()
                 fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                     if let error {
@@ -149,6 +153,27 @@ final class FirebaseManager: FirebaseManagerLogic {
                     completion(locationImagesData)
                 }
             }
+        }
+    }
+}
+
+extension FirebaseManager: FirebaseAuthenticationLogic {
+    private var auth: Auth {
+        return Auth.auth()
+    }
+    
+    func signUpUser(_ name: String, _ email: String, _ password: String, _profilePicture: Data) throws {
+        auth.createUser(withEmail: email, password: password) { [weak self] result, error in
+            if let error {
+                self?.logger.error("\(error.localizedDescription)")
+                return
+            }
+            
+            guard let result = result else { return }
+            self?.db.collection("users").addDocument(data: ["name": name,
+                                                            "uid": result.user.uid,
+                                                            "profilePicture": Data()
+            ])
         }
     }
 }

@@ -8,17 +8,20 @@
 import UIKit
 
 protocol LoginPresentationLogic {
-    func presentSomething(response: Login.Something.Response)
+    func presentEmailTextFieldValidation(response: Login.ValidateEmailTextField.Response)
+    func presentPasswordTextFieldValidation(response: Login.ValidatePasswordTextField.Response)
 }
 
 final class LoginPresenter: LoginPresentationLogic {
-    
     weak var viewController: LoginDisplayLogic?
     
-    // MARK: Do something
+    func presentEmailTextFieldValidation(response: Login.ValidateEmailTextField.Response) {
+        let viewModel = Login.ValidateEmailTextField.ViewModel(isEmailTextFieldValid: response.isEmailTextFieldValid)
+        viewController?.displayEmailTextFieldValidation(viewModel: viewModel)
+    }
     
-    func presentSomething(response: Login.Something.Response) {
-        let viewModel = Login.Something.ViewModel()
-        viewController?.displaySomething(viewModel: viewModel)
+    func presentPasswordTextFieldValidation(response: Login.ValidatePasswordTextField.Response) {
+        let viewModel = Login.ValidatePasswordTextField.ViewModel(isPasswordTextFieldValid: response.isPasswordTextFieldValid)
+        viewController?.displayPasswordTextFieldValidation(viewModel: viewModel)
     }
 }

@@ -10,11 +10,11 @@ import Foundation
 final class LocationsManager {
     static let shared = LocationsManager(firebaseManager: FirebaseManager())
     
-    private init(firebaseManager: FirebaseManagerLogic) {
+    private init(firebaseManager: FirebaseLocationsLogic) {
         self.firebaseManager = firebaseManager
     }
     
-    private let firebaseManager: FirebaseManagerLogic
+    private let firebaseManager: FirebaseLocationsLogic
     var locations = [Location]()
     
     func downloadLocations(completion: @escaping ([Location]) -> Void) {

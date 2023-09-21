@@ -90,6 +90,7 @@
 		42AA84392AA323E7004884BB /* MapWorkingLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA84382AA323E7004884BB /* MapWorkingLogicSpy.swift */; };
 		42AA843B2AA323FF004884BB /* MapInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA843A2AA323FF004884BB /* MapInteractorTests.swift */; };
 		42AA843D2AA32415004884BB /* MapPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42AA843C2AA32415004884BB /* MapPresenterTests.swift */; };
+		42DD16812ABC6F2900010830 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 42DD16802ABC6F2900010830 /* FirebaseAuth */; };
 		42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA56192A7E72BA00144F2A /* AppDelegate.swift */; };
 		42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */; };
 		42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56222A7E72BB00144F2A /* Assets.xcassets */; };
@@ -212,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				428075582AA5B3D4003C8848 /* FirebaseDatabase in Frameworks */,
+				42DD16812ABC6F2900010830 /* FirebaseAuth in Frameworks */,
 				4280755A2AA5B3D4003C8848 /* FirebaseFirestore in Frameworks */,
 				428075562AA5B3D4003C8848 /* FirebaseAnalytics in Frameworks */,
 				4280755C2AA5B3D4003C8848 /* FirebaseStorage in Frameworks */,
@@ -467,6 +469,13 @@
 			path = TestSpies;
 			sourceTree = "<group>";
 		};
+		42DD167F2ABC6F2900010830 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		42FA560D2A7E72BA00144F2A = {
 			isa = PBXGroup;
 			children = (
@@ -474,6 +483,7 @@
 				42FA562F2A7E72BB00144F2A /* PhotatoTests */,
 				42FA56392A7E72BB00144F2A /* PhotatoUITests */,
 				42FA56172A7E72BA00144F2A /* Products */,
+				42DD167F2ABC6F2900010830 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -544,6 +554,7 @@
 				428075572AA5B3D4003C8848 /* FirebaseDatabase */,
 				428075592AA5B3D4003C8848 /* FirebaseFirestore */,
 				4280755B2AA5B3D4003C8848 /* FirebaseStorage */,
+				42DD16802ABC6F2900010830 /* FirebaseAuth */,
 			);
 			productName = Photato;
 			productReference = 42FA56162A7E72BA00144F2A /* Photato.app */;
@@ -1115,6 +1126,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 428075542AA5B3D4003C8848 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		42DD16802ABC6F2900010830 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 428075542AA5B3D4003C8848 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
 		};
 		42FA564A2A7E7A8500144F2A /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;

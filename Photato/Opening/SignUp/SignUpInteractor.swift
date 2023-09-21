@@ -13,14 +13,11 @@ protocol SignUpBusinessLogic {
     func validatePasswordTextField(request: SignUp.ValidatePasswordTextField.Request)
 }
 
-protocol SignUpDataStore {
-    //var name: String { get set }
-}
+protocol SignUpDataStore {}
 
 final class SignUpInteractor: SignUpBusinessLogic, SignUpDataStore {
     var presenter: SignUpPresentationLogic?
     var worker: SignUpWorker?
-    //var name: String = ""
         
     func validateNameTextField(request: SignUp.ValidateNameTextField.Request) {
         let trimmedName = request.nameTextFieldText?.trimmingCharacters(in: .whitespacesAndNewlines)

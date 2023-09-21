@@ -8,26 +8,35 @@
 import UIKit
 
 protocol LoginBusinessLogic {
-    func doSomething(request: Login.Something.Request)
+    func validateEmailTextField(request: Login.ValidateEmailTextField.Request)
+    func validatePasswordTextField(request: Login.ValidatePasswordTextField.Request)
 }
 
-protocol LoginDataStore {
-    //var name: String { get set }
-}
+protocol LoginDataStore {}
 
 final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
-    
     var presenter: LoginPresentationLogic?
     var worker: LoginWorker?
-    //var name: String = ""
-    
-    // MARK: Do something
-    
-    func doSomething(request: Login.Something.Request) {
-        worker = LoginWorker()
-        worker?.doSomeWork()
+
+    func validateEmailTextField(request: Login.ValidateEmailTextField.Request) {
+        let trimmedEmail = request.emailTextFieldText?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         
-        let response = Login.Something.Response()
-        presenter?.presentSomething(response: response)
+        let isEmailValid = emailPred.evaluate(with: trimmedEmail)
+        
+        let response = Login.ValidateEmailTextField.Response(isEmailTextFieldValid: isEmailValid)
+        presenter?.presentEmailTextFieldValidation(response: response)
+    }
+    
+    func validatePasswordTextField(request: Login.ValidatePasswordTextField.Request) {
+        var isEmailValid: Bool = true
+        
+        if request.passwordTextFieldText?.count ?? 0 < 5 {
+            isEmailValid = false
+        }
+        
+        let response = Login.ValidatePasswordTextField.Response(isPasswordTextFieldValid: isEmailValid)
+        presenter?.presentPasswordTextFieldValidation(response: response)
     }
 }
