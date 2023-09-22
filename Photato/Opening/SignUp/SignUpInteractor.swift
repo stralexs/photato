@@ -11,13 +11,14 @@ protocol SignUpBusinessLogic {
     func validateNameTextField(request: SignUp.ValidateNameTextField.Request)
     func validateEmailTextField(request: SignUp.ValidateEmailTextField.Request)
     func validatePasswordTextField(request: SignUp.ValidatePasswordTextField.Request)
+    func signUp(request: SignUp.SignUp.Request)
 }
 
 protocol SignUpDataStore {}
 
 final class SignUpInteractor: SignUpBusinessLogic, SignUpDataStore {
     var presenter: SignUpPresentationLogic?
-    var worker: SignUpWorker?
+    private let firebaseManager: FirebaseAuthenticationLogic
         
     func validateNameTextField(request: SignUp.ValidateNameTextField.Request) {
         let trimmedName = request.nameTextFieldText?.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -45,11 +46,26 @@ final class SignUpInteractor: SignUpBusinessLogic, SignUpDataStore {
     func validatePasswordTextField(request: SignUp.ValidatePasswordTextField.Request) {
         var isEmailValid: Bool = true
         
-        if request.passwordTextFieldText?.count ?? 0 < 5 {
+        if request.passwordTextFieldText?.count ?? 0 < 6 {
             isEmailValid = false
         }
         
         let response = SignUp.ValidatePasswordTextField.Response(isPasswordTextFieldValid: isEmailValid)
         presenter?.presentPasswordTextFieldValidation(response: response)
+    }
+    
+    func signUp(request: SignUp.SignUp.Request) {
+        guard let imageData = request.profilePicture.pngData() else { return }
+        firebaseManager.signUpUser(request.name,
+                                   request.email,
+                                   request.password,
+                                   imageData)
+        
+        let response = SignUp.SignUp.Response(isSignUpSuccessful: true)
+        presenter?.presentSignUpResult(response: response)
+    }
+    
+    init(firebaseManager: FirebaseAuthenticationLogic) {
+        self.firebaseManager = firebaseManager
     }
 }

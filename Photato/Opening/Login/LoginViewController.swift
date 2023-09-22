@@ -10,6 +10,7 @@ import UIKit
 protocol LoginDisplayLogic: AnyObject {
     func displayEmailTextFieldValidation(viewModel: Login.ValidateEmailTextField.ViewModel)
     func displayPasswordTextFieldValidation(viewModel: Login.ValidatePasswordTextField.ViewModel)
+    func displaySignInResult(viewModel: Login.SignIn.ViewModel)
 }
 
 final class LoginViewController: UIViewController, LoginDisplayLogic {
@@ -105,7 +106,26 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
     
     // MARK: Login Use case
     @objc private func login() {
+        guard emailTextFieldErrorLabel.text == nil,
+              passwordTextFieldErrorLabel.text == nil,
+              let email = emailTextField.text,
+              let password = passwordTextField.text else { return }
         
+        let request = Login.SignIn.Request(email: email, password: password)
+        interactor?.signIn(request: request)
+    }
+    
+    func displaySignInResult(viewModel: Login.SignIn.ViewModel) {
+        let isSignInSuccessful = viewModel.isSignInSuccessful
+        if isSignInSuccessful {
+            router?.routeToTabBarController()
+        } else {
+            let alert = UIAlertController(title: "Invalid password", message: nil, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(cancelAction)
+            present(alert, animated: true)
+        }
     }
     
     // MARK: ValidateEmailTextField Use case
@@ -134,7 +154,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         if isPasswordValid {
             passwordTextFieldErrorLabel.text = nil
         } else {
-            passwordTextFieldErrorLabel.text = "Password must contain at least 5 characters"
+            passwordTextFieldErrorLabel.text = "Password must contain at least 6 characters"
         }
     }
     
@@ -210,7 +230,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
     
     private func configure() {
         let viewController = self
-        let interactor = LoginInteractor()
+        let interactor = LoginInteractor(firebaseManager: FirebaseManager())
         let presenter = LoginPresenter()
         let router = LoginRouter()
         viewController.interactor = interactor

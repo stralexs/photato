@@ -35,4 +35,19 @@ enum Login {
             let isPasswordTextFieldValid: Bool
         }
     }
+    
+    enum SignIn {
+        struct Request {
+            let email: String
+            let password: String
+        }
+        
+        struct Response {
+            let isSignInSuccessful: Bool
+        }
+        
+        struct ViewModel {
+            let isSignInSuccessful: Bool
+        }
+    }
 }

@@ -8,7 +8,7 @@
 import UIKit
 
 @objc protocol SignUpRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func routeToTabBarController()
 }
 
 protocol SignUpDataPassing {
@@ -16,35 +16,27 @@ protocol SignUpDataPassing {
 }
 
 final class SignUpRouter: NSObject, SignUpRoutingLogic, SignUpDataPassing {
-    
     weak var viewController: SignUpViewController?
     var dataStore: SignUpDataStore?
     
-    // MARK: Routing
+    // MARK: - Routing
     
-    //func routeToSomewhere(segue: UIStoryboardSegue?) {
-    //  if let segue = segue {
-    //    let destinationVC = segue.destination as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //  } else {
-    //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-    //  }
-    //}
+    func routeToTabBarController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
+        destinationVC.hidesBottomBarWhenPushed = true
+//        passDataToLocationDescription(source: dataStore!, destination: &destinationDS)
+        navigateToTabBarController(source: viewController!, destination: destinationVC)
+    }
     
-    // MARK: Navigation
+    // MARK: - Navigation
+    func navigateToTabBarController(source: SignUpViewController, destination: TabBarController) {
+        source.show(destination, sender: nil)
+    }
     
-    //func navigateToSomewhere(source: SignUpViewController, destination: SomewhereViewController) {
-    //  source.show(destination, sender: nil)
-    //}
-    
-    // MARK: Passing data
-    
-    //func passDataToSomewhere(source: SignUpDataStore, destination: inout SomewhereDataStore) {
-    //  destination.name = source.name
-    //}
+    // MARK: - Passing data
+//    func passDataToLocationDescription(source: LocationsListDataStore, destination: inout LocationDescriptionDataStore) {
+//        guard let indexPath = viewController?.tableView.indexPathForSelectedRow else { return }
+//        destination.location = source.locations[indexPath.row]
+//    }
 }

@@ -11,6 +11,7 @@ protocol SignUpPresentationLogic {
     func presentNameTextFieldValidation(response: SignUp.ValidateNameTextField.Response)
     func presentEmailTextFieldValidation(response: SignUp.ValidateEmailTextField.Response)
     func presentPasswordTextFieldValidation(response: SignUp.ValidatePasswordTextField.Response)
+    func presentSignUpResult(response: SignUp.SignUp.Response)
 }
 
 final class SignUpPresenter: SignUpPresentationLogic {
@@ -29,5 +30,10 @@ final class SignUpPresenter: SignUpPresentationLogic {
     func presentPasswordTextFieldValidation(response: SignUp.ValidatePasswordTextField.Response) {
         let viewModel = SignUp.ValidatePasswordTextField.ViewModel(isPasswordTextFieldValid: response.isPasswordTextFieldValid)
         viewController?.displayPasswordTextFieldValidation(viewModel: viewModel)
+    }
+    
+    func presentSignUpResult(response: SignUp.SignUp.Response) {
+        let viewModel = SignUp.SignUp.ViewModel(isSignUpSuccessful: response.isSignUpSuccessful)
+        viewController?.displaySignUpResult(viewModel: viewModel)
     }
 }

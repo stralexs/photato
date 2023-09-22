@@ -49,4 +49,21 @@ enum SignUp {
             let isPasswordTextFieldValid: Bool
         }
     }
+    
+    enum SignUp {
+        struct Request {
+            let name: String
+            let email: String
+            let password: String
+            let profilePicture: UIImage
+        }
+        
+        struct Response {
+            let isSignUpSuccessful: Bool
+        }
+        
+        struct ViewModel {
+            let isSignUpSuccessful: Bool
+        }
+    }
 }

@@ -19,7 +19,8 @@ protocol FirebaseLocationsLogic {
 }
 
 protocol FirebaseAuthenticationLogic {
-    func signUpUser(_ name: String, _ email: String, _ password: String, _profilePicture: Data) throws -> Void
+    func signUpUser(_ name: String, _ email: String, _ password: String, _ profilePicture: Data)
+    func signInUser(_ email: String, _ password: String, completion: @escaping (Bool) -> Void)
 }
 
 final class FirebaseManager: FirebaseLocationsLogic {
@@ -92,7 +93,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
             }
             
             guard let firstPath = firstPath,
-                  let fileRef = self?.storageRef.child(firstPath) else { return }
+                  let fileRef = self?.storageRef.child("/locationsImages\(firstPath)") else { return }
             let defaultImage = UIImage(named: "DefaultImage")!.pngData()!
             
             fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
@@ -134,7 +135,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
             let dispatchGroup = DispatchGroup()
             
             imagesUrls.forEach { url in
-                guard let fileRef = self?.storageRef.child(url) else { return }
+                guard let fileRef = self?.storageRef.child("/locationsImages\(url)") else { return }
                 dispatchGroup.enter()
                 fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                     if let error {
@@ -162,18 +163,45 @@ extension FirebaseManager: FirebaseAuthenticationLogic {
         return Auth.auth()
     }
     
-    func signUpUser(_ name: String, _ email: String, _ password: String, _profilePicture: Data) throws {
+    func signUpUser(_ name: String, _ email: String, _ password: String, _ profilePicture: Data) {
         auth.createUser(withEmail: email, password: password) { [weak self] result, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
                 return
             }
-            
             guard let result = result else { return }
+            
+            let imageUUID = UUID().uuidString
+            let fileRef = self?.storageRef.child("/usersProfilePictures/\(result.user.uid)/\(imageUUID).jpg")
+            fileRef?.putData(profilePicture, completion: { metadata, error in
+                if let error {
+                    self?.logger.error("\(error.localizedDescription)")
+                    return
+                }
+            })
+            
             self?.db.collection("users").addDocument(data: ["name": name,
                                                             "uid": result.user.uid,
-                                                            "profilePicture": Data()
-            ])
+                                                            "profilePictureUrl": "/usersProfilePictures/\(result.user.uid)/\(imageUUID).jpg",
+                                                            "favoriteLocations": [String]()
+                                                           ]) { error in
+                if let error {
+                    self?.logger.error("\(error.localizedDescription)")
+                    return
+                }
+            }
+        }
+    }
+    
+    func signInUser(_ email: String, _ password: String, completion: @escaping (Bool) -> Void) {
+        auth.signIn(withEmail: email, password: password) { [weak self] result, error in
+            if let error {
+                self?.logger.error("\(error.localizedDescription)")
+                completion(false)
+            }
+            if error == nil {
+                completion(true)
+            }
         }
     }
 }

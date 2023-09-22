@@ -11,6 +11,7 @@ final class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setTabBarAppearance()
+        setNavigationBar()
     }
     
     private func setTabBarAppearance() {
@@ -19,5 +20,9 @@ final class TabBarController: UITabBarController {
         tabBar.backgroundColor = .lightTortilla
         tabBar.backgroundImage = UIImage()
         tabBar.shadowImage = UIImage ()
+    }
+    
+    private func setNavigationBar() {
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 }

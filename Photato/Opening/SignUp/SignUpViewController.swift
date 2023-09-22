@@ -14,6 +14,7 @@ protocol SignUpDisplayLogic: AnyObject {
     func displayNameTextFieldValidation(viewModel: SignUp.ValidateNameTextField.ViewModel)
     func displayEmailTextFieldValidation(viewModel: SignUp.ValidateEmailTextField.ViewModel)
     func displayPasswordTextFieldValidation(viewModel: SignUp.ValidatePasswordTextField.ViewModel)
+    func displaySignUpResult(viewModel: SignUp.SignUp.ViewModel)
 }
 
 final class SignUpViewController: UIViewController, SignUpDisplayLogic {
@@ -241,13 +242,34 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
         if isPasswordValid {
             passwordTextFieldErrorLabel.text = nil
         } else {
-            passwordTextFieldErrorLabel.text = "Password must contain at least 5 characters"
+            passwordTextFieldErrorLabel.text = "Password must contain at least 6 characters"
         }
     }
     
     // MARK: SignUp Use case
     @objc private func signUp() {
+        guard nameTextFieldErrorLabel.text == nil,
+              emailTextFieldErrorLabel.text == nil,
+              passwordTextFieldErrorLabel.text == nil,
+              let name = nameTextField.text,
+              let email = emailTextField.text,
+              let password = passwordTextField.text,
+              let image = profilPictureImageView.image else { return }
         
+        let request = SignUp.SignUp.Request(name: name,
+                                            email: email,
+                                            password: password,
+                                            profilePicture: image)
+        interactor?.signUp(request: request)
+    }
+    
+    func displaySignUpResult(viewModel: SignUp.SignUp.ViewModel) {
+        let isSignUpSuccessful = viewModel.isSignUpSuccessful
+        if isSignUpSuccessful {
+            router?.routeToTabBarController()
+        } else {
+            //show error
+        }
     }
     
     // MARK: Other methods
@@ -403,7 +425,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     
     private func configure() {
         let viewController = self
-        let interactor = SignUpInteractor()
+        let interactor = SignUpInteractor(firebaseManager: FirebaseManager())
         let presenter = SignUpPresenter()
         let router = SignUpRouter()
         viewController.interactor = interactor
