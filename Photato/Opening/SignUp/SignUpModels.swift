@@ -59,11 +59,23 @@ enum SignUp {
         }
         
         struct Response {
-            let isSignUpSuccessful: Bool
+            let signUpResult: Error?
         }
         
         struct ViewModel {
-            let isSignUpSuccessful: Bool
+            let signUpErrorDescription: String?
+        }
+    }
+    
+    enum DownloadLocations {
+        struct Request {}
+        
+        struct Response {
+            let downloadResult: Error?
+        }
+        
+        struct ViewModel {
+            let downloadErrorDescription: String?
         }
     }
 }

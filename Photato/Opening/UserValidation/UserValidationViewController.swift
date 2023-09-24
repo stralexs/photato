@@ -110,6 +110,8 @@ final class UserValidationViewController: UIViewController {
     }
     
     private func tuneUI() {
+        navigationItem.setHidesBackButton(true, animated: false)
+        
         gradientChangeAnimation.delegate = self
         
         view.addSubview(containerView)

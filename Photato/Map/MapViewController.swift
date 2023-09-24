@@ -90,8 +90,10 @@ final class MapViewController: UIViewController, MapDisplayLogic {
     }
     
     func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel) {
-        viewModel.annotations.forEach { annotation in
-            mapView.addAnnotation(annotation)
+        DispatchQueue.main.async {
+            viewModel.annotations.forEach { [weak self] annotation in
+                self?.mapView.addAnnotation(annotation)
+            }
         }
     }
     

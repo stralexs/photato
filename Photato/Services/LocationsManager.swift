@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 final class LocationsManager {
     static let shared = LocationsManager(firebaseManager: FirebaseManager())
@@ -15,54 +16,78 @@ final class LocationsManager {
     }
     
     private let firebaseManager: FirebaseLocationsLogic
+    private let logger = Logger()
     var locations = [Location]()
     
-    func downloadLocations(completion: @escaping ([Location]) -> Void) {
-        firebaseManager.retrieveLocations { [weak self] locations in
-            var locationsVar = locations
-            let dispatchGroup = DispatchGroup()
-            
-            for (index, value) in locations.enumerated() {
-                dispatchGroup.enter()
-                self?.firebaseManager.retrieveFirstImageData(for: value.name) { data in
-                    locationsVar[index] = locationsVar[index].addNewImagesData(data: [data])
-                    dispatchGroup.leave()
+    func downloadLocations(completion: @escaping (FirebaseError?) -> Void) {
+        firebaseManager.retrieveLocations { [weak self] result in
+            switch result {
+            case .success(let downloadedLocations):
+                var locationsVar = downloadedLocations
+                let dispatchGroup = DispatchGroup()
+                
+                for (index, value) in downloadedLocations.enumerated() {
+                    dispatchGroup.enter()
+                    self?.firebaseManager.retrieveFirstImageData(for: value.name) { result in
+                        switch result {
+                        case .success(let data):
+                            locationsVar[index] = locationsVar[index].addNewImagesData(data: [data])
+                            dispatchGroup.leave()
+                        case .failure(let error):
+                            completion(error)
+                        }
+                    }
                 }
-            }
-            
-            dispatchGroup.notify(queue: .main) {
-                self?.locations = locationsVar
-                completion(locationsVar)
+                
+                dispatchGroup.notify(queue: .main) {
+                    self?.locations = locationsVar
+                    completion(nil)
+                }
+                
+            case .failure(let error):
+                completion(error)
             }
         }
     }
     
     func downloadImagesCount(for locationName: String, completion: @escaping (Int) -> ()) {
-        firebaseManager.retrieveImagesCount(for: locationName) { imagesCount in
-            completion(imagesCount)
+        firebaseManager.retrieveImagesCount(for: locationName) { [weak self] result in
+            switch result {
+            case .success(let imagesCount):
+                completion(imagesCount)
+            case .failure(let error):
+                self?.logger.error("\(error.localizedDescription)")
+            }
         }
     }
     
-    func downloadAllImages(for locationName: String, completion: @escaping ([Data]) -> ()) {
-        firebaseManager.retrieveAllImages(for: locationName) { [weak self] imagesData in
+    func downloadAllImages(for locationName: String, completion: @escaping (Result<[Data], FirebaseError>) -> Void) {
+        firebaseManager.retrieveAllImages(for: locationName) { [weak self] result in
             guard let self = self else { return }
-            var imagesDataWithCorrectFirstImage = imagesData
             
-            locations = locations.map { location in
-                var locationWithImages = location
+            switch result {
+            case .success(let imagesData):
+                var imagesDataWithCorrectFirstImage = imagesData
                 
-                if location.name == locationName {
-                    guard let firstImage = location.imagesData.first else { return location }
+                locations = locations.map { location in
+                    var locationWithImages = location
                     
-                    imagesDataWithCorrectFirstImage = imagesData.filter { $0 != firstImage }
-                    imagesDataWithCorrectFirstImage.insert(firstImage, at: 0)
-                    locationWithImages = location.addNewImagesData(data: imagesDataWithCorrectFirstImage)
+                    if location.name == locationName {
+                        guard let firstImage = location.imagesData.first else { return location }
+                        
+                        imagesDataWithCorrectFirstImage = imagesData.filter { $0 != firstImage }
+                        imagesDataWithCorrectFirstImage.insert(firstImage, at: 0)
+                        locationWithImages = location.addNewImagesData(data: imagesDataWithCorrectFirstImage)
+                    }
+                    
+                    return locationWithImages
                 }
                 
-                return locationWithImages
+                completion(.success(imagesDataWithCorrectFirstImage))
+                
+            case .failure(let error):
+                completion(.failure(error))
             }
-            
-            completion(imagesDataWithCorrectFirstImage)
         }
     }
 }

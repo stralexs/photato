@@ -204,7 +204,9 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     }
     
     func displayLocationImagesCount(viewModel: LocationDescription.GetLocationImagesCount.ViewModel) {
-        pageControl.numberOfPages = viewModel.imagesCount
+        DispatchQueue.main.async { [weak self] in
+            self?.pageControl.numberOfPages = viewModel.imagesCount
+        }
     }
     
     // MARK: GetLocationAllImages Use case
@@ -215,28 +217,37 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     }
     
     func displayLocationAllImages(viewModel: LocationDescription.GetLocationAllImages.ViewModel) {
-        let imagesData = viewModel.imagesData
-        let imagesCount = imagesData.count
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
+        if viewModel.downloadResultDescription.0 != nil {
+            guard let imagesData = viewModel.downloadResultDescription.0 else { return }
+            let imagesCount = imagesData.count
             
-            for x in 0..<imagesCount {
-                let imageView = UIImageView()
-                imageView.image = UIImage(data: imagesData[x])
-                imageView.clipsToBounds = true
-                let xPosition = self.view.frame.width * CGFloat(x)
-                imageView.frame = CGRect(x: xPosition,
-                                         y: 0,
-                                         width: self.scrollView.frame.width,
-                                         height: self.scrollView.frame.height)
-                imageView.contentMode = .scaleAspectFill
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                
+                for x in 0..<imagesCount {
+                    let imageView = UIImageView()
+                    imageView.image = UIImage(data: imagesData[x])
+                    imageView.clipsToBounds = true
+                    let xPosition = self.view.frame.width * CGFloat(x)
+                    imageView.frame = CGRect(x: xPosition,
+                                             y: 0,
+                                             width: self.scrollView.frame.width,
+                                             height: self.scrollView.frame.height)
+                    imageView.contentMode = .scaleAspectFill
 
-                self.scrollView.contentSize.width = self.scrollView.frame.width * CGFloat(x + 1)
-                self.scrollView.contentSize.height = imageView.frame.height
-                self.scrollView.addSubview(imageView)
-                activityIndicator.stopAnimating()
+                    self.scrollView.contentSize.width = self.scrollView.frame.width * CGFloat(x + 1)
+                    self.scrollView.contentSize.height = imageView.frame.height
+                    self.scrollView.addSubview(imageView)
+                    activityIndicator.stopAnimating()
+                }
             }
+        } else {
+            guard let errorDescription = viewModel.downloadResultDescription.1 else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
         }
     }
     

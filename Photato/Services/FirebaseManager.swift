@@ -12,15 +12,24 @@ import FirebaseAuth
 import OSLog
 
 protocol FirebaseLocationsLogic {
-    func retrieveLocations(completion: @escaping ([Location]) -> Void)
-    func retrieveFirstImageData(for locationName: String, completion: @escaping (Data) -> Void)
-    func retrieveImagesCount(for locationName: String, completion: @escaping (Int) -> ())
-    func retrieveAllImages(for locationName: String, completion: @escaping ([Data]) -> Void)
+    func retrieveLocations(completion: @escaping (Result<[Location], FirebaseError>) -> Void)
+    func retrieveFirstImageData(for locationName: String, completion: @escaping (Result<Data, FirebaseError>) -> Void)
+    func retrieveImagesCount(for locationName: String, completion: @escaping (Result<Int, FirebaseError>) -> Void)
+    func retrieveAllImages(for locationName: String, completion: @escaping (Result<[Data], FirebaseError>) -> Void)
 }
 
 protocol FirebaseAuthenticationLogic {
-    func signUpUser(_ name: String, _ email: String, _ password: String, _ profilePicture: Data)
-    func signInUser(_ email: String, _ password: String, completion: @escaping (Bool) -> Void)
+    func signUpUser(_ name: String, _ email: String, _ password: String, _ profilePicture: Data, completion: @escaping (FirebaseError?) throws -> Void)
+    func signInUser(_ email: String, _ password: String, completion: @escaping (FirebaseError?) throws -> Void)
+}
+
+enum FirebaseError: Error {
+    case locationsNotLoadedError
+    case downloadImageDataError
+    case signUpError
+    case occupiedEmail
+    case signInError
+    case unknown
 }
 
 final class FirebaseManager: FirebaseLocationsLogic {
@@ -28,11 +37,11 @@ final class FirebaseManager: FirebaseLocationsLogic {
     private let storageRef = Storage.storage().reference()
     private let logger = Logger()
     
-    func retrieveLocations(completion: @escaping ([Location]) -> Void) {
+    func retrieveLocations(completion: @escaping (Result<[Location], FirebaseError>) -> Void) {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                return
+                completion(.failure(.locationsNotLoadedError))
             }
             
             guard snapshot != nil,
@@ -47,13 +56,14 @@ final class FirebaseManager: FirebaseLocationsLogic {
                 return location
             }
             
-            completion(locations)
+            completion(.success(locations))
         }
     }
     
-    func retrieveImagesCount(for locationName: String, completion: @escaping (Int) -> Void) {
+    func retrieveImagesCount(for locationName: String, completion: @escaping (Result<Int, FirebaseError>) -> Void) {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
+                completion(.failure(.downloadImageDataError))
                 self?.logger.error("\(error.localizedDescription)")
                 return
             }
@@ -66,17 +76,17 @@ final class FirebaseManager: FirebaseLocationsLogic {
                 let imagesPaths = document.get("imagesUrls") as! [String]
                 
                 if documentName == locationName {
-                    completion(imagesPaths.count)
+                    completion(.success(imagesPaths.count))
                 }
             }
         }
     }
     
-    func retrieveFirstImageData(for locationName: String, completion: @escaping (Data) -> Void) {
+    func retrieveFirstImageData(for locationName: String, completion: @escaping (Result<Data, FirebaseError>) -> Void) {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                return
+                completion(.failure(.locationsNotLoadedError))
             }
             
             guard snapshot != nil,
@@ -94,25 +104,24 @@ final class FirebaseManager: FirebaseLocationsLogic {
             
             guard let firstPath = firstPath,
                   let fileRef = self?.storageRef.child("/locationsImages\(firstPath)") else { return }
-            let defaultImage = UIImage(named: "DefaultImage")!.pngData()!
             
             fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                 if let error {
                     self?.logger.error("\(error.localizedDescription)")
-                    return
+                    completion(.failure(.downloadImageDataError))
                 }
                 
-                guard let data = data else { completion(defaultImage); return }
-                completion(data)
+                guard let data = data else { completion(.failure(.downloadImageDataError)); return }
+                completion(.success(data))
             }
         }
     }
     
-    func retrieveAllImages(for locationName: String, completion: @escaping ([Data]) -> Void) {
+    func retrieveAllImages(for locationName: String, completion: @escaping (Result<[Data], FirebaseError>) -> Void) {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                return
+                completion(.failure(.downloadImageDataError))
             }
             
             guard snapshot != nil,
@@ -140,7 +149,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
                 fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                     if let error {
                         self?.logger.error("\(error.localizedDescription)")
-                        return
+                        completion(.failure(.downloadImageDataError))
                     }
                     
                     guard let data = data else { locationImagesData.append(defaultImage); return }
@@ -151,7 +160,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
             
             dispatchGroup.notify(queue: .main) {
                 if locationImagesData.count == imagesUrls.count {
-                    completion(locationImagesData)
+                    completion(.success(locationImagesData))
                 }
             }
         }
@@ -163,11 +172,11 @@ extension FirebaseManager: FirebaseAuthenticationLogic {
         return Auth.auth()
     }
     
-    func signUpUser(_ name: String, _ email: String, _ password: String, _ profilePicture: Data) {
+    func signUpUser(_ name: String, _ email: String, _ password: String, _ profilePicture: Data, completion: @escaping (FirebaseError?) throws -> Void) {
         auth.createUser(withEmail: email, password: password) { [weak self] result, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                return
+                try? completion(.occupiedEmail)
             }
             guard let result = result else { return }
             
@@ -176,7 +185,7 @@ extension FirebaseManager: FirebaseAuthenticationLogic {
             fileRef?.putData(profilePicture, completion: { metadata, error in
                 if let error {
                     self?.logger.error("\(error.localizedDescription)")
-                    return
+                    try? completion(.signUpError)
                 }
             })
             
@@ -187,20 +196,22 @@ extension FirebaseManager: FirebaseAuthenticationLogic {
                                                            ]) { error in
                 if let error {
                     self?.logger.error("\(error.localizedDescription)")
-                    return
+                    try? completion(.signUpError)
                 }
             }
+            
+            try? completion(nil)
         }
     }
     
-    func signInUser(_ email: String, _ password: String, completion: @escaping (Bool) -> Void) {
+    func signInUser(_ email: String, _ password: String, completion: @escaping (FirebaseError?) throws -> Void) {
         auth.signIn(withEmail: email, password: password) { [weak self] result, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                completion(false)
+                try? completion(.signInError)
             }
             if error == nil {
-                completion(true)
+                try? completion(nil)
             }
         }
     }

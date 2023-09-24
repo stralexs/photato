@@ -12,7 +12,6 @@ protocol MapWorkingLogic {
     func checkLocationServicesStatus(completion: @escaping (Bool) -> Void)
     func setupLocationManager()
     func checkAuthorizationStatus() -> Bool?
-    func fetchLocations(completion: @escaping ([Location]) -> Void)
 }
 
 final class MapWorker: NSObject, MapWorkingLogic {
@@ -47,12 +46,6 @@ final class MapWorker: NSObject, MapWorkingLogic {
         }
         
         return authorizationStatus
-    }
-    
-    func fetchLocations(completion: @escaping ([Location]) -> Void) {
-        LocationsManager.shared.downloadLocations { downloadedLocations in
-            completion(downloadedLocations)
-        }
     }
     
     init(locationManagerDelegate: CLLocationManagerDelegate) {

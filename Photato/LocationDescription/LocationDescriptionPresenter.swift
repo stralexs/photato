@@ -37,7 +37,18 @@ final class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
     }
     
     func presentLocationAllImages(response: LocationDescription.GetLocationAllImages.Response) {
-        let viewModel = LocationDescription.GetLocationAllImages.ViewModel(imagesData: response.imagesData)
+        var viewModel = LocationDescription.GetLocationAllImages.ViewModel(downloadResultDescription: (nil, nil))
+        switch response.downloadResult {
+        case .success(let imagesData):
+            viewModel = LocationDescription.GetLocationAllImages.ViewModel(downloadResultDescription: (imagesData, nil))
+        case .failure(let error):
+            if error == .downloadImageDataError {
+                viewModel = LocationDescription.GetLocationAllImages.ViewModel(downloadResultDescription: (nil, "Failed to load image data. Please try again later"))
+            } else {
+                viewModel = LocationDescription.GetLocationAllImages.ViewModel(downloadResultDescription: (nil, "Unknown error"))
+            }
+        }
+        
         viewController?.displayLocationAllImages(viewModel: viewModel)
     }
 }

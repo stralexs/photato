@@ -11,6 +11,7 @@ protocol LoginDisplayLogic: AnyObject {
     func displayEmailTextFieldValidation(viewModel: Login.ValidateEmailTextField.ViewModel)
     func displayPasswordTextFieldValidation(viewModel: Login.ValidatePasswordTextField.ViewModel)
     func displaySignInResult(viewModel: Login.SignIn.ViewModel)
+    func displayLocationsDownloadResult(viewModel: Login.DownloadLocations.ViewModel)
 }
 
 final class LoginViewController: UIViewController, LoginDisplayLogic {
@@ -80,6 +81,8 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         return loginButton
     }()
     
+    private let activityIndicator = UIActivityIndicatorView()
+    
     // MARK: - View Controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,20 +114,42 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
               let email = emailTextField.text,
               let password = passwordTextField.text else { return }
         
+        activityIndicator.startAnimating()
         let request = Login.SignIn.Request(email: email, password: password)
         interactor?.signIn(request: request)
     }
     
     func displaySignInResult(viewModel: Login.SignIn.ViewModel) {
-        let isSignInSuccessful = viewModel.isSignInSuccessful
-        if isSignInSuccessful {
-            router?.routeToTabBarController()
+        if viewModel.signInErrorDescription == nil {
+            downloadLocations()
         } else {
-            let alert = UIAlertController(title: "Invalid password", message: nil, preferredStyle: .alert)
+            guard let errorDescription = viewModel.signInErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
             let cancelAction = UIAlertAction(title: "Ok", style: .default)
             
             alert.addAction(cancelAction)
             present(alert, animated: true)
+        }
+    }
+    
+    // MARK: DownloadLocations Use case
+    private func downloadLocations() {
+        let request = Login.DownloadLocations.Request()
+        interactor?.downloadLocations(request: request)
+    }
+    
+    func displayLocationsDownloadResult(viewModel: Login.DownloadLocations.ViewModel) {
+        if viewModel.downloadErrorDescription == nil {
+            router?.routeToTabBarController()
+        } else {
+            guard let errorDescription = viewModel.downloadErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+            
+            activityIndicator.stopAnimating()
         }
     }
     
@@ -184,6 +209,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         stackView.addArrangedSubview(passwordTextField)
         stackView.addArrangedSubview(passwordTextFieldErrorLabel)
         stackView.addArrangedSubview(loginButton)
+        stackView.addArrangedSubview(activityIndicator)
         
         appIconImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
@@ -213,12 +239,15 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         }
         
         loginButton.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom).offset(50)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(stackView.snp.width)
+            make.width.equalToSuperview()
             make.height.equalTo(40)
         }
         loginButton.layer.cornerRadius = 5
+        
+        activityIndicator.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(40)
+        }
     }
     
     private func tuneBottomLinesOfTextFields() {
@@ -230,7 +259,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
     
     private func configure() {
         let viewController = self
-        let interactor = LoginInteractor(firebaseManager: FirebaseManager())
+        let interactor = LoginInteractor(firebaseManager: FirebaseManager(), keychainManager: KeychainManager())
         let presenter = LoginPresenter()
         let router = LoginRouter()
         viewController.interactor = interactor

@@ -8,16 +8,27 @@
 import UIKit
 
 enum Loading {
-    // MARK: Use cases
-    
-    enum Something {
-        struct Request {
-        }
+    enum SignInUser {
+        struct Request {}
         
         struct Response {
+            let signInResult: Error?
         }
         
         struct ViewModel {
+            let signInErrorDescription: String?
+        }
+    }
+    
+    enum DownloadLocations {
+        struct Request {}
+        
+        struct Response {
+            let downloadResult: Error?
+        }
+        
+        struct ViewModel {
+            let downloadErrorDescription: String?
         }
     }
 }

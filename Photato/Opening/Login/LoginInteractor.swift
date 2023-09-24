@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import OSLog
 
 protocol LoginBusinessLogic {
     func validateEmailTextField(request: Login.ValidateEmailTextField.Request)
     func validatePasswordTextField(request: Login.ValidatePasswordTextField.Request)
     func signIn(request: Login.SignIn.Request)
+    func downloadLocations(request: Login.DownloadLocations.Request)
 }
 
 protocol LoginDataStore {}
@@ -19,6 +21,8 @@ final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     var presenter: LoginPresentationLogic?
     var worker: LoginWorker?
     private let firebaseManager: FirebaseAuthenticationLogic
+    private let keychainManager: KeychainManagerLogic
+    private let logger = Logger()
     
     func validateEmailTextField(request: Login.ValidateEmailTextField.Request) {
         let trimmedEmail = request.emailTextFieldText?.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -43,13 +47,57 @@ final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     }
     
     func signIn(request: Login.SignIn.Request) {
-        firebaseManager.signInUser(request.email, request.password) { [weak self] isSuccessful in
-            let response = Login.SignIn.Response(isSignInSuccessful: isSuccessful)
+        firebaseManager.signInUser(request.email, request.password) { [weak self] signInError in
+            var response = Login.SignIn.Response(signInResult: nil)
+            
+            switch signInError {
+            case nil:
+                UserDefaults.standard.set(request.email, forKey: "userEmail")
+                UserDefaults.standard.set(true, forKey: "isUserLoggedIn")
+                
+                do {
+                    try self?.keychainManager.save(password: request.password.data(using: .utf8) ?? Data(),
+                                                   account: request.email)
+                }
+                
+                catch let error as KeychainError {
+                    switch error {
+                        case .duplicateItem:
+                        self?.logger.error("\(error.localizedDescription)")
+                    case .unknown(_):
+                        self?.logger.error("\(error.localizedDescription)")
+                    }
+                }
+            case .signInError:
+                response = Login.SignIn.Response(signInResult: FirebaseError.signInError)
+            default:
+                response = Login.SignIn.Response(signInResult: FirebaseError.unknown)
+            }
+            
             self?.presenter?.presentSignInResult(response: response)
         }
     }
     
-    init(firebaseManager: FirebaseAuthenticationLogic) {
+    func downloadLocations(request: Login.DownloadLocations.Request) {
+        LocationsManager.shared.downloadLocations { [weak self] downloadError in
+            var response = Login.DownloadLocations.Response(downloadResult: nil)
+            switch downloadError {
+            case nil:
+                break
+            case .locationsNotLoadedError:
+                response = Login.DownloadLocations.Response(downloadResult: FirebaseError.locationsNotLoadedError)
+            case .downloadImageDataError:
+                response = Login.DownloadLocations.Response(downloadResult: FirebaseError.downloadImageDataError)
+            default:
+                response = Login.DownloadLocations.Response(downloadResult: FirebaseError.unknown)
+            }
+            
+            self?.presenter?.presentLocationsDownloadCompletion(response: response)
+        }
+    }
+    
+    init(firebaseManager: FirebaseAuthenticationLogic, keychainManager: KeychainManagerLogic) {
         self.firebaseManager = firebaseManager
+        self.keychainManager = keychainManager
     }
 }

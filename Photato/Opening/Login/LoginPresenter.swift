@@ -11,6 +11,7 @@ protocol LoginPresentationLogic {
     func presentEmailTextFieldValidation(response: Login.ValidateEmailTextField.Response)
     func presentPasswordTextFieldValidation(response: Login.ValidatePasswordTextField.Response)
     func presentSignInResult(response: Login.SignIn.Response)
+    func presentLocationsDownloadCompletion(response: Login.DownloadLocations.Response)
 }
 
 final class LoginPresenter: LoginPresentationLogic {
@@ -27,7 +28,44 @@ final class LoginPresenter: LoginPresentationLogic {
     }
     
     func presentSignInResult(response: Login.SignIn.Response) {
-        let viewModel = Login.SignIn.ViewModel(isSignInSuccessful: response.isSignInSuccessful)
+        var viewModel = Login.SignIn.ViewModel(signInErrorDescription: nil)
+        
+        switch response.signInResult {
+        case nil:
+            break
+        case let error as FirebaseError:
+            switch error {
+            case .signInError:
+                viewModel = Login.SignIn.ViewModel(signInErrorDescription: "Failed to sign in. Check your credentials")
+            default:
+                viewModel = Login.SignIn.ViewModel(signInErrorDescription: "Unknown error")
+            }
+        default:
+            break
+        }
+        
         viewController?.displaySignInResult(viewModel: viewModel)
+    }
+    
+    func presentLocationsDownloadCompletion(response: Login.DownloadLocations.Response) {
+        var viewModel = Login.DownloadLocations.ViewModel(downloadErrorDescription: nil)
+        
+        switch response.downloadResult {
+        case nil:
+            break
+        case let error as FirebaseError:
+            switch error {
+            case .locationsNotLoadedError:
+                viewModel = Login.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load locations. Please try again later")
+            case .downloadImageDataError:
+                viewModel = Login.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load data. Please try again later")
+            default:
+                viewModel = Login.DownloadLocations.ViewModel(downloadErrorDescription: "Unknown error")
+            }
+        default:
+            break
+        }
+        
+        viewController?.displayLocationsDownloadResult(viewModel: viewModel)
     }
 }

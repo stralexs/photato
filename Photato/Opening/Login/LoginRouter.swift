@@ -22,13 +22,12 @@ final class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing {
     func routeToTabBarController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let destinationVC = storyboard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
-        destinationVC.hidesBottomBarWhenPushed = true
 //        passDataToLocationDescription(source: dataStore!, destination: &destinationDS)
         navigateToTabBarController(source: viewController!, destination: destinationVC)
     }
     
     // MARK: - Navigation
-    func navigateToTabBarController(source: LoginViewController, destination: TabBarController) {
+    private func navigateToTabBarController(source: LoginViewController, destination: TabBarController) {
         source.show(destination, sender: nil)
     }
     

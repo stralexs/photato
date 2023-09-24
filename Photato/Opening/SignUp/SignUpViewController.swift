@@ -15,6 +15,7 @@ protocol SignUpDisplayLogic: AnyObject {
     func displayEmailTextFieldValidation(viewModel: SignUp.ValidateEmailTextField.ViewModel)
     func displayPasswordTextFieldValidation(viewModel: SignUp.ValidatePasswordTextField.ViewModel)
     func displaySignUpResult(viewModel: SignUp.SignUp.ViewModel)
+    func displayLocationsDownloadResult(viewModel: SignUp.DownloadLocations.ViewModel)
 }
 
 final class SignUpViewController: UIViewController, SignUpDisplayLogic {
@@ -124,6 +125,8 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
         errorLabel.font = .systemFont(ofSize: 14, weight: .light)
         return errorLabel
     }()
+    
+    private let activityIndicator = UIActivityIndicatorView()
     
     private lazy var signUpButton: UIButton = {
         let signUpButton = UIButton()
@@ -256,6 +259,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
               let password = passwordTextField.text,
               let image = profilPictureImageView.image else { return }
         
+        activityIndicator.startAnimating()
         let request = SignUp.SignUp.Request(name: name,
                                             email: email,
                                             password: password,
@@ -264,11 +268,36 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     }
     
     func displaySignUpResult(viewModel: SignUp.SignUp.ViewModel) {
-        let isSignUpSuccessful = viewModel.isSignUpSuccessful
-        if isSignUpSuccessful {
+        if viewModel.signUpErrorDescription == nil {
             router?.routeToTabBarController()
         } else {
-            //show error
+            guard let errorDescription = viewModel.signUpErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(cancelAction)
+            present(alert, animated: true)
+        }
+    }
+    
+    // MARK: DownloadLocations Use case
+    private func downloadLocations() {
+        let request = SignUp.DownloadLocations.Request()
+        interactor?.downloadLocations(request: request)
+    }
+    
+    func displayLocationsDownloadResult(viewModel: SignUp.DownloadLocations.ViewModel) {
+        if viewModel.downloadErrorDescription == nil {
+            router?.routeToTabBarController()
+        } else {
+            guard let errorDescription = viewModel.downloadErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+            
+            activityIndicator.stopAnimating()
         }
     }
     
@@ -373,9 +402,17 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
             make.height.equalTo(15)
         }
         
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(stackView.snp.width)
+            make.height.equalTo(20)
+        }
+        
         view.addSubview(signUpButton)
         signUpButton.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom).offset(50)
+            make.top.equalTo(activityIndicator.snp.bottom).offset(20)
             make.centerX.equalToSuperview()
             make.width.equalTo(stackView.snp.width)
             make.height.equalTo(40)
@@ -425,7 +462,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     
     private func configure() {
         let viewController = self
-        let interactor = SignUpInteractor(firebaseManager: FirebaseManager())
+        let interactor = SignUpInteractor(firebaseManager: FirebaseManager(), keychainManager: KeychainManager())
         let presenter = SignUpPresenter()
         let router = SignUpRouter()
         viewController.interactor = interactor

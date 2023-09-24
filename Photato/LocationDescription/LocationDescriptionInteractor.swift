@@ -60,15 +60,20 @@ final class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, Loc
     }
     
     func getLocationAllImages(request: LocationDescription.GetLocationAllImages.Request) {
-        guard var location = location else { return }
+        guard let location = location else { return }
         if location.imagesData.count == 1 {
-            LocationsManager.shared.downloadAllImages(for: location.name) { [weak self] imagesData in
-                location = location.addNewImagesData(data: imagesData)
-                let response = LocationDescription.GetLocationAllImages.Response(imagesData: imagesData)
-                self?.presenter?.presentLocationAllImages(response: response)
+            LocationsManager.shared.downloadAllImages(for: location.name) { [weak self] result in
+                switch result {
+                case .success(let imagesData):
+                    let response = LocationDescription.GetLocationAllImages.Response(downloadResult: .success(imagesData))
+                    self?.presenter?.presentLocationAllImages(response: response)
+                case .failure(let error):
+                    let response = LocationDescription.GetLocationAllImages.Response(downloadResult: .failure(error))
+                    self?.presenter?.presentLocationAllImages(response: response)
+                }
             }
         } else {
-            let response = LocationDescription.GetLocationAllImages.Response(imagesData: location.imagesData)
+            let response = LocationDescription.GetLocationAllImages.Response(downloadResult: .success(location.imagesData))
             presenter?.presentLocationAllImages(response: response)
         }
     }

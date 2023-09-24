@@ -37,11 +37,11 @@ enum LocationDescription {
         struct Request {}
         
         struct Response {
-            let imagesData: [Data]
+            let downloadResult: Result<[Data], FirebaseError>
         }
         
         struct ViewModel {
-            let imagesData: [Data]
+            let downloadResultDescription: ([Data]?, String?)
         }
     }
     

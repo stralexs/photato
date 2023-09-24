@@ -8,7 +8,8 @@
 import UIKit
 
 @objc protocol LoadingRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func routeToUserValidation()
+    func routeToTabBarController()
 }
 
 protocol LoadingDataPassing {
@@ -16,35 +17,35 @@ protocol LoadingDataPassing {
 }
 
 class LoadingRouter: NSObject, LoadingRoutingLogic, LoadingDataPassing {
-    
     weak var viewController: LoadingViewController?
     var dataStore: LoadingDataStore?
     
-    // MARK: Routing
+    func routeToUserValidation() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "UserValidationViewController") as! UserValidationViewController
+//        passDataToLocationDescription(source: dataStore!, destination: &destinationDS)
+        navigateToUserValidation(source: viewController!, destination: destinationVC)
+    }
     
-    //func routeToSomewhere(segue: UIStoryboardSegue?) {
-    //  if let segue = segue {
-    //    let destinationVC = segue.destination as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //  } else {
-    //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-    //  }
-    //}
+    func routeToTabBarController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
+//        passDataToLocationDescription(source: dataStore!, destination: &destinationDS)
+        navigateToTabBarController(source: viewController!, destination: destinationVC)
+    }
     
-    // MARK: Navigation
+    // MARK: - Navigation
+    private func navigateToUserValidation(source: LoadingViewController, destination: UserValidationViewController) {
+        source.show(destination, sender: nil)
+    }
     
-    //func navigateToSomewhere(source: LoadingViewController, destination: SomewhereViewController) {
-    //  source.show(destination, sender: nil)
-    //}
+    private func navigateToTabBarController(source: LoadingViewController, destination: TabBarController) {
+        source.show(destination, sender: nil)
+    }
     
-    // MARK: Passing data
-    
-    //func passDataToSomewhere(source: LoadingDataStore, destination: inout SomewhereDataStore) {
-    //  destination.name = source.name
-    //}
+    // MARK: - Passing data
+//    func passDataToLocationDescription(source: LocationsListDataStore, destination: inout LocationDescriptionDataStore) {
+//        guard let indexPath = viewController?.tableView.indexPathForSelectedRow else { return }
+//        destination.location = source.locations[indexPath.row]
+//    }
 }
