@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProfileBusinessLogic {
     func getUserFavouriteLocations(request: Profile.GetUserFavouriteLocations.Request)
+    func fetchUserData(request: Profile.FetchUserData.Request)
 }
 
 protocol ProfileDataStore {
@@ -27,6 +28,14 @@ final class ProfileInteractor: ProfileBusinessLogic, ProfileDataStore {
         
         let response = Profile.GetUserFavouriteLocations.Response(locations: locations)
         presenter?.presentUserFavouriteLocations(response: response)
+    }
+    
+    func fetchUserData(request: Profile.FetchUserData.Request) {
+        let name = UserManager.shared.user.name
+        let imageData = UserManager.shared.user.profilePicture
+        
+        let response = Profile.FetchUserData.Response(name: name, imageData: imageData)
+        presenter?.presentUserData(response: response)
     }
     
     //MARK: - Initialization

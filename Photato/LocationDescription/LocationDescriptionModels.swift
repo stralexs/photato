@@ -13,11 +13,13 @@ enum LocationDescription {
         
         struct Response {
             let location: Location
+            let isFavorite: Bool
         }
         
         struct ViewModel {
             let location: Location
             let stringLocationCoordinates: String
+            let isFavorite: Bool
         }
     }
     
@@ -55,5 +57,17 @@ enum LocationDescription {
     
     enum OpenLocationInMaps {
         struct Request {}
+    }
+    
+    enum SetLocationFavoriteStatus {
+        struct Request {}
+        
+        struct Response {
+            let isFavorite: Bool
+        }
+        
+        struct ViewModel {
+            let isFavorite: Bool
+        }
     }
 }

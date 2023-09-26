@@ -19,4 +19,18 @@ enum Profile {
             let locations: [Location]
         }
     }
+    
+    enum FetchUserData {
+        struct Request {}
+        
+        struct Response {
+            let name: String
+            let imageData: Data
+        }
+        
+        struct ViewModel {
+            let name: String
+            let image: UIImage
+        }
+    }
 }

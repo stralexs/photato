@@ -13,6 +13,6 @@ protocol ProfileWorkingLogic {
 
 final class ProfileWorker: ProfileWorkingLogic {
     func fetchUserFavouriteLocations() -> [Location] {
-        return LocationsManager.shared.locations
+        LocationsManager.shared.locations.filter { UserManager.shared.user.favoriteLocations.contains($0.name) }
     }
 }

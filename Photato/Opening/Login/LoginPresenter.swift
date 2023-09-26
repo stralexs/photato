@@ -35,8 +35,10 @@ final class LoginPresenter: LoginPresentationLogic {
             break
         case let error as FirebaseError:
             switch error {
-            case .signInError:
+            case .failedToSignIn:
                 viewModel = Login.SignIn.ViewModel(signInErrorDescription: "Failed to sign in. Check your credentials")
+            case .failedToGetUserData:
+                viewModel = Login.SignIn.ViewModel(signInErrorDescription: "Failed to get your data. Please try again later")
             default:
                 viewModel = Login.SignIn.ViewModel(signInErrorDescription: "Unknown error")
             }
@@ -55,9 +57,9 @@ final class LoginPresenter: LoginPresentationLogic {
             break
         case let error as FirebaseError:
             switch error {
-            case .locationsNotLoadedError:
+            case .dataNotLoaded:
                 viewModel = Login.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load locations. Please try again later")
-            case .downloadImageDataError:
+            case .imageDataNotLoaded:
                 viewModel = Login.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load data. Please try again later")
             default:
                 viewModel = Login.DownloadLocations.ViewModel(downloadErrorDescription: "Unknown error")

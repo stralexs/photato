@@ -269,7 +269,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     
     func displaySignUpResult(viewModel: SignUp.SignUp.ViewModel) {
         if viewModel.signUpErrorDescription == nil {
-            router?.routeToTabBarController()
+            downloadLocations()
         } else {
             guard let errorDescription = viewModel.signUpErrorDescription else { return }
             let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)

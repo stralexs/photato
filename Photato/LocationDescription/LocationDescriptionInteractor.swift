@@ -13,6 +13,7 @@ protocol LocationDescriptionBusinessLogic {
     func openLocationInMaps(request: LocationDescription.OpenLocationInMaps.Request)
     func getLocationImagesCount(request: LocationDescription.GetLocationImagesCount.Request)
     func getLocationAllImages(request: LocationDescription.GetLocationAllImages.Request)
+    func setFavoriteStatus(request: LocationDescription.SetLocationFavoriteStatus.Request)
 }
 
 protocol LocationDescriptionDataStore {
@@ -24,11 +25,14 @@ final class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, Loc
     var presenter: LocationDescriptionPresentationLogic?
     var worker: LocationDescriptionWorkingLogic
     var location: Location?
+    private var isFavorite = Bool()
     
     // MARK: - Methods
     func showLocationDescription(request: LocationDescription.ShowLocationDescription.Request) {
         guard let location = location else { return }
-        let response = LocationDescription.ShowLocationDescription.Response(location: location)
+        isFavorite = worker.getFavoriteStatus(for: location.name)
+        
+        let response = LocationDescription.ShowLocationDescription.Response(location: location, isFavorite: isFavorite)
         presenter?.presentLocationDescription(response: response)
     }
     
@@ -76,6 +80,15 @@ final class LocationDescriptionInteractor: LocationDescriptionBusinessLogic, Loc
             let response = LocationDescription.GetLocationAllImages.Response(downloadResult: .success(location.imagesData))
             presenter?.presentLocationAllImages(response: response)
         }
+    }
+    
+    func setFavoriteStatus(request: LocationDescription.SetLocationFavoriteStatus.Request) {
+        guard let location = location else { return }
+        worker.setFavoriteStatus(for: location.name)
+        isFavorite.toggle()
+        
+        let response = LocationDescription.SetLocationFavoriteStatus.Response(isFavorite: isFavorite)
+        presenter?.presentNewFavoriteStatus(response: response)
     }
     
     // MARK: - Initialization

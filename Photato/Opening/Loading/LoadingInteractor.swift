@@ -34,11 +34,12 @@ class LoadingInteractor: LoadingBusinessLogic, LoadingDataStore {
                 switch signInError {
                 case nil:
                     break
-                case .signInError:
-                    response = Loading.SignInUser.Response(signInResult: FirebaseError.signInError)
+                case .failedToSignIn:
+                    response = Loading.SignInUser.Response(signInResult: FirebaseError.failedToSignIn)
+                case .failedToGetUserData:
+                    response = Loading.SignInUser.Response(signInResult: FirebaseError.failedToGetUserData)
                 default:
                     response = Loading.SignInUser.Response(signInResult: FirebaseError.unknown)
-                    
                 }
                 
                 self?.presenter?.presentSignInResult(response: response)
@@ -55,10 +56,10 @@ class LoadingInteractor: LoadingBusinessLogic, LoadingDataStore {
             switch downloadError {
             case nil:
                 break
-            case .locationsNotLoadedError:
-                response = Loading.DownloadLocations.Response(downloadResult: FirebaseError.locationsNotLoadedError)
-            case .downloadImageDataError:
-                response = Loading.DownloadLocations.Response(downloadResult: FirebaseError.downloadImageDataError)
+            case .dataNotLoaded:
+                response = Loading.DownloadLocations.Response(downloadResult: FirebaseError.dataNotLoaded)
+            case .imageDataNotLoaded:
+                response = Loading.DownloadLocations.Response(downloadResult: FirebaseError.imageDataNotLoaded)
             default:
                 response = Loading.DownloadLocations.Response(downloadResult: FirebaseError.unknown)
             }

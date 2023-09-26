@@ -82,8 +82,8 @@ final class SignUpInteractor: SignUpBusinessLogic, SignUpDataStore {
                         self?.logger.error("\(error.localizedDescription)")
                     }
                 }
-            case .signUpError:
-                response = SignUp.SignUp.Response(signUpResult: FirebaseError.signUpError)
+            case .failedToSignUp:
+                response = SignUp.SignUp.Response(signUpResult: FirebaseError.failedToSignUp)
             case .occupiedEmail:
                 response = SignUp.SignUp.Response(signUpResult: FirebaseError.occupiedEmail)
             default:
@@ -100,10 +100,10 @@ final class SignUpInteractor: SignUpBusinessLogic, SignUpDataStore {
             switch downloadError {
             case nil:
                 break
-            case .locationsNotLoadedError:
-                response = SignUp.DownloadLocations.Response(downloadResult: FirebaseError.locationsNotLoadedError)
-            case .downloadImageDataError:
-                response = SignUp.DownloadLocations.Response(downloadResult: FirebaseError.downloadImageDataError)
+            case .dataNotLoaded:
+                response = SignUp.DownloadLocations.Response(downloadResult: FirebaseError.dataNotLoaded)
+            case .imageDataNotLoaded:
+                response = SignUp.DownloadLocations.Response(downloadResult: FirebaseError.imageDataNotLoaded)
             default:
                 response = SignUp.DownloadLocations.Response(downloadResult: FirebaseError.unknown)
             }

@@ -12,6 +12,7 @@ protocol LocationDescriptionDisplayLogic: AnyObject {
     func displayCopiedToClipboardMessage(viewModel: LocationDescription.CopyCoordinatesToClipboard.ViewModel)
     func displayLocationImagesCount(viewModel: LocationDescription.GetLocationImagesCount.ViewModel)
     func displayLocationAllImages(viewModel: LocationDescription.GetLocationAllImages.ViewModel)
+    func displayLocationNewFavoriteStatus(viewModel: LocationDescription.SetLocationFavoriteStatus.ViewModel)
 }
 
 final class LocationDescriptionViewController: UIViewController, LocationDescriptionDisplayLogic {
@@ -151,17 +152,16 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         return downloadImageButton
     }()
     
-    private let addToFavouritesButton: UIButton = {
+    private lazy var addToFavouritesButton: UIButton = {
         let addToFavouritesButton = UIButton()
-        let image = UIImage(systemName: "heart")
-        addToFavouritesButton.setImage(image, for: .normal)
         addToFavouritesButton.imageView?.contentMode = .scaleAspectFit
         addToFavouritesButton.contentHorizontalAlignment = .fill
         addToFavouritesButton.contentVerticalAlignment = .fill
         addToFavouritesButton.tintColor = .tortilla
+        addToFavouritesButton.addTarget(self, action: #selector(toggleFavorite), for: .touchUpInside)
         return addToFavouritesButton
     }()
-
+    
     // MARK: - Initialization
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -195,6 +195,9 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         locationAddressLabel.text = viewModel.location.address
         locationDescriptionTextView.text = viewModel.location.description
         locationCoordinatesLabel.text = viewModel.stringLocationCoordinates
+        
+        let favoriteImage = viewModel.isFavorite ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        addToFavouritesButton.setImage(favoriteImage, for: .normal)
     }
     
     // MARK: GetLocationImagesCount Use case
@@ -234,7 +237,7 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
                                              width: self.scrollView.frame.width,
                                              height: self.scrollView.frame.height)
                     imageView.contentMode = .scaleAspectFill
-
+                    
                     self.scrollView.contentSize.width = self.scrollView.frame.width * CGFloat(x + 1)
                     self.scrollView.contentSize.height = imageView.frame.height
                     self.scrollView.addSubview(imageView)
@@ -280,6 +283,17 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         alert.addAction(settingsAction)
         alert.addAction(cancelAction)
         present(alert, animated: true)
+    }
+    
+    // MARK: SetLocationFavoriteStatus Use case
+    @objc private func toggleFavorite() {
+        let request = LocationDescription.SetLocationFavoriteStatus.Request()
+        interactor?.setFavoriteStatus(request: request)
+    }
+    
+    func displayLocationNewFavoriteStatus(viewModel: LocationDescription.SetLocationFavoriteStatus.ViewModel) {
+        let favoriteImage = viewModel.isFavorite ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        addToFavouritesButton.setImage(favoriteImage, for: .normal)
     }
     
     // MARK: Other methods
@@ -403,7 +417,7 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     
     private func configure() {
         let viewController = self
-        let interactor = LocationDescriptionInteractor(worker: LocationDescriptionWorker())
+        let interactor = LocationDescriptionInteractor(worker: LocationDescriptionWorker(firebaseManager: FirebaseManager()))
         let presenter = LocationDescriptionPresenter()
         let router = LocationDescriptionRouter()
         viewController.interactor = interactor

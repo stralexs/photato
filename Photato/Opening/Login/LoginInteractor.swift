@@ -68,8 +68,10 @@ final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
                         self?.logger.error("\(error.localizedDescription)")
                     }
                 }
-            case .signInError:
-                response = Login.SignIn.Response(signInResult: FirebaseError.signInError)
+            case .failedToSignIn:
+                response = Login.SignIn.Response(signInResult: FirebaseError.failedToSignIn)
+            case .failedToGetUserData:
+                response = Login.SignIn.Response(signInResult: FirebaseError.failedToGetUserData)
             default:
                 response = Login.SignIn.Response(signInResult: FirebaseError.unknown)
             }
@@ -84,10 +86,10 @@ final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
             switch downloadError {
             case nil:
                 break
-            case .locationsNotLoadedError:
-                response = Login.DownloadLocations.Response(downloadResult: FirebaseError.locationsNotLoadedError)
-            case .downloadImageDataError:
-                response = Login.DownloadLocations.Response(downloadResult: FirebaseError.downloadImageDataError)
+            case .dataNotLoaded:
+                response = Login.DownloadLocations.Response(downloadResult: FirebaseError.dataNotLoaded)
+            case .imageDataNotLoaded:
+                response = Login.DownloadLocations.Response(downloadResult: FirebaseError.imageDataNotLoaded)
             default:
                 response = Login.DownloadLocations.Response(downloadResult: FirebaseError.unknown)
             }

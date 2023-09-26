@@ -12,6 +12,7 @@ protocol LocationDescriptionPresentationLogic {
     func presentCopiedToClipboardMessage(response: LocationDescription.CopyCoordinatesToClipboard.Response)
     func presentLocationImagesCount(response: LocationDescription.GetLocationImagesCount.Response)
     func presentLocationAllImages(response: LocationDescription.GetLocationAllImages.Response)
+    func presentNewFavoriteStatus(response: LocationDescription.SetLocationFavoriteStatus.Response)
 }
 
 final class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
@@ -22,7 +23,9 @@ final class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
         let latitude = round(100_000 * response.location.coordinates.latitude) / 100_000
         let coordinates = "\(latitude), \(longitude)"
         
-        let viewModel = LocationDescription.ShowLocationDescription.ViewModel(location: response.location, stringLocationCoordinates: coordinates)
+        let viewModel = LocationDescription.ShowLocationDescription.ViewModel(location: response.location,
+                                                                              stringLocationCoordinates: coordinates,
+                                                                              isFavorite: response.isFavorite)
         viewController?.displayLocationDescription(viewModel: viewModel)
     }
     
@@ -42,7 +45,7 @@ final class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
         case .success(let imagesData):
             viewModel = LocationDescription.GetLocationAllImages.ViewModel(downloadResultDescription: (imagesData, nil))
         case .failure(let error):
-            if error == .downloadImageDataError {
+            if error == .imageDataNotLoaded {
                 viewModel = LocationDescription.GetLocationAllImages.ViewModel(downloadResultDescription: (nil, "Failed to load image data. Please try again later"))
             } else {
                 viewModel = LocationDescription.GetLocationAllImages.ViewModel(downloadResultDescription: (nil, "Unknown error"))
@@ -50,5 +53,10 @@ final class LocationDescriptionPresenter: LocationDescriptionPresentationLogic {
         }
         
         viewController?.displayLocationAllImages(viewModel: viewModel)
+    }
+    
+    func presentNewFavoriteStatus(response: LocationDescription.SetLocationFavoriteStatus.Response) {
+        let viewModel = LocationDescription.SetLocationFavoriteStatus.ViewModel(isFavorite: response.isFavorite)
+        viewController?.displayLocationNewFavoriteStatus(viewModel: viewModel)
     }
 }

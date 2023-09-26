@@ -41,7 +41,7 @@ final class SignUpPresenter: SignUpPresentationLogic {
             break
         case let error as FirebaseError:
             switch error {
-            case .signUpError:
+            case .failedToSignUp:
                 viewModel = SignUp.SignUp.ViewModel(signUpErrorDescription: "Failed to sign up. Please try again later")
             case .occupiedEmail:
                 viewModel = SignUp.SignUp.ViewModel(signUpErrorDescription: "The email address is already in use by another account. Pleasy try another one")
@@ -63,9 +63,9 @@ final class SignUpPresenter: SignUpPresentationLogic {
             break
         case let error as FirebaseError:
             switch error {
-            case .locationsNotLoadedError:
+            case .dataNotLoaded:
                 viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load locations. Please try again later")
-            case .downloadImageDataError:
+            case .imageDataNotLoaded:
                 viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load data. Please try again later")
             default:
                 viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: "Unknown error")

@@ -10,7 +10,7 @@ import Foundation
 final class UserManager {
     static let shared = UserManager()
     private init() {
-        user = User(name: "", email: "", password: "", profilePicture: Data(), favoriteLocations: [])
+        user = User(uid: "", name: "", email: "", profilePicture: Data(), favoriteLocations: [])
     }
     
     var user: User

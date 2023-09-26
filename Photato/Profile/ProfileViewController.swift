@@ -9,6 +9,7 @@ import UIKit
 
 protocol ProfileDisplayLogic: AnyObject {
     func displayUserFavouriteLocations(viewModel: Profile.GetUserFavouriteLocations.ViewModel)
+    func displayUserData(viewModel: Profile.FetchUserData.ViewModel)
 }
 
 final class ProfileViewController: UIViewController, ProfileDisplayLogic {
@@ -41,7 +42,7 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         profileImageView.layer.masksToBounds = false
         profileImageView.layer.borderColor = UIColor.darkOliveGreen.cgColor
         profileImageView.clipsToBounds = true
-        profileImageView.contentMode = .scaleAspectFit
+        profileImageView.contentMode = .scaleAspectFill
         return profileImageView
     }()
     
@@ -100,11 +101,12 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         super.viewDidLoad()
         configure()
         tuneUI()
-        getUserFavouriteLocations()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        getUserFavoriteLocations()
+        fetchUserData()
         navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.isTranslucent = true
     }
@@ -122,7 +124,7 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
     // MARK: - Methods
 
     // MARK: GetUserFavouriteLocations Use case
-    func getUserFavouriteLocations() {
+    private func getUserFavoriteLocations() {
         let request = Profile.GetUserFavouriteLocations.Request()
         interactor?.getUserFavouriteLocations(request: request)
     }
@@ -130,6 +132,20 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
     func displayUserFavouriteLocations(viewModel: Profile.GetUserFavouriteLocations.ViewModel) {
         locations = viewModel.locations
         tableView.reloadData()
+    }
+    
+    // MARK: FetchUserData Use case
+    private func fetchUserData() {
+        let request = Profile.FetchUserData.Request()
+        interactor?.fetchUserData(request: request)
+    }
+    
+    func displayUserData(viewModel: Profile.FetchUserData.ViewModel) {
+        let profilePicture = viewModel.image
+        let name = viewModel.name
+        
+        profileImageView.image = profilePicture
+        userNameLabel.text = name
     }
     
     // MARK: Other methods

@@ -23,12 +23,20 @@ protocol FirebaseAuthenticationLogic {
     func signInUser(_ email: String, _ password: String, completion: @escaping (FirebaseError?) throws -> Void)
 }
 
+protocol FirebaseUserLogic {
+    func fetchUser(_ authResult: AuthDataResult?, completion: @escaping (Result<User, FirebaseError>) -> Void)
+    func createUser(_ uid: String, _ name: String, _ email: String, _ profilePicture: Data)
+    func addLocationToFavorites(_ locationName: String)
+    func removeLocationFromFavorites(_ locationName: String)
+}
+
 enum FirebaseError: Error {
-    case locationsNotLoadedError
-    case downloadImageDataError
-    case signUpError
+    case dataNotLoaded
+    case imageDataNotLoaded
+    case failedToSignUp
     case occupiedEmail
-    case signInError
+    case failedToSignIn
+    case failedToGetUserData
     case unknown
 }
 
@@ -41,7 +49,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                completion(.failure(.locationsNotLoadedError))
+                completion(.failure(.dataNotLoaded))
             }
             
             guard snapshot != nil,
@@ -63,7 +71,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
     func retrieveImagesCount(for locationName: String, completion: @escaping (Result<Int, FirebaseError>) -> Void) {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
-                completion(.failure(.downloadImageDataError))
+                completion(.failure(.imageDataNotLoaded))
                 self?.logger.error("\(error.localizedDescription)")
                 return
             }
@@ -86,7 +94,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                completion(.failure(.locationsNotLoadedError))
+                completion(.failure(.dataNotLoaded))
             }
             
             guard snapshot != nil,
@@ -108,10 +116,10 @@ final class FirebaseManager: FirebaseLocationsLogic {
             fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                 if let error {
                     self?.logger.error("\(error.localizedDescription)")
-                    completion(.failure(.downloadImageDataError))
+                    completion(.failure(.imageDataNotLoaded))
                 }
                 
-                guard let data = data else { completion(.failure(.downloadImageDataError)); return }
+                guard let data = data else { completion(.failure(.imageDataNotLoaded)); return }
                 completion(.success(data))
             }
         }
@@ -121,7 +129,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
         db.collection("locations").getDocuments { [weak self] snapshot, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                completion(.failure(.downloadImageDataError))
+                completion(.failure(.imageDataNotLoaded))
             }
             
             guard snapshot != nil,
@@ -149,7 +157,7 @@ final class FirebaseManager: FirebaseLocationsLogic {
                 fileRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
                     if let error {
                         self?.logger.error("\(error.localizedDescription)")
-                        completion(.failure(.downloadImageDataError))
+                        completion(.failure(.imageDataNotLoaded))
                     }
                     
                     guard let data = data else { locationImagesData.append(defaultImage); return }
@@ -185,21 +193,22 @@ extension FirebaseManager: FirebaseAuthenticationLogic {
             fileRef?.putData(profilePicture, completion: { metadata, error in
                 if let error {
                     self?.logger.error("\(error.localizedDescription)")
-                    try? completion(.signUpError)
+                    try? completion(.failedToSignUp)
                 }
             })
             
-            self?.db.collection("users").addDocument(data: ["name": name,
-                                                            "uid": result.user.uid,
-                                                            "profilePictureUrl": "/usersProfilePictures/\(result.user.uid)/\(imageUUID).jpg",
-                                                            "favoriteLocations": [String]()
-                                                           ]) { error in
+            self?.db.collection("users").document("\(result.user.uid)").setData(["name": name,
+                                                                                 "uid": result.user.uid,
+                                                                                 "profilePictureUrl": "/usersProfilePictures/\(result.user.uid)/\(imageUUID).jpg",
+                                                                                 "favoriteLocations": [String]()
+                                                                                ]) { error in
                 if let error {
                     self?.logger.error("\(error.localizedDescription)")
-                    try? completion(.signUpError)
+                    try? completion(.failedToSignUp)
                 }
             }
             
+            self?.createUser(result.user.uid, name, email, profilePicture)
             try? completion(nil)
         }
     }
@@ -208,11 +217,78 @@ extension FirebaseManager: FirebaseAuthenticationLogic {
         auth.signIn(withEmail: email, password: password) { [weak self] result, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                try? completion(.signInError)
+                try? completion(.failedToSignIn)
             }
             if error == nil {
-                try? completion(nil)
+                self?.fetchUser(result) { fetchingResult in
+                    switch fetchingResult {
+                    case .success(let user):
+                        UserManager.shared.user = user
+                        try? completion(nil)
+                    case .failure(let error):
+                        try? completion(error)
+                    }
+                }
             }
         }
+    }
+}
+
+extension FirebaseManager: FirebaseUserLogic {
+    func fetchUser(_ authResult: AuthDataResult?, completion: @escaping (Result<User, FirebaseError>) -> Void) {
+        guard let result = authResult,
+              let email = result.user.email else { completion(.failure(.failedToGetUserData)); return }
+        
+        db.collection("users").getDocuments { [weak self] snapshot, error in
+            if let error {
+                self?.logger.error("\(error.localizedDescription)")
+                completion(.failure(.dataNotLoaded))
+            }
+            
+            guard let userDocument = snapshot?.documents.filter({ $0.get("uid") as! String == result.user.uid }).first,
+                  let fileRef = self?.storageRef.child("\(userDocument.get("profilePictureUrl") as! String)") else { completion(.failure(.failedToGetUserData)); return }
+            
+            fileRef.getData(maxSize: 50 * 1024 * 1024) { data, error in
+                if let error {
+                    self?.logger.error("\(error.localizedDescription)")
+                    completion(.failure(.failedToGetUserData))
+                }
+            
+                guard let data = data else { completion(.failure(.failedToGetUserData)); return }
+                
+                let user = User(uid: result.user.uid,
+                                name: userDocument.get("name") as! String,
+                                email: email,
+                                profilePicture: data,
+                                favoriteLocations: userDocument.get("favoriteLocations") as! [String])
+                
+                completion(.success(user))
+            }
+        }
+    }
+    
+    func createUser(_ uid: String, _ name: String, _ email: String, _ profilePicture: Data) {
+        let user = User(uid: uid,
+                        name: name,
+                        email: email,
+                        profilePicture: profilePicture,
+                        favoriteLocations: [])
+        UserManager.shared.user = user
+    }
+    
+    func addLocationToFavorites(_ locationName: String) {
+        let uid = UserManager.shared.user.uid
+        
+        db.collection("users").document(uid).updateData([
+            "favoriteLocations": FieldValue.arrayUnion(["\(locationName)"])
+        ])
+    }
+    
+    func removeLocationFromFavorites(_ locationName: String) {
+        let uid = UserManager.shared.user.uid
+        
+        db.collection("users").document(uid).updateData([
+            "favoriteLocations": FieldValue.arrayRemove(["\(locationName)"])
+        ])
     }
 }
