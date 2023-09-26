@@ -22,7 +22,6 @@ final class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing {
     func routeToTabBarController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let destinationVC = storyboard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
-//        passDataToLocationDescription(source: dataStore!, destination: &destinationDS)
         navigateToTabBarController(source: viewController!, destination: destinationVC)
     }
     
@@ -30,10 +29,4 @@ final class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing {
     private func navigateToTabBarController(source: LoginViewController, destination: TabBarController) {
         source.show(destination, sender: nil)
     }
-    
-    // MARK: - Passing data
-//    func passDataToLocationDescription(source: LocationsListDataStore, destination: inout LocationDescriptionDataStore) {
-//        guard let indexPath = viewController?.tableView.indexPathForSelectedRow else { return }
-//        destination.location = source.locations[indexPath.row]
-//    }
 }

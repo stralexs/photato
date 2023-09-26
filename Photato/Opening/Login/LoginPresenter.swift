@@ -18,12 +18,22 @@ final class LoginPresenter: LoginPresentationLogic {
     weak var viewController: LoginDisplayLogic?
     
     func presentEmailTextFieldValidation(response: Login.ValidateEmailTextField.Response) {
-        let viewModel = Login.ValidateEmailTextField.ViewModel(isEmailTextFieldValid: response.isEmailTextFieldValid)
+        var emailTextFieldValidationDescription: String?
+        if response.isEmailTextFieldValid == false {
+            emailTextFieldValidationDescription = "Invalid Email. Example: photo123@gmail.com"
+        }
+        
+        let viewModel = Login.ValidateEmailTextField.ViewModel(emailTextFieldValidationDescription: emailTextFieldValidationDescription)
         viewController?.displayEmailTextFieldValidation(viewModel: viewModel)
     }
     
     func presentPasswordTextFieldValidation(response: Login.ValidatePasswordTextField.Response) {
-        let viewModel = Login.ValidatePasswordTextField.ViewModel(isPasswordTextFieldValid: response.isPasswordTextFieldValid)
+        var passwordTextFieldValidationDescription: String?
+        if response.isPasswordTextFieldValid == false {
+            passwordTextFieldValidationDescription = "Password must contain at least 6 characters"
+        }
+        
+        let viewModel = Login.ValidatePasswordTextField.ViewModel(passwordTextFieldValidationDescription: passwordTextFieldValidationDescription)
         viewController?.displayPasswordTextFieldValidation(viewModel: viewModel)
     }
     

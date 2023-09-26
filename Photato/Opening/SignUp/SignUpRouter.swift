@@ -20,11 +20,9 @@ final class SignUpRouter: NSObject, SignUpRoutingLogic, SignUpDataPassing {
     var dataStore: SignUpDataStore?
     
     // MARK: - Routing
-    
     func routeToTabBarController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let destinationVC = storyboard.instantiateViewController(withIdentifier: "TabBarController") as! TabBarController
-//        passDataToLocationDescription(source: dataStore!, destination: &destinationDS)
         navigateToTabBarController(source: viewController!, destination: destinationVC)
     }
     
@@ -32,10 +30,4 @@ final class SignUpRouter: NSObject, SignUpRoutingLogic, SignUpDataPassing {
     private func navigateToTabBarController(source: SignUpViewController, destination: TabBarController) {
         source.show(destination, sender: nil)
     }
-    
-    // MARK: - Passing data
-//    func passDataToLocationDescription(source: LocationsListDataStore, destination: inout LocationDescriptionDataStore) {
-//        guard let indexPath = viewController?.tableView.indexPathForSelectedRow else { return }
-//        destination.location = source.locations[indexPath.row]
-//    }
 }

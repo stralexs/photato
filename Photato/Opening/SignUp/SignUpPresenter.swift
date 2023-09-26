@@ -19,17 +19,32 @@ final class SignUpPresenter: SignUpPresentationLogic {
     weak var viewController: SignUpDisplayLogic?
     
     func presentNameTextFieldValidation(response: SignUp.ValidateNameTextField.Response) {
-        let viewModel = SignUp.ValidateNameTextField.ViewModel(isNameTextFieldValid: response.isNameTextFieldValid)
+        var nameTextFieldValidationDescription: String?
+        if response.isNameTextFieldValid == false {
+            nameTextFieldValidationDescription = "Please fill name field"
+        }
+        
+        let viewModel = SignUp.ValidateNameTextField.ViewModel(nameTextFieldValidationDescription: nameTextFieldValidationDescription)
         viewController?.displayNameTextFieldValidation(viewModel: viewModel)
     }
     
     func presentEmailTextFieldValidation(response: SignUp.ValidateEmailTextField.Response) {
-        let viewModel = SignUp.ValidateEmailTextField.ViewModel(isEmailTextFieldValid: response.isEmailTextFieldValid)
+        var emailTextFieldValidationDescription: String?
+        if response.isEmailTextFieldValid == false {
+            emailTextFieldValidationDescription = "Invalid Email. Example: photo123@gmail.com"
+        }
+        
+        let viewModel = SignUp.ValidateEmailTextField.ViewModel(emailTextFieldValidationDescription: emailTextFieldValidationDescription)
         viewController?.displayEmailTextFieldValidation(viewModel: viewModel)
     }
     
     func presentPasswordTextFieldValidation(response: SignUp.ValidatePasswordTextField.Response) {
-        let viewModel = SignUp.ValidatePasswordTextField.ViewModel(isPasswordTextFieldValid: response.isPasswordTextFieldValid)
+        var passwordTextFieldValidationDescription: String?
+        if response.isPasswordTextFieldValid == false {
+            passwordTextFieldValidationDescription = "Password must contain at least 6 characters"
+        }
+        
+        let viewModel = SignUp.ValidatePasswordTextField.ViewModel(passwordTextFieldValidationDescription: passwordTextFieldValidationDescription)
         viewController?.displayPasswordTextFieldValidation(viewModel: viewModel)
     }
     

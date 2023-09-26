@@ -160,12 +160,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
     }
     
     func displayEmailTextFieldValidation(viewModel: Login.ValidateEmailTextField.ViewModel) {
-        let isEmailValid = viewModel.isEmailTextFieldValid
-        if isEmailValid {
-            emailTextFieldErrorLabel.text = nil
-        } else {
-            emailTextFieldErrorLabel.text = "Invalid Email. Example: photo123@gmail.com"
-        }
+        emailTextFieldErrorLabel.text = viewModel.emailTextFieldValidationDescription
     }
     
     // MARK: ValidatePasswordTextField Use case
@@ -175,12 +170,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
     }
     
     func displayPasswordTextFieldValidation(viewModel: Login.ValidatePasswordTextField.ViewModel) {
-        let isPasswordValid = viewModel.isPasswordTextFieldValid
-        if isPasswordValid {
-            passwordTextFieldErrorLabel.text = nil
-        } else {
-            passwordTextFieldErrorLabel.text = "Password must contain at least 6 characters"
-        }
+        passwordTextFieldErrorLabel.text = viewModel.passwordTextFieldValidationDescription
     }
     
     // MARK: Other methods

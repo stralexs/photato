@@ -18,7 +18,7 @@ enum Login {
         }
         
         struct ViewModel {
-            let isEmailTextFieldValid: Bool
+            let emailTextFieldValidationDescription: String?
         }
     }
     
@@ -32,7 +32,7 @@ enum Login {
         }
         
         struct ViewModel {
-            let isPasswordTextFieldValid: Bool
+            let passwordTextFieldValidationDescription: String?
         }
     }
     

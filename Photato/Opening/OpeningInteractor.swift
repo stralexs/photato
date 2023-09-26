@@ -11,9 +11,7 @@ protocol OpeningBusinessLogic {
     func checkIsUserLoggedIn(request: Opening.CheckIsUserLoggedIn.Request)
 }
 
-protocol OpeningDataStore {}
-
-final class OpeningInteractor: OpeningBusinessLogic, OpeningDataStore {
+final class OpeningInteractor: OpeningBusinessLogic {
     var presenter: OpeningPresentationLogic?
         
     func checkIsUserLoggedIn(request: Opening.CheckIsUserLoggedIn.Request) {

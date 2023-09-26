@@ -65,13 +65,11 @@
 		429162AF2AB8D35600E7361C /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162A92AB8D35600E7361C /* OpeningViewController.swift */; };
 		429162B02AB8D35600E7361C /* OpeningInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162AA2AB8D35600E7361C /* OpeningInteractor.swift */; };
 		429162B72AB8D37600E7361C /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162B12AB8D37600E7361C /* LoginPresenter.swift */; };
-		429162B82AB8D37600E7361C /* LoginWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162B22AB8D37600E7361C /* LoginWorker.swift */; };
 		429162B92AB8D37600E7361C /* LoginRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162B32AB8D37600E7361C /* LoginRouter.swift */; };
 		429162BA2AB8D37600E7361C /* LoginModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162B42AB8D37600E7361C /* LoginModels.swift */; };
 		429162BB2AB8D37600E7361C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162B52AB8D37600E7361C /* LoginViewController.swift */; };
 		429162BC2AB8D37600E7361C /* LoginInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162B62AB8D37600E7361C /* LoginInteractor.swift */; };
 		429162C32AB8D39200E7361C /* SignUpPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162BD2AB8D39200E7361C /* SignUpPresenter.swift */; };
-		429162C42AB8D39200E7361C /* SignUpWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162BE2AB8D39200E7361C /* SignUpWorker.swift */; };
 		429162C52AB8D39200E7361C /* SignUpRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162BF2AB8D39200E7361C /* SignUpRouter.swift */; };
 		429162C62AB8D39200E7361C /* SignUpModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162C02AB8D39200E7361C /* SignUpModels.swift */; };
 		429162C72AB8D39200E7361C /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 429162C12AB8D39200E7361C /* SignUpViewController.swift */; };
@@ -173,13 +171,11 @@
 		429162A92AB8D35600E7361C /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
 		429162AA2AB8D35600E7361C /* OpeningInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningInteractor.swift; sourceTree = "<group>"; };
 		429162B12AB8D37600E7361C /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
-		429162B22AB8D37600E7361C /* LoginWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWorker.swift; sourceTree = "<group>"; };
 		429162B32AB8D37600E7361C /* LoginRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginRouter.swift; sourceTree = "<group>"; };
 		429162B42AB8D37600E7361C /* LoginModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModels.swift; sourceTree = "<group>"; };
 		429162B52AB8D37600E7361C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		429162B62AB8D37600E7361C /* LoginInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginInteractor.swift; sourceTree = "<group>"; };
 		429162BD2AB8D39200E7361C /* SignUpPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPresenter.swift; sourceTree = "<group>"; };
-		429162BE2AB8D39200E7361C /* SignUpWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpWorker.swift; sourceTree = "<group>"; };
 		429162BF2AB8D39200E7361C /* SignUpRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRouter.swift; sourceTree = "<group>"; };
 		429162C02AB8D39200E7361C /* SignUpModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpModels.swift; sourceTree = "<group>"; };
 		429162C12AB8D39200E7361C /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
@@ -400,7 +396,6 @@
 				429162B52AB8D37600E7361C /* LoginViewController.swift */,
 				429162B62AB8D37600E7361C /* LoginInteractor.swift */,
 				429162B12AB8D37600E7361C /* LoginPresenter.swift */,
-				429162B22AB8D37600E7361C /* LoginWorker.swift */,
 				429162B32AB8D37600E7361C /* LoginRouter.swift */,
 				429162B42AB8D37600E7361C /* LoginModels.swift */,
 			);
@@ -413,7 +408,6 @@
 				429162C12AB8D39200E7361C /* SignUpViewController.swift */,
 				429162C22AB8D39200E7361C /* SignUpInteractor.swift */,
 				429162BD2AB8D39200E7361C /* SignUpPresenter.swift */,
-				429162BE2AB8D39200E7361C /* SignUpWorker.swift */,
 				429162BF2AB8D39200E7361C /* SignUpRouter.swift */,
 				429162C02AB8D39200E7361C /* SignUpModels.swift */,
 			);
@@ -704,7 +698,6 @@
 				42FA561A2A7E72BA00144F2A /* AppDelegate.swift in Sources */,
 				42225A0B2AB987D200274737 /* UserValidationRouter.swift in Sources */,
 				424528F82A7E9AB00059246D /* LocationsListRouter.swift in Sources */,
-				429162B82AB8D37600E7361C /* LoginWorker.swift in Sources */,
 				429162C32AB8D39200E7361C /* SignUpPresenter.swift in Sources */,
 				429162B92AB8D37600E7361C /* LoginRouter.swift in Sources */,
 				4295C8872A7F940300447493 /* LocationTableViewCell.swift in Sources */,
@@ -713,7 +706,6 @@
 				4280755E2AA5BB6A003C8848 /* FirebaseManager.swift in Sources */,
 				424528FA2A7E9AB00059246D /* LocationsListViewController.swift in Sources */,
 				42225A0D2AB987D200274737 /* UserValidationViewController.swift in Sources */,
-				429162C42AB8D39200E7361C /* SignUpWorker.swift in Sources */,
 				424528F72A7E9AB00059246D /* LocationsListWorker.swift in Sources */,
 				429162B72AB8D37600E7361C /* LoginPresenter.swift in Sources */,
 				42023CE32ABADDF200950E97 /* UITextFieldExtension.swift in Sources */,

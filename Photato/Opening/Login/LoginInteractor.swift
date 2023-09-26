@@ -19,7 +19,6 @@ protocol LoginDataStore {}
 
 final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
     var presenter: LoginPresentationLogic?
-    var worker: LoginWorker?
     private let firebaseManager: FirebaseAuthenticationLogic
     private let keychainManager: KeychainManagerLogic
     private let logger = Logger()

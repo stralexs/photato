@@ -211,12 +211,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     }
     
     func displayNameTextFieldValidation(viewModel: SignUp.ValidateNameTextField.ViewModel) {
-        let isNameValid = viewModel.isNameTextFieldValid
-        if isNameValid {
-            nameTextFieldErrorLabel.text = nil
-        } else {
-            nameTextFieldErrorLabel.text = "Please fill name field"
-        }
+        nameTextFieldErrorLabel.text = viewModel.nameTextFieldValidationDescription
     }
     
     // MARK: ValidateEmailTextField Use case
@@ -226,12 +221,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     }
     
     func displayEmailTextFieldValidation(viewModel: SignUp.ValidateEmailTextField.ViewModel) {
-        let isEmailValid = viewModel.isEmailTextFieldValid
-        if isEmailValid {
-            emailTextFieldErrorLabel.text = nil
-        } else {
-            emailTextFieldErrorLabel.text = "Invalid Email. Example: photo123@gmail.com"
-        }
+        emailTextFieldErrorLabel.text = viewModel.emailTextFieldValidationDescription
     }
     
     // MARK: ValidatePasswordTextField Use case
@@ -241,12 +231,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     }
     
     func displayPasswordTextFieldValidation(viewModel: SignUp.ValidatePasswordTextField.ViewModel) {
-        let isPasswordValid = viewModel.isPasswordTextFieldValid
-        if isPasswordValid {
-            passwordTextFieldErrorLabel.text = nil
-        } else {
-            passwordTextFieldErrorLabel.text = "Password must contain at least 6 characters"
-        }
+        passwordTextFieldErrorLabel.text = viewModel.passwordTextFieldValidationDescription
     }
     
     // MARK: SignUp Use case
