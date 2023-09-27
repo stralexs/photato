@@ -308,30 +308,39 @@ extension FirebaseManager: FirebaseUserLogic {
     }
     
     func changeUserProfilePicture(_ imageData: Data, completion: @escaping (FirebaseError?) -> Void) {
-        storageRef.child("/usersProfilePictures/\(UserManager.shared.user.uid)").delete { [weak self] error in
+        db.collection("users").getDocuments { [weak self] snapshot, error in
             if let error {
                 self?.logger.error("\(error.localizedDescription)")
-                completion(.unknown)
+                completion(.failedToSaveNewData)
             }
+            guard let userDocument = snapshot?.documents.filter({ $0.get("uid") as! String == UserManager.shared.user.uid }).first,
+                  let profilePictureUrl = userDocument.get("profilePictureUrl") as? String else { return }
             
-            let imageUUID = UUID().uuidString
-            let path = "/usersProfilePictures/\(UserManager.shared.user.uid)/\(imageUUID).jpg"
-            let fileRef = self?.storageRef.child(path)
-            fileRef?.putData(imageData, completion: { metadata, error in
+            self?.storageRef.child(profilePictureUrl).delete { [weak self] error in
                 if let error {
                     self?.logger.error("\(error.localizedDescription)")
-                    completion(.failedToSaveNewData)
+                    completion(.unknown)
                 }
                 
-                self?.db.collection("users").document(UserManager.shared.user.uid).updateData(["profilePictureUrl": path]) { [weak self] error in
+                let imageUUID = UUID().uuidString
+                let path = "/usersProfilePictures/\(UserManager.shared.user.uid)/\(imageUUID).jpg"
+                let fileRef = self?.storageRef.child(path)
+                fileRef?.putData(imageData, completion: { metadata, error in
                     if let error {
                         self?.logger.error("\(error.localizedDescription)")
                         completion(.failedToSaveNewData)
                     }
                     
-                    completion(nil)
-                }
-            })
+                    self?.db.collection("users").document(UserManager.shared.user.uid).updateData(["profilePictureUrl": path]) { [weak self] error in
+                        if let error {
+                            self?.logger.error("\(error.localizedDescription)")
+                            completion(.failedToSaveNewData)
+                        }
+                        
+                        completion(nil)
+                    }
+                })
+            }
         }
     }
 }
