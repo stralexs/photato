@@ -9,6 +9,7 @@ import UIKit
 
 @objc protocol ProfileRoutingLogic {
     func routeToLocationDescription()
+    func routeToSettings()
 }
 
 protocol ProfileDataPassing {
@@ -29,13 +30,24 @@ final class ProfileRouter: NSObject, ProfileRoutingLogic, ProfileDataPassing {
         navigateToLocationDescription(source: viewController!, destination: destinationVC)
     }
     
+    func routeToSettings() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        destinationVC.hidesBottomBarWhenPushed = true
+        navigateToSettings(source: viewController!, destination: destinationVC)
+    }
+    
     // MARK: - Navigation
-    func navigateToLocationDescription(source: ProfileViewController, destination: LocationDescriptionViewController) {
+    private func navigateToLocationDescription(source: ProfileViewController, destination: LocationDescriptionViewController) {
+        source.show(destination, sender: nil)
+    }
+    
+    private func navigateToSettings(source: ProfileViewController, destination: SettingsViewController) {
         source.show(destination, sender: nil)
     }
     
     // MARK: - Passing data
-    func passDataToLocationDescription(source: ProfileDataStore, destination: inout LocationDescriptionDataStore) {
+    private func passDataToLocationDescription(source: ProfileDataStore, destination: inout LocationDescriptionDataStore) {
         guard let indexPath = viewController?.tableView.indexPathForSelectedRow else { return }
         destination.location = source.locations[indexPath.row]
     }

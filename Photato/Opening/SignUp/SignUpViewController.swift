@@ -215,7 +215,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     }
     
     // MARK: ValidateEmailTextField Use case
-    func validateEmailTextField(_ text: String?) {
+    private func validateEmailTextField(_ text: String?) {
         let request = SignUp.ValidateEmailTextField.Request(emailTextFieldText: text)
         interactor?.validateEmailTextField(request: request)
     }
@@ -225,7 +225,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     }
     
     // MARK: ValidatePasswordTextField Use case
-    func validatePasswordTextField(_ text: String?) {
+    private func validatePasswordTextField(_ text: String?) {
         let request = SignUp.ValidatePasswordTextField.Request(passwordTextFieldText: text)
         interactor?.validatePasswordTextField(request: request)
     }

@@ -35,10 +35,10 @@ struct User {
                      favoriteLocations: newFavoriteLocations)
     }
     
-    func changeUserInfo(newName: String?, newProfilePicture: Data?) -> Self {
+    func changeUserInfo(newName: String?, newEmail: String?,newProfilePicture: Data?) -> Self {
         .init(uid: uid,
               name: newName ?? name,
-              email: email,
+              email: newEmail ?? email,
               profilePicture: newProfilePicture ?? profilePicture,
               favoriteLocations: favoriteLocations)
     }

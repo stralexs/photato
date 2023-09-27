@@ -38,7 +38,7 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         
     private let profileImageView: UIImageView = {
         let profileImageView = UIImageView()
-        profileImageView.layer.borderWidth = 4
+        profileImageView.layer.borderWidth = 3
         profileImageView.layer.masksToBounds = false
         profileImageView.layer.borderColor = UIColor.darkOliveGreen.cgColor
         profileImageView.clipsToBounds = true
@@ -46,7 +46,7 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         return profileImageView
     }()
     
-    private let settingsButton: UIButton = {
+    private lazy var settingsButton: UIButton = {
         let settingsButton = UIButton()
         let image = UIImage(systemName: "gear")
         settingsButton.setImage(image, for: .normal)
@@ -54,6 +54,7 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         settingsButton.contentHorizontalAlignment = .fill
         settingsButton.contentVerticalAlignment = .fill
         settingsButton.tintColor = .tortilla
+        settingsButton.addTarget(self, action: #selector(routeToSettings), for: .touchUpInside)
         return settingsButton
     }()
     
@@ -149,6 +150,10 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
     }
     
     // MARK: Other methods
+    @objc private func routeToSettings() {
+        router?.routeToSettings()
+    }
+    
     private func tuneUI() {
         view.backgroundColor = .lightTortilla
 

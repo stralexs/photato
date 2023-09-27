@@ -37,7 +37,7 @@ final class OpeningViewController: UIViewController, OpeningDisplayLogic {
     
     func displayIsUserLoggedIn(viewModel: Opening.CheckIsUserLoggedIn.ViewModel) {
         DispatchQueue.main.async { [weak self] in
-            let isUserLoggedIn = false
+            let isUserLoggedIn = viewModel.isUserLoggedIn
             
             if isUserLoggedIn {
                 self?.loadingViewController.view.isHidden = false
