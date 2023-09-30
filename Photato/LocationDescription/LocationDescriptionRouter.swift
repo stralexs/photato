@@ -8,7 +8,7 @@
 import UIKit
 
 @objc protocol LocationDescriptionRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func routeToWeatherForecast()
 }
 
 protocol LocationDescriptionDataPassing {
@@ -16,35 +16,26 @@ protocol LocationDescriptionDataPassing {
 }
 
 final class LocationDescriptionRouter: NSObject, LocationDescriptionRoutingLogic, LocationDescriptionDataPassing {
-    
     weak var viewController: LocationDescriptionViewController?
     var dataStore: LocationDescriptionDataStore?
     
-    // MARK: Routing
+    // MARK: - Routing
+    func routeToWeatherForecast() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let destinationVC = storyboard.instantiateViewController(withIdentifier: "WeatherForecastViewController") as! WeatherForecastViewController
+        var destinationDS = destinationVC.router!.dataStore!
+        destinationVC.hidesBottomBarWhenPushed = true
+        passDataToWeatherForecast(source: dataStore!, destination: &destinationDS)
+        navigateToWeatherForecast(source: viewController!, destination: destinationVC)
+    }
     
-    //func routeToSomewhere(segue: UIStoryboardSegue?) {
-    //  if let segue = segue {
-    //    let destinationVC = segue.destination as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //  } else {
-    //    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    //    let destinationVC = storyboard.instantiateViewController(withIdentifier: "SomewhereViewController") as! SomewhereViewController
-    //    var destinationDS = destinationVC.router!.dataStore!
-    //    passDataToSomewhere(source: dataStore!, destination: &destinationDS)
-    //    navigateToSomewhere(source: viewController!, destination: destinationVC)
-    //  }
-    //}
+    // MARK: - Navigation
+    func navigateToWeatherForecast(source: LocationDescriptionViewController, destination: WeatherForecastViewController) {
+        source.present(destination, animated: true)
+    }
     
-    // MARK: Navigation
-    
-    //func navigateToSomewhere(source: LocationDescriptionViewController, destination: SomewhereViewController) {
-    //  source.show(destination, sender: nil)
-    //}
-    
-    // MARK: Passing data
-    
-    //func passDataToSomewhere(source: LocationDescriptionDataStore, destination: inout SomewhereDataStore) {
-    //  destination.name = source.name
-    //}
+    // MARK: - Passing data
+    func passDataToWeatherForecast(source: LocationDescriptionDataStore, destination: inout WeatherForecastDataStore) {
+        destination.location = source.location
+    }
 }

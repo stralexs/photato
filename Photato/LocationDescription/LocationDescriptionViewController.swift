@@ -141,15 +141,16 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
         return message
     }()
     
-    private let weatherButton: UIButton = {
-        let downloadImageButton = UIButton()
+    private lazy var weatherButton: UIButton = {
+        let weatherButton = UIButton()
         let image = UIImage(systemName: "sun.max")
-        downloadImageButton.setImage(image, for: .normal)
-        downloadImageButton.imageView?.contentMode = .scaleAspectFit
-        downloadImageButton.contentHorizontalAlignment = .fill
-        downloadImageButton.contentVerticalAlignment = .fill
-        downloadImageButton.tintColor = .tortilla
-        return downloadImageButton
+        weatherButton.setImage(image, for: .normal)
+        weatherButton.imageView?.contentMode = .scaleAspectFit
+        weatherButton.contentHorizontalAlignment = .fill
+        weatherButton.contentVerticalAlignment = .fill
+        weatherButton.tintColor = .tortilla
+        weatherButton.addTarget(self, action: #selector(routeToWeatherForecast), for: .touchUpInside)
+        return weatherButton
     }()
     
     private lazy var addToFavouritesButton: UIButton = {
@@ -297,6 +298,10 @@ final class LocationDescriptionViewController: UIViewController, LocationDescrip
     }
     
     // MARK: Other methods
+    @objc private func routeToWeatherForecast() {
+        router?.routeToWeatherForecast()
+    }
+    
     private func tuneUI() {
         view.backgroundColor = .lightTortilla
         
