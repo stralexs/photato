@@ -1,5 +1,4 @@
 # Photato
-## Photographer's most needed app
 
 ![photato intro](https://github.com/stralexs/photato/assets/123239625/716feb19-82e4-48e5-b017-40c9f67e80ea)
 
@@ -53,7 +52,7 @@ Settings scene allows user to make some changes to his account. Also in the uppe
 Since the project involves further development, when creating architecture, the choice fell on Clean Swift, since this architecture makes it easy to add new modules that expand functionality, and is also easy to test and maximally complies with SOLID principles. Also, many Interactors and Workers, through their dependence on protocols, have access to managers (for example, FirebaseManager) that perform certain functions. Two of them - LocationsManager and UserManager - are singletons. Yes, perhaps singletons are not the best option in terms of clean architecture and testability, but when the entire application should have only one instance of an array with locations information and only one user, this is the best choice. Additionally, the application was monitored for memory leaks and retain cycles.
 <img width="1440" alt="Screenshot 2023-09-30 at 12 52 42" src="https://github.com/stralexs/photato/assets/123239625/6cbc7986-d664-45fc-b929-e623d64cc4fa">
 <p align="center">
-App has no memory leaks in Leaks intrument
+App has no memory leaks in Leaks instrument
 </p>
 
 ## Stack
