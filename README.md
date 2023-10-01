@@ -8,6 +8,7 @@ One of the toughest tasks of any photographer is to look for inspiration and con
 <p align="center">
 Scenes hierarchy
 </p>
+
 ![ViewController Hirarhchy](https://github.com/stralexs/photato/assets/123239625/13f6bc53-41af-4ca4-b605-07454334e770)
 
 ## Opening scene
