@@ -12,7 +12,7 @@ protocol WeatherForecastPresentationLogic {
     func presentWeather(response: WeatherForecast.GetWeather.Response)
 }
 
-class WeatherForecastPresenter: WeatherForecastPresentationLogic {
+final class WeatherForecastPresenter: WeatherForecastPresentationLogic {
     weak var viewController: WeatherForecastDisplayLogic?
         
     func presentLocationName(response: WeatherForecast.GetLocationName.Response) {

@@ -16,8 +16,8 @@ protocol LocationsListDisplayLogic: AnyObject {
 
 final class LocationsListViewController: UIViewController, LocationsListDisplayLogic {
     // MARK: - Properties
-    var interactor: LocationsListBusinessLogic?
-    var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
+    private var interactor: LocationsListBusinessLogic?
+    private var router: (NSObjectProtocol & LocationsListRoutingLogic & LocationsListDataPassing)?
     
     private var locations = [Location]()
     
@@ -35,10 +35,11 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
         return searchController
     }()
     
-    // MARK: - View Controller Lifecycle
+    // MARK: - View Controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure(with: self)
+        configure()
+        tuneConstraints()
         tuneUI()
         getLocations()
     }
@@ -46,41 +47,11 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshLocations()
-        navigationController?.navigationBar.isTranslucent = true
+        setNavigationBarAppearance()
     }
     
     // MARK: - Methods
-    
-    // MARK: FetchLocations Use case
-    private func getLocations() {
-        let request = LocationsList.FetchLocations.Request()
-        interactor?.fetchLocations(request: request)
-    }
-    
-    func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
-    }
-    
-    // MARK: SearchLocations Use case
-    func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
-    }
-    
-    // MARK: RefreshLocations Use case
-    func refreshLocations() {
-        let request = LocationsList.RefreshLocations.Requst()
-        interactor?.refreshLocations(requst: request)
-    }
-    
-    func displayRefreshedLocations(viewModel: LocationsList.RefreshLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
-    }
-    
-    // MARK: Other methods
-    private func tuneUI() {
+    private func tuneConstraints() {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.left.equalToSuperview()
@@ -88,6 +59,9 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom)
         }
+    }
+    
+    private func tuneUI() {
         tableView.delegate = self
         tableView.dataSource = self
         
@@ -98,8 +72,12 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
         searchController.searchBar.delegate = self
     }
     
-    private func configure(with view: LocationsListViewController) {
-        let viewController = view
+    private func setNavigationBarAppearance() {
+        navigationController?.navigationBar.isTranslucent = true
+    }
+    
+    private func configure() {
+        let viewController = self
         let interactor = LocationsListInteractor(worker: LocationsListWorker())
         let presenter = LocationsListPresenter()
         let router = LocationsListRouter()
@@ -109,6 +87,45 @@ final class LocationsListViewController: UIViewController, LocationsListDisplayL
         presenter.viewController = viewController
         router.viewController = viewController
         router.dataStore = interactor
+    }
+}
+
+    // MARK: - FetchLocations Use case
+extension LocationsListViewController {
+    private func getLocations() {
+        let request = LocationsList.FetchLocations.Request()
+        interactor?.fetchLocations(request: request)
+    }
+    
+    func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel) {
+        locations = viewModel.locations
+        tableView.reloadData()
+    }
+}
+
+    // MARK: - SearchLocations Use case
+extension LocationsListViewController {
+    private func searchLocations(_ searchText: String) {
+        let request = LocationsList.SearchLocations.Request(searchText: searchText)
+        interactor?.searchLocations(request: request)
+    }
+    
+    func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel) {
+        locations = viewModel.locations
+        tableView.reloadData()
+    }
+}
+
+    // MARK: - RefreshLocations Use case
+extension LocationsListViewController {
+    private func refreshLocations() {
+        let request = LocationsList.RefreshLocations.Requst()
+        interactor?.refreshLocations(requst: request)
+    }
+    
+    func displayRefreshedLocations(viewModel: LocationsList.RefreshLocations.ViewModel) {
+        locations = viewModel.locations
+        tableView.reloadData()
     }
 }
 
@@ -125,6 +142,7 @@ extension LocationsListViewController: UITableViewDataSource {
         return cell
     }
 }
+
     // MARK: -  UITableViewDelegate
 extension LocationsListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -136,9 +154,7 @@ extension LocationsListViewController: UITableViewDelegate {
     // MARK: - UISearchBarDelegate
 extension LocationsListViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let request = LocationsList.SearchLocations.Request(searchText: searchText)
-        interactor?.searchLocations(request: request)
-        tableView.reloadData()
+        searchLocations(searchText)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

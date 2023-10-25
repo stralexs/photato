@@ -9,16 +9,19 @@ import Foundation
 import OSLog
 
 final class LocationsManager {
+    // MARK: - Singleton
     static let shared = LocationsManager(firebaseManager: FirebaseManager())
     
     private init(firebaseManager: FirebaseLocationsLogic) {
         self.firebaseManager = firebaseManager
     }
     
+    // MARK: - Properties
     private let firebaseManager: FirebaseLocationsLogic
     private let logger = Logger()
     var locations = [Location]()
     
+    // MARK: - Methods
     func downloadLocations(completion: @escaping (FirebaseError?) -> Void) {
         firebaseManager.retrieveLocations { [weak self] result in
             switch result {

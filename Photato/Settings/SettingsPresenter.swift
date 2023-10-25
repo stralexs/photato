@@ -14,7 +14,7 @@ protocol SettingsPresentationLogic {
     func presentLeaveAccount(response: Settings.LeaveAccount.Response)
 }
 
-class SettingsPresenter: SettingsPresentationLogic {
+final class SettingsPresenter: SettingsPresentationLogic {
     weak var viewController: SettingsDisplayLogic?
     
     func presentUserData(response: Settings.GetUserData.Response) {
@@ -59,6 +59,6 @@ class SettingsPresenter: SettingsPresentationLogic {
     
     func presentLeaveAccount(response: Settings.LeaveAccount.Response) {
         let viewModel = Settings.LeaveAccount.ViewModel()
-        viewController?.leaveAccount(viewModel: viewModel)
+        viewController?.displayLeaveAccount(viewModel: viewModel)
     }
 }

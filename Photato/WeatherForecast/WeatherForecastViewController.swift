@@ -12,7 +12,7 @@ protocol WeatherForecastDisplayLogic: AnyObject {
     func displayWeather(viewModel: WeatherForecast.GetWeather.ViewModel)
 }
 
-class WeatherForecastViewController: UIViewController, WeatherForecastDisplayLogic {
+final class WeatherForecastViewController: UIViewController, WeatherForecastDisplayLogic {
     // MARK: - Properties
     var interactor: WeatherForecastBusinessLogic?
     var router: (NSObjectProtocol & WeatherForecastDataPassing)?
@@ -156,6 +156,7 @@ class WeatherForecastViewController: UIViewController, WeatherForecastDisplayLog
         super.viewDidLoad()
         getLocationName()
         getWeather()
+        tuneConstraints()
         tuneUI()
     }
     
@@ -171,54 +172,7 @@ class WeatherForecastViewController: UIViewController, WeatherForecastDisplayLog
     }
     
     // MARK: - Methods
-    
-    // MARK: GetLocationName Use case
-    private func getLocationName() {
-        let request = WeatherForecast.GetLocationName.Request()
-        interactor?.getLocationName(request: request)
-    }
-    
-    func displayLocationName(viewModel: WeatherForecast.GetLocationName.ViewModel) {
-        locationNameLabel.text = viewModel.locationName
-    }
-    
-    // MARK: GetWeather Use case
-    private func getWeather() {
-        let request = WeatherForecast.GetWeather.Request()
-        interactor?.getWeather(request: request)
-    }
-    
-    func displayWeather(viewModel: WeatherForecast.GetWeather.ViewModel) {
-        if viewModel.errorDescription != nil {
-            guard let errorDescription = viewModel.errorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
-        } else {
-            DispatchQueue.main.async { [weak self] in
-                guard let currentWeather = viewModel.currentWeatherDetails,
-                      let hourlyForecast = viewModel.hourlyForecast,
-                      let dailyForecast = viewModel.dailyForecast else { return }
-                
-                self?.temperatureLabel.text = currentWeather.temperature
-                self?.statusLabel.text = currentWeather.mainStatus
-                self?.humidityLabel.text = currentWeather.humidity
-                self?.windSpeedLabel.text = currentWeather.windSpeed
-                
-                self?.hourlyWeather = hourlyForecast
-                self?.dailyWeather = dailyForecast
-                self?.hourlyWeatherCollectionView.reloadData()
-                self?.dailyWeatherTableView.reloadData()
-            }
-        }
-    }
-    
-    // MARK: Other methods
-    private func tuneUI() {
-        view.backgroundColor = .tortilla
-        
+    private func tuneConstraints() {
         view.addSubview(rootVerticalStackView)
         rootVerticalStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -239,7 +193,6 @@ class WeatherForecastViewController: UIViewController, WeatherForecastDisplayLog
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(7)
         }
-        swipeDownSignView.layer.cornerRadius = 3
         
         locationWeatherContainerView.addSubview(locationNameLabel)
         locationNameLabel.snp.makeConstraints { make in
@@ -329,14 +282,21 @@ class WeatherForecastViewController: UIViewController, WeatherForecastDisplayLog
             make.left.top.equalToSuperview().offset(15)
             make.right.bottom.equalToSuperview().inset(15)
         }
-        hourlyWeatherCollectionView.layer.cornerRadius = 15
-        hourlyWeatherCollectionView.dataSource = self
         
         tableViewContainerView.addSubview(dailyWeatherTableView)
         dailyWeatherTableView.snp.makeConstraints { make in
             make.left.top.equalToSuperview().offset(15)
             make.right.bottom.equalToSuperview().inset(15)
         }
+    }
+    
+    private func tuneUI() {
+        view.backgroundColor = .tortilla
+        swipeDownSignView.layer.cornerRadius = 3
+        
+        hourlyWeatherCollectionView.layer.cornerRadius = 15
+        hourlyWeatherCollectionView.dataSource = self
+        
         dailyWeatherTableView.layer.cornerRadius = 15
         dailyWeatherTableView.dataSource = self
         dailyWeatherTableView.backgroundColor = .lightTortilla
@@ -357,6 +317,54 @@ class WeatherForecastViewController: UIViewController, WeatherForecastDisplayLog
     
 }
 
+    // MARK: - GetLocationName Use case
+extension WeatherForecastViewController {
+    private func getLocationName() {
+        let request = WeatherForecast.GetLocationName.Request()
+        interactor?.getLocationName(request: request)
+    }
+    
+    func displayLocationName(viewModel: WeatherForecast.GetLocationName.ViewModel) {
+        locationNameLabel.text = viewModel.locationName
+    }
+}
+
+    // MARK: - GetWeather Use case
+extension WeatherForecastViewController {
+    private func getWeather() {
+        let request = WeatherForecast.GetWeather.Request()
+        interactor?.getWeather(request: request)
+    }
+    
+    func displayWeather(viewModel: WeatherForecast.GetWeather.ViewModel) {
+        if viewModel.errorDescription != nil {
+            guard let errorDescription = viewModel.errorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                guard let currentWeather = viewModel.currentWeatherDetails,
+                      let hourlyForecast = viewModel.hourlyForecast,
+                      let dailyForecast = viewModel.dailyForecast else { return }
+                
+                self?.temperatureLabel.text = currentWeather.temperature
+                self?.statusLabel.text = currentWeather.mainStatus
+                self?.humidityLabel.text = currentWeather.humidity
+                self?.windSpeedLabel.text = currentWeather.windSpeed
+                
+                self?.hourlyWeather = hourlyForecast
+                self?.dailyWeather = dailyForecast
+                self?.hourlyWeatherCollectionView.reloadData()
+                self?.dailyWeatherTableView.reloadData()
+            }
+        }
+    }
+}
+
+    // MARK: - UITableViewDataSource
 extension WeatherForecastViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dailyWeather.count
@@ -370,6 +378,7 @@ extension WeatherForecastViewController: UITableViewDataSource {
     }
 }
 
+    // MARK: - UICollectionViewDataSource
 extension WeatherForecastViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return hourlyWeather.count

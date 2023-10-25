@@ -12,13 +12,8 @@ import UIKit
     func routeToTabBarController()
 }
 
-protocol LoadingDataPassing {
-    var dataStore: LoadingDataStore? { get }
-}
-
-class LoadingRouter: NSObject, LoadingRoutingLogic, LoadingDataPassing {
+class LoadingRouter: NSObject, LoadingRoutingLogic {
     weak var viewController: LoadingViewController?
-    var dataStore: LoadingDataStore?
     
     func routeToUserValidation() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)

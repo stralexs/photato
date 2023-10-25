@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HourlyForecastCollectionViewCell: UICollectionViewCell {
+final class HourlyForecastCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     static let identifier = "HourlyForecastCollectionViewCell"
     
@@ -43,7 +43,7 @@ class HourlyForecastCollectionViewCell: UICollectionViewCell {
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        tuneUI()
+        tuneConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -61,7 +61,7 @@ class HourlyForecastCollectionViewCell: UICollectionViewCell {
         weatherConditionImageView.image = UIImage(named: "\(weatherParameters.icon)")
     }
     
-    private func tuneUI() {
+    private func tuneConstraints() {
         contentView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.left.top.equalToSuperview()

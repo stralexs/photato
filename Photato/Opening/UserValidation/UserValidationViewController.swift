@@ -9,7 +9,7 @@ import UIKit
 
 final class UserValidationViewController: UIViewController {
     // MARK: - Properties
-    var router: (NSObjectProtocol & UserValidationRoutingLogic)?
+    private var router: (NSObjectProtocol & UserValidationRoutingLogic)?
     
     private let gradient = CAGradientLayer()
     private var gradientSet = [[CGColor]]()
@@ -56,10 +56,11 @@ final class UserValidationViewController: UIViewController {
         return signUpButton
     }()
     
-    // MARK: - View Controller Lifecycle
+    // MARK: - View Controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        tuneConstraints()
         tuneUI()
     }
     
@@ -109,11 +110,7 @@ final class UserValidationViewController: UIViewController {
         gradient.add(gradientChangeAnimation, forKey: "colorChange")
     }
     
-    private func tuneUI() {
-        navigationItem.setHidesBackButton(true, animated: false)
-        
-        gradientChangeAnimation.delegate = self
-        
+    private func tuneConstraints() {
         view.addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -140,12 +137,19 @@ final class UserValidationViewController: UIViewController {
             make.width.equalToSuperview()
             make.height.equalTo(50)
         }
-        loginButton.layer.cornerRadius = 5
         
         signUpButton.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(50)
         }
+    }
+    
+    private func tuneUI() {
+        navigationItem.setHidesBackButton(true, animated: false)
+        
+        gradientChangeAnimation.delegate = self
+        
+        loginButton.layer.cornerRadius = 5
         signUpButton.layer.cornerRadius = 5
     }
     

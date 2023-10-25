@@ -11,13 +11,8 @@ import UIKit
     func routeToTabBarController()
 }
 
-protocol SignUpDataPassing {
-    var dataStore: SignUpDataStore? { get }
-}
-
-final class SignUpRouter: NSObject, SignUpRoutingLogic, SignUpDataPassing {
+final class SignUpRouter: NSObject, SignUpRoutingLogic {
     weak var viewController: SignUpViewController?
-    var dataStore: SignUpDataStore?
     
     // MARK: - Routing
     func routeToTabBarController() {

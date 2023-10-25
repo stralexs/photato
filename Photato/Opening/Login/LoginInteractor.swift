@@ -15,14 +15,14 @@ protocol LoginBusinessLogic {
     func downloadLocations(request: Login.DownloadLocations.Request)
 }
 
-protocol LoginDataStore {}
-
-final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
+final class LoginInteractor: LoginBusinessLogic {
+    //MARK: - Properties
     var presenter: LoginPresentationLogic?
     private let firebaseManager: FirebaseAuthenticationLogic
     private let keychainManager: KeychainManagerLogic
     private let logger = Logger()
     
+    //MARK: - Methods
     func validateEmailTextField(request: Login.ValidateEmailTextField.Request) {
         let trimmedEmail = request.emailTextFieldText?.trimmingCharacters(in: .whitespacesAndNewlines)
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -97,6 +97,7 @@ final class LoginInteractor: LoginBusinessLogic, LoginDataStore {
         }
     }
     
+    //MARK: - Initialization
     init(firebaseManager: FirebaseAuthenticationLogic, keychainManager: KeychainManagerLogic) {
         self.firebaseManager = firebaseManager
         self.keychainManager = keychainManager

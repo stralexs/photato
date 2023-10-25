@@ -14,10 +14,10 @@ protocol SettingsDisplayLogic: AnyObject {
     func displayUserData(viewModel: Settings.GetUserData.ViewModel)
     func displayNameTextFieldValidation(viewModel: Settings.ValidateNameTextField.ViewModel)
     func displayApplyChangesResult(viewModel: Settings.ApplyChanges.ViewModel)
-    func leaveAccount(viewModel: Settings.LeaveAccount.ViewModel)
+    func displayLeaveAccount(viewModel: Settings.LeaveAccount.ViewModel)
 }
 
-class SettingsViewController: UIViewController, SettingsDisplayLogic {
+final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     // MARK: - Properties
     private var interactor: SettingsBusinessLogic?
     private var router: (NSObjectProtocol & SettingsRoutingLogic)?
@@ -107,12 +107,8 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         getUserData()
+        tuneConstraints()
         tuneUI()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tuneBottomLinesOfTextField()
     }
     
     // MARK: - Initialization
@@ -127,8 +123,102 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     }
     
     // MARK: - Methods
+    @objc private func editProfilePicture() {
+        present(photoPicker, animated: true)
+    }
     
-    // MARK: GetUserData Use case
+    private func tuneConstraints() {
+        view.addSubview(profilPictureImageViewContainerView)
+        profilPictureImageViewContainerView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
+            make.left.equalToSuperview().offset(30)
+            make.right.equalToSuperview().inset(30)
+            make.height.equalTo(120)
+        }
+        profilPictureImageViewContainerView.addSubview(profilPictureImageView)
+        
+        profilPictureImageView.snp.makeConstraints { make in
+            make.centerX.centerY.equalToSuperview()
+            make.height.width.equalTo(120)
+        }
+        
+        profilPictureImageViewContainerView.addSubview(editProfilePictureButton)
+        editProfilePictureButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.centerX.equalToSuperview().offset(40)
+            make.height.width.equalTo(30)
+        }
+        
+        view.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.top.equalTo(profilPictureImageViewContainerView.snp.bottom).offset(10)
+            make.left.equalToSuperview().offset(30)
+            make.right.equalToSuperview().inset(30)
+        }
+        stackView.spacing = 10
+        stackView.addArrangedSubview(nameTextField)
+        stackView.addArrangedSubview(nameTextFieldErrorLabel)
+        
+        nameTextField.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        
+        nameTextFieldErrorLabel.snp.makeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(15)
+        }
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.snp.makeConstraints { make in
+            make.top.equalTo(stackView.snp.bottom)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(stackView.snp.width)
+            make.height.equalTo(20)
+        }
+        
+        view.addSubview(applyButton)
+        applyButton.snp.makeConstraints { make in
+            make.top.equalTo(activityIndicator.snp.bottom).offset(20)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(stackView.snp.width)
+            make.height.equalTo(40)
+        }
+    }
+    
+    private func tuneUI() {
+        title = "Settings"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .tortilla
+        navigationItem.rightBarButtonItem = rightBarButtomItem
+        view.backgroundColor = .lightTortilla
+        
+        profilPictureImageView.layer.cornerRadius = 60
+        editProfilePictureButton.layer.cornerRadius = 15
+        applyButton.layer.cornerRadius = 5
+        
+        nameTextField.delegate = self
+        photoPicker.delegate = self
+        
+        nameTextField.layoutIfNeeded()
+        nameTextField.addBottomLineToTextField()
+    }
+    
+    private func configure() {
+        let viewController = self
+        let interactor = SettingsInteractor(firbaseManager: FirebaseManager())
+        let presenter = SettingsPresenter()
+        let router = SettingsRouter()
+        viewController.interactor = interactor
+        viewController.router = router
+        interactor.presenter = presenter
+        presenter.viewController = viewController
+        router.viewController = viewController
+    }
+}
+
+    // MARK: - GetUserData Use case
+extension SettingsViewController {
     private func getUserData() {
         let request = Settings.GetUserData.Request()
         interactor?.getUserData(request: request)
@@ -138,8 +228,10 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
         nameTextField.text = viewModel.userData.name
         profilPictureImageView.image = UIImage(data: viewModel.userData.profilePicture)
     }
-    
-    // MARK: ValidateNameTextField Use case
+}
+
+    // MARK: - ValidateNameTextField Use case
+extension SettingsViewController {
     private func validateNameTextField(_ text: String?) {
         let request = Settings.ValidateNameTextField.Request(nameTextFieldText: text)
         interactor?.validateNameTextField(request: request)
@@ -148,8 +240,10 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
     func displayNameTextFieldValidation(viewModel: Settings.ValidateNameTextField.ViewModel) {
         nameTextFieldErrorLabel.text = viewModel.nameTextFieldValidationDescription
     }
-    
-    // MARK: ApplyChanges Use case
+}
+
+    // MARK: - ApplyChanges Use case
+extension SettingsViewController {
     @objc private func applyChanges() {
         guard nameTextFieldErrorLabel.text == nil,
               let name = nameTextField.text,
@@ -181,18 +275,10 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
             present(alert, animated: true)
         }
     }
-    
-    // MARK: LeaveAccount Use case
-    private func leaveAccount() {
-        let request = Settings.LeaveAccount.Request()
-        interactor?.leaveAccount(request: request)
-    }
-    
-    func leaveAccount(viewModel: Settings.LeaveAccount.ViewModel) {
-        router?.routeToUserValidation()
-    }
-    
-    // MARK: Other methods
+}
+
+    // MARK: - LeaveAccount Use case
+extension SettingsViewController {
     @objc private func exitAccount() {
         let alert = UIAlertController(title: "Are you sure want to leave your account?", message: nil, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -205,100 +291,17 @@ class SettingsViewController: UIViewController, SettingsDisplayLogic {
         present(alert, animated: true)
     }
     
-    @objc private func editProfilePicture() {
-        present(photoPicker, animated: true)
+    private func leaveAccount() {
+        let request = Settings.LeaveAccount.Request()
+        interactor?.leaveAccount(request: request)
     }
     
-    private func tuneUI() {
-        title = "Settings"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .tortilla
-        navigationItem.rightBarButtonItem = rightBarButtomItem
-        view.backgroundColor = .lightTortilla
-        
-        view.addSubview(profilPictureImageViewContainerView)
-        profilPictureImageViewContainerView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().inset(30)
-            make.height.equalTo(120)
-        }
-        profilPictureImageViewContainerView.addSubview(profilPictureImageView)
-        
-        profilPictureImageView.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-            make.height.width.equalTo(120)
-        }
-        profilPictureImageView.layer.cornerRadius = 60
-        
-        profilPictureImageViewContainerView.addSubview(editProfilePictureButton)
-        editProfilePictureButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.centerX.equalToSuperview().offset(40)
-            make.height.width.equalTo(30)
-        }
-        editProfilePictureButton.layer.cornerRadius = 15
-        
-        view.addSubview(stackView)
-        stackView.snp.makeConstraints { make in
-            make.top.equalTo(profilPictureImageViewContainerView.snp.bottom).offset(10)
-            make.left.equalToSuperview().offset(30)
-            make.right.equalToSuperview().inset(30)
-        }
-        stackView.spacing = 10
-        stackView.addArrangedSubview(nameTextField)
-        stackView.addArrangedSubview(nameTextFieldErrorLabel)
-        
-        nameTextField.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalTo(40)
-        }
-        nameTextField.delegate = self
-        
-        nameTextFieldErrorLabel.snp.makeConstraints { make in
-            make.width.equalToSuperview()
-            make.height.equalTo(15)
-        }
-        
-        view.addSubview(activityIndicator)
-        activityIndicator.snp.makeConstraints { make in
-            make.top.equalTo(stackView.snp.bottom)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(stackView.snp.width)
-            make.height.equalTo(20)
-        }
-        
-        view.addSubview(applyButton)
-        applyButton.snp.makeConstraints { make in
-            make.top.equalTo(activityIndicator.snp.bottom).offset(20)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(stackView.snp.width)
-            make.height.equalTo(40)
-        }
-        applyButton.layer.cornerRadius = 5
-        
-        photoPicker.delegate = self
-    }
-    
-    private func tuneBottomLinesOfTextField() {
-        nameTextField.layoutIfNeeded()
-        nameTextField.addBottomLineToTextField()
-    }
-    
-    private func configure() {
-        let viewController = self
-        let interactor = SettingsInteractor(firbaseManager: FirebaseManager())
-        let presenter = SettingsPresenter()
-        let router = SettingsRouter()
-        viewController.interactor = interactor
-        viewController.router = router
-        interactor.presenter = presenter
-        presenter.viewController = viewController
-        router.viewController = viewController
+    func displayLeaveAccount(viewModel: Settings.LeaveAccount.ViewModel) {
+        router?.routeToUserValidation()
     }
 }
 
-// MARK: - PHPickerViewControllerDelegate
+    // MARK: - PHPickerViewControllerDelegate
 extension SettingsViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
@@ -317,7 +320,7 @@ extension SettingsViewController: PHPickerViewControllerDelegate {
     }
 }
 
-// MARK: - UITextFieldDelegate
+    // MARK: - UITextFieldDelegate
 extension SettingsViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         validateNameTextField(textField.text)

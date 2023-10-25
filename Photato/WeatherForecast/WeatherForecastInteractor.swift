@@ -16,11 +16,13 @@ protocol WeatherForecastDataStore {
     var location: Location? { get set }
 }
 
-class WeatherForecastInteractor: WeatherForecastBusinessLogic, WeatherForecastDataStore {
+final class WeatherForecastInteractor: WeatherForecastBusinessLogic, WeatherForecastDataStore {
+    // MARK: - Properties
     var presenter: WeatherForecastPresentationLogic?
     var location: Location?
     private let weatherManager: WeatherManagerLogic
         
+    // MARK: - Methods
     func getLocationName(request: WeatherForecast.GetLocationName.Request) {
         guard let location = location else { return }
         let response = WeatherForecast.GetLocationName.Response(locationName: location.name)
@@ -43,6 +45,7 @@ class WeatherForecastInteractor: WeatherForecastBusinessLogic, WeatherForecastDa
         }
     }
     
+    // MARK: - Initialization
     init(weatherManager: WeatherManagerLogic) {
         self.weatherManager = weatherManager
     }

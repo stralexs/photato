@@ -17,7 +17,7 @@ protocol LoginDisplayLogic: AnyObject {
 final class LoginViewController: UIViewController, LoginDisplayLogic {
     // MARK: - Properties    
     private var interactor: LoginBusinessLogic?
-    private var router: (NSObjectProtocol & LoginRoutingLogic & LoginDataPassing)?
+    private var router: (NSObjectProtocol & LoginRoutingLogic)?
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -86,12 +86,8 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
     // MARK: - View Controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        tuneConstraints()
         tuneUI()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tuneBottomLinesOfTextFields()
     }
     
     // MARK: - Initialization
@@ -106,86 +102,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
     }
     
     // MARK: - Methods
-    
-    // MARK: Login Use case
-    @objc private func login() {
-        guard emailTextFieldErrorLabel.text == nil,
-              passwordTextFieldErrorLabel.text == nil,
-              let email = emailTextField.text,
-              let password = passwordTextField.text else { return }
-        
-        activityIndicator.startAnimating()
-        let request = Login.SignIn.Request(email: email, password: password)
-        interactor?.signIn(request: request)
-    }
-    
-    func displaySignInResult(viewModel: Login.SignIn.ViewModel) {
-        if viewModel.signInErrorDescription == nil {
-            downloadLocations()
-        } else {
-            guard let errorDescription = viewModel.signInErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(cancelAction)
-            present(alert, animated: true)
-        }
-    }
-    
-    // MARK: DownloadLocations Use case
-    private func downloadLocations() {
-        let request = Login.DownloadLocations.Request()
-        interactor?.downloadLocations(request: request)
-    }
-    
-    func displayLocationsDownloadResult(viewModel: Login.DownloadLocations.ViewModel) {
-        if viewModel.downloadErrorDescription == nil {
-            router?.routeToTabBarController()
-        } else {
-            guard let errorDescription = viewModel.downloadErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
-            
-            activityIndicator.stopAnimating()
-        }
-    }
-    
-    // MARK: ValidateEmailTextField Use case
-    func validateEmailTextField(_ text: String?) {
-        let request = Login.ValidateEmailTextField.Request(emailTextFieldText: text)
-        interactor?.validateEmailTextField(request: request)
-    }
-    
-    func displayEmailTextFieldValidation(viewModel: Login.ValidateEmailTextField.ViewModel) {
-        emailTextFieldErrorLabel.text = viewModel.emailTextFieldValidationDescription
-    }
-    
-    // MARK: ValidatePasswordTextField Use case
-    func validatePasswordTextField(_ text: String?) {
-        let request = Login.ValidatePasswordTextField.Request(passwordTextFieldText: text)
-        interactor?.validatePasswordTextField(request: request)
-    }
-    
-    func displayPasswordTextFieldValidation(viewModel: Login.ValidatePasswordTextField.ViewModel) {
-        passwordTextFieldErrorLabel.text = viewModel.passwordTextFieldValidationDescription
-    }
-    
-    // MARK: Other methods
-    private func clearErrorMessage(_ textFieldTag: Int) {
-        switch textFieldTag {
-        case 0:
-            emailTextFieldErrorLabel.text = nil
-        case 1:
-            passwordTextFieldErrorLabel.text = nil
-        default:
-            break
-        }
-    }
-    
-    private func tuneUI() {
+    private func tuneConstraints() {
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(20)
@@ -210,7 +127,6 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
             make.width.equalToSuperview()
             make.height.equalTo(40)
         }
-        emailTextField.delegate = self
         
         emailTextFieldErrorLabel.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -221,7 +137,6 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
             make.width.equalToSuperview()
             make.height.equalTo(40)
         }
-        passwordTextField.delegate = self
         
         passwordTextFieldErrorLabel.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -232,7 +147,6 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
             make.width.equalToSuperview()
             make.height.equalTo(40)
         }
-        loginButton.layer.cornerRadius = 5
         
         activityIndicator.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -240,7 +154,12 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         }
     }
     
-    private func tuneBottomLinesOfTextFields() {
+    private func tuneUI() {
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        
+        loginButton.layer.cornerRadius = 5
+        
         emailTextField.layoutIfNeeded()
         emailTextField.addBottomLineToTextField()
         passwordTextField.layoutIfNeeded()
@@ -257,10 +176,85 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         interactor.presenter = presenter
         presenter.viewController = viewController
         router.viewController = viewController
-        router.dataStore = interactor
     }
 }
 
+    // MARK: - Login Use case
+extension LoginViewController {
+    @objc private func login() {
+        guard emailTextFieldErrorLabel.text == nil,
+              passwordTextFieldErrorLabel.text == nil,
+              let email = emailTextField.text,
+              let password = passwordTextField.text else { return }
+        
+        activityIndicator.startAnimating()
+        let request = Login.SignIn.Request(email: email, password: password)
+        interactor?.signIn(request: request)
+    }
+    
+    func displaySignInResult(viewModel: Login.SignIn.ViewModel) {
+        if viewModel.signInErrorDescription == nil {
+            downloadLocations()
+        } else {
+            guard let errorDescription = viewModel.signInErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(cancelAction)
+            present(alert, animated: true)
+        }
+    }
+}
+
+    // MARK: - ValidateEmailTextField Use case
+extension LoginViewController {
+    func validateEmailTextField(_ text: String?) {
+        let request = Login.ValidateEmailTextField.Request(emailTextFieldText: text)
+        interactor?.validateEmailTextField(request: request)
+    }
+    
+    func displayEmailTextFieldValidation(viewModel: Login.ValidateEmailTextField.ViewModel) {
+        emailTextFieldErrorLabel.text = viewModel.emailTextFieldValidationDescription
+    }
+}
+
+
+    // MARK: - DownloadLocations Use case
+extension LoginViewController {
+    private func downloadLocations() {
+        let request = Login.DownloadLocations.Request()
+        interactor?.downloadLocations(request: request)
+    }
+    
+    func displayLocationsDownloadResult(viewModel: Login.DownloadLocations.ViewModel) {
+        if viewModel.downloadErrorDescription == nil {
+            router?.routeToTabBarController()
+        } else {
+            guard let errorDescription = viewModel.downloadErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+            
+            activityIndicator.stopAnimating()
+        }
+    }
+}
+
+    // MARK: - ValidatePasswordTextField Use case
+extension LoginViewController {
+    func validatePasswordTextField(_ text: String?) {
+        let request = Login.ValidatePasswordTextField.Request(passwordTextFieldText: text)
+        interactor?.validatePasswordTextField(request: request)
+    }
+    
+    func displayPasswordTextFieldValidation(viewModel: Login.ValidatePasswordTextField.ViewModel) {
+        passwordTextFieldErrorLabel.text = viewModel.passwordTextFieldValidationDescription
+    }
+}
+
+    // MARK: - UITextFieldDelegate
 extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField.tag {
@@ -278,5 +272,16 @@ extension LoginViewController: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         clearErrorMessage(textField.tag)
         return true
+    }
+    
+    private func clearErrorMessage(_ textFieldTag: Int) {
+        switch textFieldTag {
+        case 0:
+            emailTextFieldErrorLabel.text = nil
+        case 1:
+            passwordTextFieldErrorLabel.text = nil
+        default:
+            break
+        }
     }
 }

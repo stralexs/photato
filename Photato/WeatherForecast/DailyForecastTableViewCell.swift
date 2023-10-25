@@ -7,7 +7,7 @@
 
 import UIKit
 
-class DailyForecastTableViewCell: UITableViewCell {
+final class DailyForecastTableViewCell: UITableViewCell {
     // MARK: - Properties
     static let identifier = "DailyForecastTableViewCell"
     
@@ -71,6 +71,7 @@ class DailyForecastTableViewCell: UITableViewCell {
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        tuneConstraints()
         tuneUI()
     }
     
@@ -90,9 +91,7 @@ class DailyForecastTableViewCell: UITableViewCell {
         weatherConditionImageView.image = UIImage(named: "\(weatherParameters.icon)")
     }
     
-    private func tuneUI() {
-        contentView.backgroundColor = .lightTortilla
-        
+    private func tuneConstraints() {
         contentView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.left.top.equalToSuperview().offset(10)
@@ -141,5 +140,9 @@ class DailyForecastTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().offset(5)
         }
+    }
+    
+    private func tuneUI() {
+        contentView.backgroundColor = .lightTortilla
     }
 }

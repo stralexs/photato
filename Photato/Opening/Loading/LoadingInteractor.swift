@@ -13,14 +13,14 @@ protocol LoadingBusinessLogic {
     func downloadLocations(request: Loading.DownloadLocations.Request)
 }
 
-protocol LoadingDataStore {}
-
-class LoadingInteractor: LoadingBusinessLogic, LoadingDataStore {
+class LoadingInteractor: LoadingBusinessLogic {
+    //MARK: - Properties
     var presenter: LoadingPresentationLogic?
     private let keychainManager: KeychainManagerLogic
     private let firebaseManager: FirebaseAuthenticationLogic
     private let logger = Logger()
     
+    //MARK: - Methods
     func signInUser(request: Loading.SignInUser.Request) {
         guard let userEmail = UserDefaults.standard.string(forKey: "userEmail") else { return }
         
@@ -68,6 +68,7 @@ class LoadingInteractor: LoadingBusinessLogic, LoadingDataStore {
         }
     }
     
+    //MARK: - Initialization
     init(keychainManager: KeychainManagerLogic, firebaseManager: FirebaseAuthenticationLogic) {
         self.keychainManager = keychainManager
         self.firebaseManager = firebaseManager

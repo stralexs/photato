@@ -12,7 +12,7 @@ import UIKit
     func routeToProfile(navigationController: UINavigationController?)
 }
 
-class SettingsRouter: NSObject, SettingsRoutingLogic {
+final class SettingsRouter: NSObject, SettingsRoutingLogic {
     weak var viewController: SettingsViewController?
     
     // MARK: - Routing

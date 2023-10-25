@@ -21,7 +21,7 @@ protocol SignUpDisplayLogic: AnyObject {
 final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     // MARK: - Properties
     private var interactor: SignUpBusinessLogic?
-    private var router: (NSObjectProtocol & SignUpRoutingLogic & SignUpDataPassing)?
+    private var router: (NSObjectProtocol & SignUpRoutingLogic)?
     private let logger = Logger()
     
     private let profilPictureImageViewContainerView: UIView = {
@@ -180,15 +180,11 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
         return dismissButton
     }()
     
-    // MARK: - View Controller Lifecycle
+    // MARK: - View Controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        tuneConstraints()
         tuneUI()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        tuneBottomLinesOfTextFields()
     }
     
     // MARK: - Initialization
@@ -203,90 +199,6 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
     }
     
     // MARK: - Methods
-    
-    // MARK: ValidateNameTextField Use case
-    private func validateNameTextField(_ text: String?) {
-        let request = SignUp.ValidateNameTextField.Request(nameTextFieldText: text)
-        interactor?.validateNameTextField(request: request)
-    }
-    
-    func displayNameTextFieldValidation(viewModel: SignUp.ValidateNameTextField.ViewModel) {
-        nameTextFieldErrorLabel.text = viewModel.nameTextFieldValidationDescription
-    }
-    
-    // MARK: ValidateEmailTextField Use case
-    private func validateEmailTextField(_ text: String?) {
-        let request = SignUp.ValidateEmailTextField.Request(emailTextFieldText: text)
-        interactor?.validateEmailTextField(request: request)
-    }
-    
-    func displayEmailTextFieldValidation(viewModel: SignUp.ValidateEmailTextField.ViewModel) {
-        emailTextFieldErrorLabel.text = viewModel.emailTextFieldValidationDescription
-    }
-    
-    // MARK: ValidatePasswordTextField Use case
-    private func validatePasswordTextField(_ text: String?) {
-        let request = SignUp.ValidatePasswordTextField.Request(passwordTextFieldText: text)
-        interactor?.validatePasswordTextField(request: request)
-    }
-    
-    func displayPasswordTextFieldValidation(viewModel: SignUp.ValidatePasswordTextField.ViewModel) {
-        passwordTextFieldErrorLabel.text = viewModel.passwordTextFieldValidationDescription
-    }
-    
-    // MARK: SignUp Use case
-    @objc private func signUp() {
-        guard nameTextFieldErrorLabel.text == nil,
-              emailTextFieldErrorLabel.text == nil,
-              passwordTextFieldErrorLabel.text == nil,
-              let name = nameTextField.text,
-              let email = emailTextField.text,
-              let password = passwordTextField.text,
-              let image = profilPictureImageView.image else { return }
-        
-        activityIndicator.startAnimating()
-        let request = SignUp.SignUp.Request(name: name,
-                                            email: email,
-                                            password: password,
-                                            profilePicture: image)
-        interactor?.signUp(request: request)
-    }
-    
-    func displaySignUpResult(viewModel: SignUp.SignUp.ViewModel) {
-        if viewModel.signUpErrorDescription == nil {
-            downloadLocations()
-        } else {
-            guard let errorDescription = viewModel.signUpErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(cancelAction)
-            present(alert, animated: true)
-        }
-    }
-    
-    // MARK: DownloadLocations Use case
-    private func downloadLocations() {
-        let request = SignUp.DownloadLocations.Request()
-        interactor?.downloadLocations(request: request)
-    }
-    
-    func displayLocationsDownloadResult(viewModel: SignUp.DownloadLocations.ViewModel) {
-        if viewModel.downloadErrorDescription == nil {
-            router?.routeToTabBarController()
-        } else {
-            guard let errorDescription = viewModel.downloadErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
-            
-            activityIndicator.stopAnimating()
-        }
-    }
-    
-    // MARK: Other methods
     @objc private func addProfilePicture() {
         present(photoPicker, animated: true)
     }
@@ -303,20 +215,7 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
         }
     }
     
-    private func clearErrorMessage(_ textFieldTag: Int) {
-        switch textFieldTag {
-        case 0:
-            nameTextFieldErrorLabel.text = nil
-        case 1:
-            emailTextFieldErrorLabel.text = nil
-        case 2:
-            passwordTextFieldErrorLabel.text = nil
-        default:
-            break
-        }
-    }
-    
-    private func tuneUI() {
+    private func tuneConstraints() {
         view.addSubview(profilPictureImageViewContainerView)
         profilPictureImageViewContainerView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
@@ -330,7 +229,6 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
             make.centerX.centerY.equalToSuperview()
             make.height.width.equalTo(120)
         }
-        profilPictureImageView.layer.cornerRadius = 60
         
         profilPictureImageViewContainerView.addSubview(addProfilePictureButton)
         addProfilePictureButton.snp.makeConstraints { make in
@@ -338,7 +236,6 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
             make.centerX.equalToSuperview().offset(40)
             make.height.width.equalTo(30)
         }
-        addProfilePictureButton.layer.cornerRadius = 15
         
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -358,7 +255,6 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
             make.width.equalToSuperview()
             make.height.equalTo(40)
         }
-        nameTextField.delegate = self
         
         nameTextFieldErrorLabel.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -369,7 +265,6 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
             make.width.equalToSuperview()
             make.height.equalTo(40)
         }
-        emailTextField.delegate = self
         
         emailTextFieldErrorLabel.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -380,7 +275,6 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
             make.width.equalToSuperview()
             make.height.equalTo(40)
         }
-        passwordTextField.delegate = self
         
         passwordTextFieldErrorLabel.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -402,7 +296,6 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
             make.width.equalTo(stackView.snp.width)
             make.height.equalTo(40)
         }
-        signUpButton.layer.cornerRadius = 5
         
         view.addSubview(signUpClarificationPresentButton)
         signUpClarificationPresentButton.snp.makeConstraints { make in
@@ -432,11 +325,18 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
             make.top.equalToSuperview().offset(15)
             make.right.equalToSuperview().inset(15)
         }
-        
-        photoPicker.delegate = self
     }
     
-    private func tuneBottomLinesOfTextFields() {
+    private func tuneUI() {
+        profilPictureImageView.layer.cornerRadius = 60
+        addProfilePictureButton.layer.cornerRadius = 15
+        signUpButton.layer.cornerRadius = 5
+
+        nameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
+        photoPicker.delegate = self
+        
         nameTextField.layoutIfNeeded()
         nameTextField.addBottomLineToTextField()
         emailTextField.layoutIfNeeded()
@@ -455,7 +355,99 @@ final class SignUpViewController: UIViewController, SignUpDisplayLogic {
         interactor.presenter = presenter
         presenter.viewController = viewController
         router.viewController = viewController
-        router.dataStore = interactor
+    }
+}
+
+
+    // MARK: - ValidateNameTextField Use case
+extension SignUpViewController {
+    private func validateNameTextField(_ text: String?) {
+        let request = SignUp.ValidateNameTextField.Request(nameTextFieldText: text)
+        interactor?.validateNameTextField(request: request)
+    }
+    
+    func displayNameTextFieldValidation(viewModel: SignUp.ValidateNameTextField.ViewModel) {
+        nameTextFieldErrorLabel.text = viewModel.nameTextFieldValidationDescription
+    }
+}
+
+    // MARK: - ValidateEmailTextField Use case
+extension SignUpViewController {
+    private func validateEmailTextField(_ text: String?) {
+        let request = SignUp.ValidateEmailTextField.Request(emailTextFieldText: text)
+        interactor?.validateEmailTextField(request: request)
+    }
+    
+    func displayEmailTextFieldValidation(viewModel: SignUp.ValidateEmailTextField.ViewModel) {
+        emailTextFieldErrorLabel.text = viewModel.emailTextFieldValidationDescription
+    }
+}
+
+    // MARK: - ValidatePasswordTextField Use case
+extension SignUpViewController {
+    private func validatePasswordTextField(_ text: String?) {
+        let request = SignUp.ValidatePasswordTextField.Request(passwordTextFieldText: text)
+        interactor?.validatePasswordTextField(request: request)
+    }
+    
+    func displayPasswordTextFieldValidation(viewModel: SignUp.ValidatePasswordTextField.ViewModel) {
+        passwordTextFieldErrorLabel.text = viewModel.passwordTextFieldValidationDescription
+    }
+}
+
+    // MARK: - SignUp Use case
+extension SignUpViewController {
+    @objc private func signUp() {
+        guard nameTextFieldErrorLabel.text == nil,
+              emailTextFieldErrorLabel.text == nil,
+              passwordTextFieldErrorLabel.text == nil,
+              let name = nameTextField.text,
+              let email = emailTextField.text,
+              let password = passwordTextField.text,
+              let image = profilPictureImageView.image else { return }
+        
+        activityIndicator.startAnimating()
+        let request = SignUp.SignUp.Request(name: name,
+                                            email: email,
+                                            password: password,
+                                            profilePicture: image)
+        interactor?.signUp(request: request)
+    }
+    
+    func displaySignUpResult(viewModel: SignUp.SignUp.ViewModel) {
+        if viewModel.signUpErrorDescription == nil {
+            downloadLocations()
+        } else {
+            guard let errorDescription = viewModel.signUpErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(cancelAction)
+            present(alert, animated: true)
+        }
+    }
+}
+
+    // MARK: - DownloadLocations Use case
+extension SignUpViewController {
+    private func downloadLocations() {
+        let request = SignUp.DownloadLocations.Request()
+        interactor?.downloadLocations(request: request)
+    }
+    
+    func displayLocationsDownloadResult(viewModel: SignUp.DownloadLocations.ViewModel) {
+        if viewModel.downloadErrorDescription == nil {
+            router?.routeToTabBarController()
+        } else {
+            guard let errorDescription = viewModel.downloadErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+            
+            activityIndicator.stopAnimating()
+        }
     }
 }
 
@@ -498,5 +490,18 @@ extension SignUpViewController: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         clearErrorMessage(textField.tag)
         return true
+    }
+    
+    private func clearErrorMessage(_ textFieldTag: Int) {
+        switch textFieldTag {
+        case 0:
+            nameTextFieldErrorLabel.text = nil
+        case 1:
+            emailTextFieldErrorLabel.text = nil
+        case 2:
+            passwordTextFieldErrorLabel.text = nil
+        default:
+            break
+        }
     }
 }

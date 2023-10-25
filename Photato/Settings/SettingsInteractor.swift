@@ -14,10 +14,12 @@ protocol SettingsBusinessLogic {
     func leaveAccount(request: Settings.LeaveAccount.Request)
 }
 
-class SettingsInteractor: SettingsBusinessLogic {
+final class SettingsInteractor: SettingsBusinessLogic {
+    //MARK: - Properties
     var presenter: SettingsPresentationLogic?
     private let firebaseManager: FirebaseUserLogic
     
+    //MARK: - Methods
     func getUserData(request: Settings.GetUserData.Request) {
         let user = UserManager.shared.user
         
@@ -84,6 +86,7 @@ class SettingsInteractor: SettingsBusinessLogic {
         presenter?.presentLeaveAccount(response: response)
     }
     
+    //MARK: - Initialization
     init(firbaseManager: FirebaseUserLogic) {
         self.firebaseManager = firbaseManager
     }

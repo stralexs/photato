@@ -14,8 +14,8 @@ protocol ProfileDisplayLogic: AnyObject {
 
 final class ProfileViewController: UIViewController, ProfileDisplayLogic {
     // MARK: - Properties
-    var interactor: ProfileBusinessLogic?
-    var router: (NSObjectProtocol & ProfileRoutingLogic & ProfileDataPassing)?
+    private var interactor: ProfileBusinessLogic?
+    private var router: (NSObjectProtocol & ProfileRoutingLogic & ProfileDataPassing)?
     
     private var locations = [Location]()
     
@@ -63,7 +63,6 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         userNameLabel.textColor = .tortilla
         userNameLabel.textAlignment = .center
         userNameLabel.font = .systemFont(ofSize: 36, weight: .heavy)
-        userNameLabel.text = "Username"
         userNameLabel.adjustsFontSizeToFitWidth = true
         return userNameLabel
     }()
@@ -97,10 +96,11 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         return tableView
     }()
     
-    // MARK: - View Controller Lifecycle
+    // MARK: - View Controller lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        tuneConstraints()
         tuneUI()
     }
     
@@ -108,57 +108,30 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
         super.viewWillAppear(animated)
         getUserFavoriteLocations()
         fetchUserData()
-        navigationController?.navigationBar.isHidden = true
-        navigationController?.navigationBar.isTranslucent = true
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
+        setNavigationBarAppearance()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.navigationBar.isHidden = false
-    }
-
-    // MARK: - Methods
-
-    // MARK: GetUserFavouriteLocations Use case
-    private func getUserFavoriteLocations() {
-        let request = Profile.GetUserFavouriteLocations.Request()
-        interactor?.getUserFavouriteLocations(request: request)
+        discardNavigationBarAppearance()
     }
     
-    func displayUserFavouriteLocations(viewModel: Profile.GetUserFavouriteLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
-    }
-    
-    // MARK: FetchUserData Use case
-    private func fetchUserData() {
-        let request = Profile.FetchUserData.Request()
-        interactor?.fetchUserData(request: request)
-    }
-    
-    func displayUserData(viewModel: Profile.FetchUserData.ViewModel) {
-        let profilePicture = viewModel.image
-        let name = viewModel.name
-        
-        profileImageView.image = profilePicture
-        userNameLabel.text = name
-    }
-    
-    // MARK: Other methods
+    // MARK: - Routing
     @objc private func routeToSettings() {
         router?.routeToSettings()
     }
-    
-    private func tuneUI() {
-        view.backgroundColor = .lightTortilla
 
-        navigationItem.backButtonTitle = "Profile"
-        
+    // MARK: - Methods
+    private func setNavigationBarAppearance() {
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isTranslucent = true
+    }
+    
+    private func discardNavigationBarAppearance() {
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    private func tuneConstraints() {
         view.addSubview(topContainerView)
         topContainerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -167,14 +140,6 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
             topContainerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             topContainerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25)
         ])
-        
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [UIColor.tortilla.cgColor, UIColor.white.cgColor]
-        gradientLayer.locations = [0.0, 1.0]
-        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
-        gradientLayer.endPoint = CGPoint(x: 0.0, y: 0.25)
-        gradientLayer.frame = view.frame
-        view.layer.insertSublayer(gradientLayer, at: 0)
         
         topContainerView.addSubview(topStackView)
         topStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -251,8 +216,25 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
             tableView.trailingAnchor.constraint(equalTo: bottomStackView.trailingAnchor),
             tableView.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor, multiplier: 0.9)
         ])
+    }
+    
+    private func tuneUI() {
+        view.backgroundColor = .lightTortilla
+        navigationItem.backButtonTitle = "Profile"
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [UIColor.tortilla.cgColor, UIColor.white.cgColor]
+        gradientLayer.locations = [0.0, 1.0]
+        gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.0, y: 0.25)
+        gradientLayer.frame = view.frame
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        
         tableView.delegate = self
         tableView.dataSource = self
+        
+        profileImageView.layoutIfNeeded()
+        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
     }
     
     private func configure() {
@@ -269,7 +251,36 @@ final class ProfileViewController: UIViewController, ProfileDisplayLogic {
     }
 }
 
-// MARK: - UITableViewDataSource
+    // MARK: - GetUserFavouriteLocations Use case
+extension ProfileViewController {
+    private func getUserFavoriteLocations() {
+        let request = Profile.GetUserFavouriteLocations.Request()
+        interactor?.getUserFavouriteLocations(request: request)
+    }
+    
+    func displayUserFavouriteLocations(viewModel: Profile.GetUserFavouriteLocations.ViewModel) {
+        locations = viewModel.locations
+        tableView.reloadData()
+    }
+}
+
+    // MARK: - FetchUserData Use case
+extension ProfileViewController {
+    private func fetchUserData() {
+        let request = Profile.FetchUserData.Request()
+        interactor?.fetchUserData(request: request)
+    }
+    
+    func displayUserData(viewModel: Profile.FetchUserData.ViewModel) {
+        let profilePicture = viewModel.image
+        let name = viewModel.name
+        
+        profileImageView.image = profilePicture
+        userNameLabel.text = name
+    }
+}
+
+    // MARK: - UITableViewDataSource
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return locations.count
@@ -283,7 +294,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
 }
 
-// MARK: -  UITableViewDelegate
+    // MARK: -  UITableViewDelegate
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         router?.routeToLocationDescription()

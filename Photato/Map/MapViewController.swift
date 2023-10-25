@@ -29,12 +29,13 @@ final class MapViewController: UIViewController, MapDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        tuneConstraints()
         tuneUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isTranslucent = true
+        setNavigationBarAppearance()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -45,75 +46,21 @@ final class MapViewController: UIViewController, MapDisplayLogic {
     }
     
     // MARK: - Methods
-    
-    // MARK: CheckLocationServicesEnabled Use case
-    private func checkLocationServicesEnabled() {
-        let request = Map.CheckLocationServicesEnabled.Request()
-        interactor?.checkLocationServicesEnabled(request: request)
-    }
-    
-    func displayLocationServicesStatus(viewModel: Map.CheckLocationServicesEnabled.ViewModel) {
-        let isLocationServicesEnabled = viewModel.isLocationServicesEnabled
-        if isLocationServicesEnabled {
-            setupLocationManager()
-            checkAthorizationStatus()
-        } else {
-            showAlertAction(title: "Turn on Location Services to allow \"Photato\" to determine your location", message: nil)
-        }
-    }
-    
-    // MARK: SetupLocationManager Use case
-    private func setupLocationManager() {
-        let request = Map.SetupLocationManager.Request()
-        interactor?.setupLocationManager(request: request)
-    }
-    
-    // MARK: CheckAuthorizationStatus Use case
-    private func checkAthorizationStatus() {
-        let request = Map.CheckAuthorizationStatus.Request()
-        interactor?.checkAuthorizationStatus(request: request)
-    }
-    
-    func displayAuthorizationStatus(viewModel: Map.CheckAuthorizationStatus.ViewModel) {
-        guard let authorizationStatus = viewModel.locationAuthorizationStatus else { return }
-        if authorizationStatus {
-            mapView.showsUserLocation = true
-        } else {
-            showAlertAction(title: "You have blocked the use of Location Services", message: "Do you want to change this?")
-        }
-    }
-    
-    // MARK: GetLocationsAnnotations Use case
-    private func getLocationsAnnotations() {
-        let request = Map.GetLocationsAnnotations.Request()
-        interactor?.fetchLocations(request: request)
-    }
-    
-    func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel) {
-        DispatchQueue.main.async {
-            viewModel.annotations.forEach { [weak self] annotation in
-                self?.mapView.addAnnotation(annotation)
-            }
-        }
-    }
-    
-    // MARK: RefreshLocations Use case
-    private func refreshLocations() {
-        let request = Map.RefreshLocations.Request()
-        interactor?.refreshLocations(request: request)
-    }
-    
-    // MARK: Other Methods
-    private func tuneUI() {
-        navigationItem.backButtonTitle = "Map"
-        
+    private func tuneConstraints() {
         view.addSubview(mapView)
         mapView.snp.makeConstraints { make in
             make.left.right.top.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
-        
+    }
+    
+    private func tuneUI() {
+        navigationItem.backButtonTitle = "Map"
         mapView.delegate = self
+    }
+    
+    private func setNavigationBarAppearance() {
+        navigationController?.navigationBar.isTranslucent = true
     }
     
     private func showAlertAction(title: String, message: String?) {
@@ -143,6 +90,72 @@ final class MapViewController: UIViewController, MapDisplayLogic {
     }
 }
 
+    // MARK: - CheckLocationServicesEnabled Use case
+extension MapViewController {
+    private func checkLocationServicesEnabled() {
+        let request = Map.CheckLocationServicesEnabled.Request()
+        interactor?.checkLocationServicesEnabled(request: request)
+    }
+    
+    func displayLocationServicesStatus(viewModel: Map.CheckLocationServicesEnabled.ViewModel) {
+        let isLocationServicesEnabled = viewModel.isLocationServicesEnabled
+        if isLocationServicesEnabled {
+            setupLocationManager()
+            checkAthorizationStatus()
+        } else {
+            showAlertAction(title: "Turn on Location Services to allow \"Photato\" to determine your location", message: nil)
+        }
+    }
+}
+
+    // MARK: - SetupLocationManager Use case
+extension MapViewController {
+    private func setupLocationManager() {
+        let request = Map.SetupLocationManager.Request()
+        interactor?.setupLocationManager(request: request)
+    }
+}
+
+    // MARK: - CheckAuthorizationStatus Use case
+extension MapViewController {
+    private func checkAthorizationStatus() {
+        let request = Map.CheckAuthorizationStatus.Request()
+        interactor?.checkAuthorizationStatus(request: request)
+    }
+    
+    func displayAuthorizationStatus(viewModel: Map.CheckAuthorizationStatus.ViewModel) {
+        guard let authorizationStatus = viewModel.locationAuthorizationStatus else { return }
+        if authorizationStatus {
+            mapView.showsUserLocation = true
+        } else {
+            showAlertAction(title: "You have blocked the use of Location Services", message: "Do you want to change this?")
+        }
+    }
+}
+
+    // MARK: - GetLocationsAnnotations Use case
+extension MapViewController {
+    private func getLocationsAnnotations() {
+        let request = Map.GetLocationsAnnotations.Request()
+        interactor?.fetchLocations(request: request)
+    }
+    
+    func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel) {
+        DispatchQueue.main.async {
+            viewModel.annotations.forEach { [weak self] annotation in
+                self?.mapView.addAnnotation(annotation)
+            }
+        }
+    }
+}
+
+    // MARK: - RefreshLocations Use case
+extension MapViewController {
+    private func refreshLocations() {
+        let request = Map.RefreshLocations.Request()
+        interactor?.refreshLocations(request: request)
+    }
+}
 
     // MARK: - CLLocationManagerDelegate
 extension MapViewController: CLLocationManagerDelegate {

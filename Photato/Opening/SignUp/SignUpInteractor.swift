@@ -16,14 +16,14 @@ protocol SignUpBusinessLogic {
     func downloadLocations(request: SignUp.DownloadLocations.Request)
 }
 
-protocol SignUpDataStore {}
-
-final class SignUpInteractor: SignUpBusinessLogic, SignUpDataStore {
+final class SignUpInteractor: SignUpBusinessLogic {
+    //MARK: - Properties
     var presenter: SignUpPresentationLogic?
     private let firebaseManager: FirebaseAuthenticationLogic
     private let keychainManager: KeychainManagerLogic
     private let logger = Logger()
-        
+    
+    //MARK: - Methods
     func validateNameTextField(request: SignUp.ValidateNameTextField.Request) {
         let trimmedName = request.nameTextFieldText?.trimmingCharacters(in: .whitespacesAndNewlines)
         var isTextFieldTextValid: Bool = true
@@ -112,6 +112,7 @@ final class SignUpInteractor: SignUpBusinessLogic, SignUpDataStore {
         }
     }
     
+    //MARK: - Initialization
     init(firebaseManager: FirebaseAuthenticationLogic, keychainManager: KeychainManagerLogic) {
         self.firebaseManager = firebaseManager
         self.keychainManager = keychainManager

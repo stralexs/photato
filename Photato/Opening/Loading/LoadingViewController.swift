@@ -15,7 +15,7 @@ protocol LoadingDisplayLogic: AnyObject {
 class LoadingViewController: UIViewController, LoadingDisplayLogic {
     // MARK: - Properties
     private var interactor: LoadingBusinessLogic?
-    private var router: (NSObjectProtocol & LoadingRoutingLogic & LoadingDataPassing)?
+    private var router: (NSObjectProtocol & LoadingRoutingLogic)?
     
     private let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -45,6 +45,7 @@ class LoadingViewController: UIViewController, LoadingDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        tuneConstraints()
         tuneUI()
     }
     
@@ -54,55 +55,7 @@ class LoadingViewController: UIViewController, LoadingDisplayLogic {
     }
     
     // MARK: - Methods
-    
-    // MARK: SignInUser Use case
-    func signInUser() {
-        guard self.view.isHidden == false else { return }
-        let request = Loading.SignInUser.Request()
-        interactor?.signInUser(request: request)
-    }
-    
-    func displaySignInResult(viewModel: Loading.SignInUser.ViewModel) {
-        if viewModel.signInErrorDescription == nil {
-            downloadLocations()
-        } else {
-            activityIndicator.stopAnimating()
-            appIconImageView.isHidden = true
-            loadingLabel.isHidden = true
-            guard let errorDescription = viewModel.signInErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-                self?.router?.routeToUserValidation()
-            }
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
-        }
-    }
-    
-    // MARK: DownloadLocations Use case
-    private func downloadLocations() {
-        let request = Loading.DownloadLocations.Request()
-        interactor?.downloadLocations(request: request)
-    }
-    
-    func displayLocationsDownloadResult(viewModel: Loading.DownloadLocations.ViewModel) {
-        if viewModel.downloadErrorDescription == nil {
-            router?.routeToTabBarController()
-        } else {
-            guard let errorDescription = viewModel.downloadErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-                self?.router?.routeToUserValidation()
-            }
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
-        }
-    }
-    
-    // MARK: Setup
-    private func tuneUI() {
+    private func tuneConstraints() {
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.centerY.centerX.equalToSuperview()
@@ -127,6 +80,9 @@ class LoadingViewController: UIViewController, LoadingDisplayLogic {
             make.width.equalToSuperview()
             make.height.equalTo(20)
         }
+    }
+    
+    private func tuneUI() {
         activityIndicator.startAnimating()
     }
     
@@ -140,6 +96,55 @@ class LoadingViewController: UIViewController, LoadingDisplayLogic {
         interactor.presenter = presenter
         presenter.viewController = viewController
         router.viewController = viewController
-        router.dataStore = interactor
+    }
+}
+
+    // MARK: - SignInUser Use case
+extension LoadingViewController {
+    private func signInUser() {
+        guard self.view.isHidden == false else { return }
+        let request = Loading.SignInUser.Request()
+        interactor?.signInUser(request: request)
+    }
+    
+    func displaySignInResult(viewModel: Loading.SignInUser.ViewModel) {
+        if viewModel.signInErrorDescription == nil {
+            downloadLocations()
+        } else {
+            activityIndicator.stopAnimating()
+            appIconImageView.isHidden = true
+            loadingLabel.isHidden = true
+            guard let errorDescription = viewModel.signInErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
+                self?.router?.routeToUserValidation()
+            }
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        }
+    }
+}
+
+    // MARK: - DownloadLocations Use case
+extension LoadingViewController {
+    private func downloadLocations() {
+        let request = Loading.DownloadLocations.Request()
+        interactor?.downloadLocations(request: request)
+    }
+    
+    func displayLocationsDownloadResult(viewModel: Loading.DownloadLocations.ViewModel) {
+        if viewModel.downloadErrorDescription == nil {
+            router?.routeToTabBarController()
+        } else {
+            guard let errorDescription = viewModel.downloadErrorDescription else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
+                self?.router?.routeToUserValidation()
+            }
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        }
     }
 }

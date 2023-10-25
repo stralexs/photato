@@ -11,13 +11,8 @@ import UIKit
     func routeToTabBarController()
 }
 
-protocol LoginDataPassing {
-    var dataStore: LoginDataStore? { get }
-}
-
-final class LoginRouter: NSObject, LoginRoutingLogic, LoginDataPassing {
+final class LoginRouter: NSObject, LoginRoutingLogic {
     weak var viewController: LoginViewController?
-    var dataStore: LoginDataStore?
     
     func routeToTabBarController() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
