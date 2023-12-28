@@ -51,14 +51,18 @@ final class HourlyForecastCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Methods
-    func configure(with weatherParameters: HourlyWeatherParameters, and index: Int) {
+    func configure(with weatherParameters: Weather.Hourly, and index: Int) {
         if index == 0 {
             timeLabel.text = "Now"
         } else {
-            timeLabel.text = weatherParameters.hour
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH"
+            formatter.timeZone = TimeZone(identifier: "Europe/Minsk")
+            let formattedHour = formatter.string(from: Date(timeIntervalSince1970: weatherParameters.dt))
+            timeLabel.text = formattedHour
         }
         temperatureLabel.text = "\(Int(round(weatherParameters.temp)))°"
-        weatherConditionImageView.image = UIImage(named: "\(weatherParameters.icon)")
+        weatherConditionImageView.image = UIImage(named: "\(weatherParameters.weather.first!.icon)")
     }
     
     private func tuneConstraints() {

@@ -24,14 +24,14 @@ enum WeatherForecast {
         struct Request {}
         
         struct Response {
-            let weatherFetchResult: Result<Weather, WeatherError>
+            let weatherFetchResult: Result<Weather, Error>
         }
         
         struct ViewModel {
             let errorDescription: String?
             let currentWeatherDetails: (temperature: String, mainStatus: String, humidity: String, windSpeed: String)?
-            let hourlyForecast: [HourlyWeatherParameters]?
-            let dailyForecast: [DailyWeatherParameters]?
+            let hourlyForecast: [Weather.Hourly]?
+            let dailyForecast: [Weather.Daily]?
         }
     }
 }

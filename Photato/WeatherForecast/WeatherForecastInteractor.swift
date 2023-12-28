@@ -33,14 +33,15 @@ final class WeatherForecastInteractor: WeatherForecastBusinessLogic, WeatherFore
         guard let latitude = location?.coordinates.latitude,
               let longitude = location?.coordinates.longitude else { return }
         
-        weatherManager.getWeather(latittude: String(latitude), longtitude: String(longitude)) { [weak self] result in
-            switch result {
-            case .success(let weather):
+        Task {
+            do {
+                let weather = try await weatherManager.getWeather(latittude: String(latitude), longtitude: String(longitude))
                 let response = WeatherForecast.GetWeather.Response(weatherFetchResult: .success(weather))
-                self?.presenter?.presentWeather(response: response)
-            case .failure(let error):
+                self.presenter?.presentWeather(response: response)
+            }
+            catch {
                 let response = WeatherForecast.GetWeather.Response(weatherFetchResult: .failure(error))
-                self?.presenter?.presentWeather(response: response)
+                self.presenter?.presentWeather(response: response)
             }
         }
     }

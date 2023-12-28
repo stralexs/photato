@@ -17,8 +17,8 @@ final class WeatherForecastViewController: UIViewController, WeatherForecastDisp
     var interactor: WeatherForecastBusinessLogic?
     var router: (NSObjectProtocol & WeatherForecastDataPassing)?
     
-    private var hourlyWeather = [HourlyWeatherParameters]()
-    private var dailyWeather = [DailyWeatherParameters]()
+    private var hourlyWeather = [Weather.Hourly]()
+    private var dailyWeather = [Weather.Daily]()
     
     private let rootVerticalStackView: UIStackView = {
         let rootVerticalStackView = UIStackView()
@@ -345,20 +345,20 @@ extension WeatherForecastViewController {
             alert.addAction(okAction)
             present(alert, animated: true)
         } else {
-            DispatchQueue.main.async { [weak self] in
+            DispatchQueue.main.async {
                 guard let currentWeather = viewModel.currentWeatherDetails,
                       let hourlyForecast = viewModel.hourlyForecast,
                       let dailyForecast = viewModel.dailyForecast else { return }
                 
-                self?.temperatureLabel.text = currentWeather.temperature
-                self?.statusLabel.text = currentWeather.mainStatus
-                self?.humidityLabel.text = currentWeather.humidity
-                self?.windSpeedLabel.text = currentWeather.windSpeed
+                self.temperatureLabel.text = currentWeather.temperature
+                self.statusLabel.text = currentWeather.mainStatus
+                self.humidityLabel.text = currentWeather.humidity
+                self.windSpeedLabel.text = currentWeather.windSpeed
                 
-                self?.hourlyWeather = hourlyForecast
-                self?.dailyWeather = dailyForecast
-                self?.hourlyWeatherCollectionView.reloadData()
-                self?.dailyWeatherTableView.reloadData()
+                self.hourlyWeather = hourlyForecast
+                self.dailyWeather = dailyForecast
+                self.hourlyWeatherCollectionView.reloadData()
+                self.dailyWeatherTableView.reloadData()
             }
         }
     }

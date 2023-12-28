@@ -80,15 +80,20 @@ final class DailyForecastTableViewCell: UITableViewCell {
     }
     
     // MARK: - Methods
-    func configure(with weatherParameters: DailyWeatherParameters, and index: Int) {
+    func configure(with weatherParameters: Weather.Daily, and index: Int) {
         if index == 0 {
             weekdayLabel.text = "Today"
         } else {
-            weekdayLabel.text = weatherParameters.weekday
+            let formatter = DateFormatter()
+            formatter.dateFormat = "EEEE"
+            formatter.locale = Locale(identifier: "en_US")
+            formatter.timeZone = TimeZone(identifier: "Europe/Minsk")
+            let formattedWeekday = formatter.string(from: Date(timeIntervalSince1970: weatherParameters.dt))
+            weekdayLabel.text = formattedWeekday
         }
-        nightTemperatureLabel.text = "Night: \(Int(round(weatherParameters.tempNight)))°"
-        dayTemperatureLabel.text = "Day: \(Int(round(weatherParameters.tempDay)))°"
-        weatherConditionImageView.image = UIImage(named: "\(weatherParameters.icon)")
+        nightTemperatureLabel.text = "Night: \(Int(round(weatherParameters.temp.night)))°"
+        dayTemperatureLabel.text = "Day: \(Int(round(weatherParameters.temp.day)))°"
+        weatherConditionImageView.image = UIImage(named: "\(weatherParameters.weather.first!.icon)")
     }
     
     private func tuneConstraints() {

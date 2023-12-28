@@ -23,25 +23,22 @@ final class WeatherForecastPresenter: WeatherForecastPresentationLogic {
     func presentWeather(response: WeatherForecast.GetWeather.Response) {
         switch response.weatherFetchResult {
         case .success(let weather):
-            let temperature = "\(Int(round(weather.currentWeather.temp)))°"
-            let mainStatus = "\(weather.currentWeather.mainStatus)"
-            let humidity = "\(weather.currentWeather.humidity)%"
-            let windSpeed = "\(weather.currentWeather.windSpeed) m/s"
+            let temperature = "\(Int(round(weather.current.temp)))°"
+            let mainStatus = "\(weather.current.weather.first!.main)"
+            let humidity = "\(weather.current.humidity)%"
+            let windSpeed = "\(weather.current.windSpeed) m/s"
             
             let viewModel = WeatherForecast.GetWeather.ViewModel(errorDescription: nil,
                                                                  currentWeatherDetails: (temperature, mainStatus, humidity, windSpeed),
-                                                                 hourlyForecast: weather.hourlyForecast,
-                                                                 dailyForecast: weather.dailyForecast)
+                                                                 hourlyForecast: weather.hourly,
+                                                                 dailyForecast: weather.daily)
             viewController?.displayWeather(viewModel: viewModel)
-        case .failure(let error):
-            switch error {
-            case .failedToGetWeatherData:
-                let viewModel = WeatherForecast.GetWeather.ViewModel(errorDescription: "Failed to load weather data. Please try again later",
-                                                                     currentWeatherDetails: nil,
-                                                                     hourlyForecast: nil,
-                                                                     dailyForecast: nil)
-                viewController?.displayWeather(viewModel: viewModel)
-            }
+        case .failure:
+            let viewModel = WeatherForecast.GetWeather.ViewModel(errorDescription: "Failed to load weather data. Please try again later",
+                                                                 currentWeatherDetails: nil,
+                                                                 hourlyForecast: nil,
+                                                                 dailyForecast: nil)
+            viewController?.displayWeather(viewModel: viewModel)
         }
     }
 }

@@ -7,30 +7,46 @@
 
 import Foundation
 
-struct Weather {
-    var timezone: String
-    var currentWeather: CurrentWeatherParameters
-    var hourlyForecast: [HourlyWeatherParameters]
-    var dailyForecast: [DailyWeatherParameters]
-}
-
-struct CurrentWeatherParameters {
-    let date: String
-    let mainStatus: String
-    let temp: Double
-    let humidity: Int
-    let windSpeed: Double
-}
-
-struct HourlyWeatherParameters {
-    let hour: String
-    let temp: Double
-    let icon: String
-}
-
-struct DailyWeatherParameters {
-    let weekday: String
-    let tempDay: Double
-    let tempNight: Double
-    let icon: String
+struct Weather: Decodable {
+    let timezone: String
+    let current: Current
+    let hourly: [Hourly]
+    let daily: [Daily]
+    
+    struct Current: Decodable {
+        let temp: Double
+        let humidity: Double
+        let windSpeed: Double
+        let weather: [WeatherStatus]
+    }
+    
+    struct Hourly: Decodable {
+        let dt: Double
+        let temp: Double
+        let weather: [WeatherStatus]
+    }
+    
+    struct Daily: Decodable {
+        let dt: Double
+        let temp: Temp
+        let weather: [WeatherStatus]
+    }
+    
+    struct WeatherStatus: Decodable {
+        let main: String
+        let icon: String
+    }
+    
+    struct Temp: Decodable {
+        let day: Double
+        let night: Double
+    }
+    
+    func prefixHourlyWeather() -> Self {
+        let prefixedHourlyWeather = Array(hourly.prefix(24))
+        return .init(timezone: timezone,
+                     current: current,
+                     hourly: prefixedHourlyWeather,
+                     daily: daily)
+    }
 }
