@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 @objc protocol LocationDescriptionRoutingLogic {
     func routeToWeatherForecast()
@@ -21,21 +22,16 @@ final class LocationDescriptionRouter: NSObject, LocationDescriptionRoutingLogic
     
     // MARK: - Routing
     func routeToWeatherForecast() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let destinationVC = storyboard.instantiateViewController(withIdentifier: "WeatherForecastViewController") as! WeatherForecastViewController
-        var destinationDS = destinationVC.router!.dataStore!
-        destinationVC.hidesBottomBarWhenPushed = true
-        passDataToWeatherForecast(source: dataStore!, destination: &destinationDS)
-        navigateToWeatherForecast(source: viewController!, destination: destinationVC)
+        guard let location = dataStore?.location,
+              let viewController = viewController else { return }
+        let contentView = WeatherContentView()
+            .environment(WeatherForecastViewModel(location))
+        let hostingController = UIHostingController(rootView: contentView)
+        navigateToWeatherForecast(source: viewController, destination: hostingController)
     }
     
     // MARK: - Navigation
-    func navigateToWeatherForecast(source: LocationDescriptionViewController, destination: WeatherForecastViewController) {
+    private func navigateToWeatherForecast(source: LocationDescriptionViewController, destination: UIHostingController<some View>) {
         source.present(destination, animated: true)
-    }
-    
-    // MARK: - Passing data
-    func passDataToWeatherForecast(source: LocationDescriptionDataStore, destination: inout WeatherForecastDataStore) {
-        destination.location = source.location
     }
 }
