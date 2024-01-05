@@ -8,7 +8,7 @@ One of the toughest tasks of any photographer is to look for inspiration and con
 Scenes hierarchy
 </p>
 
-![ViewController Hirarhchy](https://github.com/stralexs/photato/assets/123239625/13f6bc53-41af-4ca4-b605-07454334e770)
+![ViewController Hirarhchy](https://github.com/stralexs/photato/assets/123239625/cebb2e19-cd5f-437f-a1d4-36727bb8ec29)
 
 ## Opening scene
 Opening scene using property isUserLoggedIn stored in UserDefaults determines whether user is logged in and, if true, shows Loading scene or UserValidation scene if false.
@@ -42,8 +42,8 @@ LocationDescription scene contains detailed information about the location: coor
 ![LocationDescriptionScene](https://github.com/stralexs/photato/assets/123239625/2f9eeaf7-796f-49cb-ad60-a542bafd04f3)
 
 ## WeatherForecast scene
-Weather scene uses open weather API of the openweathermap website, and with the help of WeatherManager and Alamofire json with weather data is loaded. UI is identical to the interface of the standard Weather application.
-![WeatherForecastScene](https://github.com/stralexs/photato/assets/123239625/18de7bb3-6e2e-427d-8f4f-df23c074df71)
+Weather scene uses open weather API of the openweathermap website, and with the help of WeatherManager and AlamofireDownloadable protocol weather data is loaded. UI is identical to the interface of the standard Weather application. SwiftUI and Swift concurrency are used in this scene.
+![WeatherForecastScene](https://github.com/stralexs/photato/assets/123239625/32190b92-201d-4b8e-b2be-8049af58b672)
 
 ## Settings scene
 Settings scene allows user to make some changes to his account. Also in the upper right corner there is a button to sign out of account, which leads to UserValidation scene.
@@ -57,26 +57,12 @@ App has no memory leaks in Leaks instrument
 
 ## Stack
 - Clean Swift
-- UIKit
+- UIKit, SwiftUI
 - Code layout, SnapKit
 - MapKit, CoreLocation
 - Firebase, UserDefaults, Keychain
 - Unit tests
 - REST API, Alamofire
 - SOLID principles
-- GCD
+- GCD, async/await
 - SPM
-
-
-
-
-
-
-
-
-
-
-
-
-
-
