@@ -112,19 +112,11 @@
 		42FA561C2A7E72BA00144F2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA561B2A7E72BA00144F2A /* SceneDelegate.swift */; };
 		42FA56232A7E72BB00144F2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56222A7E72BB00144F2A /* Assets.xcassets */; };
 		42FA56262A7E72BB00144F2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42FA56242A7E72BB00144F2A /* LaunchScreen.storyboard */; };
-		42FA563B2A7E72BB00144F2A /* LocationsListUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42FA563A2A7E72BB00144F2A /* LocationsListUITests.swift */; };
 		42FA564B2A7E7A8500144F2A /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 42FA564A2A7E7A8500144F2A /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		42FA562D2A7E72BB00144F2A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 42FA560E2A7E72BA00144F2A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 42FA56152A7E72BA00144F2A;
-			remoteInfo = Photato;
-		};
-		42FA56372A7E72BB00144F2A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 42FA560E2A7E72BA00144F2A /* Project object */;
 			proxyType = 1;
@@ -236,8 +228,6 @@
 		42FA56252A7E72BB00144F2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		42FA56272A7E72BB00144F2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		42FA562C2A7E72BB00144F2A /* PhotatoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotatoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		42FA56362A7E72BB00144F2A /* PhotatoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhotatoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		42FA563A2A7E72BB00144F2A /* LocationsListUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,13 +246,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		42FA56292A7E72BB00144F2A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		42FA56332A7E72BB00144F2A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -553,7 +536,6 @@
 			children = (
 				42FA56182A7E72BA00144F2A /* Photato */,
 				42FA562F2A7E72BB00144F2A /* PhotatoTests */,
-				42FA56392A7E72BB00144F2A /* PhotatoUITests */,
 				42FA56172A7E72BA00144F2A /* Products */,
 				42DD167F2ABC6F2900010830 /* Frameworks */,
 			);
@@ -564,7 +546,6 @@
 			children = (
 				42FA56162A7E72BA00144F2A /* Photato.app */,
 				42FA562C2A7E72BB00144F2A /* PhotatoTests.xctest */,
-				42FA56362A7E72BB00144F2A /* PhotatoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -596,14 +577,6 @@
 				4245291F2A7EB7670059246D /* LocationsListTests */,
 			);
 			path = PhotatoTests;
-			sourceTree = "<group>";
-		};
-		42FA56392A7E72BB00144F2A /* PhotatoUITests */ = {
-			isa = PBXGroup;
-			children = (
-				42FA563A2A7E72BB00144F2A /* LocationsListUITests.swift */,
-			);
-			path = PhotatoUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -653,24 +626,6 @@
 			productReference = 42FA562C2A7E72BB00144F2A /* PhotatoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		42FA56352A7E72BB00144F2A /* PhotatoUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 42FA56462A7E72BB00144F2A /* Build configuration list for PBXNativeTarget "PhotatoUITests" */;
-			buildPhases = (
-				42FA56322A7E72BB00144F2A /* Sources */,
-				42FA56332A7E72BB00144F2A /* Frameworks */,
-				42FA56342A7E72BB00144F2A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				42FA56382A7E72BB00144F2A /* PBXTargetDependency */,
-			);
-			name = PhotatoUITests;
-			productName = PhotatoUITests;
-			productReference = 42FA56362A7E72BB00144F2A /* PhotatoUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -685,10 +640,6 @@
 						CreatedOnToolsVersion = 14.3.1;
 					};
 					42FA562B2A7E72BB00144F2A = {
-						CreatedOnToolsVersion = 14.3.1;
-						TestTargetID = 42FA56152A7E72BA00144F2A;
-					};
-					42FA56352A7E72BB00144F2A = {
 						CreatedOnToolsVersion = 14.3.1;
 						TestTargetID = 42FA56152A7E72BA00144F2A;
 					};
@@ -714,7 +665,6 @@
 			targets = (
 				42FA56152A7E72BA00144F2A /* Photato */,
 				42FA562B2A7E72BB00144F2A /* PhotatoTests */,
-				42FA56352A7E72BB00144F2A /* PhotatoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -732,13 +682,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		42FA562A2A7E72BB00144F2A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		42FA56342A7E72BB00144F2A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -857,14 +800,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		42FA56322A7E72BB00144F2A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				42FA563B2A7E72BB00144F2A /* LocationsListUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -872,11 +807,6 @@
 			isa = PBXTargetDependency;
 			target = 42FA56152A7E72BA00144F2A /* Photato */;
 			targetProxy = 42FA562D2A7E72BB00144F2A /* PBXContainerItemProxy */;
-		};
-		42FA56382A7E72BB00144F2A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 42FA56152A7E72BA00144F2A /* Photato */;
-			targetProxy = 42FA56372A7E72BB00144F2A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1106,42 +1036,6 @@
 			};
 			name = Release;
 		};
-		42FA56472A7E72BB00144F2A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5C3RTUTT2M;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.alexander-developer.PhotatoUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Photato;
-			};
-			name = Debug;
-		};
-		42FA56482A7E72BB00144F2A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5C3RTUTT2M;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.alexander-developer.PhotatoUITests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Photato;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1168,15 +1062,6 @@
 			buildConfigurations = (
 				42FA56442A7E72BB00144F2A /* Debug */,
 				42FA56452A7E72BB00144F2A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		42FA56462A7E72BB00144F2A /* Build configuration list for PBXNativeTarget "PhotatoUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				42FA56472A7E72BB00144F2A /* Debug */,
-				42FA56482A7E72BB00144F2A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
