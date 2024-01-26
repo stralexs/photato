@@ -58,12 +58,13 @@ final class LoginInteractor: LoginBusinessLogic {
                     try self?.keychainManager.save(password: request.password.data(using: .utf8) ?? Data(),
                                                    account: request.email)
                 }
-                
                 catch let error as KeychainError {
                     switch error {
                         case .duplicateItem:
+                        response = Login.SignIn.Response(signInResult: KeychainError.duplicateItem)
                         self?.logger.error("\(error.localizedDescription)")
-                    case .unknown(_):
+                    case .unknown(let status):
+                        response = Login.SignIn.Response(signInResult: KeychainError.unknown(status: status))
                         self?.logger.error("\(error.localizedDescription)")
                     }
                 }

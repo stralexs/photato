@@ -49,44 +49,24 @@ final class SignUpPresenter: SignUpPresentationLogic {
     }
     
     func presentSignUpResult(response: SignUp.SignUp.Response) {
-        var viewModel = SignUp.SignUp.ViewModel(signUpErrorDescription: nil)
-        
+        let viewModel: SignUp.SignUp.ViewModel
         switch response.signUpResult {
-        case nil:
-            break
         case let error as FirebaseError:
-            switch error {
-            case .failedToSignUp:
-                viewModel = SignUp.SignUp.ViewModel(signUpErrorDescription: "Failed to sign up. Please try again later")
-            case .occupiedEmail:
-                viewModel = SignUp.SignUp.ViewModel(signUpErrorDescription: "The email address is already in use by another account. Pleasy try another one")
-            default:
-                viewModel = SignUp.SignUp.ViewModel(signUpErrorDescription: "Unknown error")
-            }
+            viewModel = SignUp.SignUp.ViewModel(signUpErrorDescription: error.errorDescription)
         default:
-            break
+            viewModel = SignUp.SignUp.ViewModel(signUpErrorDescription: nil)
         }
         
         viewController?.displaySignUpResult(viewModel: viewModel)
     }
     
     func presentLocationsDownloadCompletion(response: SignUp.DownloadLocations.Response) {
-        var viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: nil)
-        
+        let viewModel: SignUp.DownloadLocations.ViewModel
         switch response.downloadResult {
-        case nil:
-            break
         case let error as FirebaseError:
-            switch error {
-            case .dataNotLoaded:
-                viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load locations. Please try again later")
-            case .imageDataNotLoaded:
-                viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load data. Please try again later")
-            default:
-                viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: "Unknown error")
-            }
+            viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: error.errorDescription)
         default:
-            break
+            viewModel = SignUp.DownloadLocations.ViewModel(downloadErrorDescription: nil)
         }
         
         viewController?.displayLocationsDownloadResult(viewModel: viewModel)

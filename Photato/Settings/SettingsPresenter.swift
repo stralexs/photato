@@ -36,22 +36,12 @@ final class SettingsPresenter: SettingsPresentationLogic {
     }
     
     func presentApplyChangesResult(response: Settings.ApplyChanges.Response) {
-        var viewModel = Settings.ApplyChanges.ViewModel(applyChangesErrorDescription: nil)
-        
+        let viewModel: Settings.ApplyChanges.ViewModel
         switch response.applyChangesResult {
-        case nil:
-            break
         case let error as FirebaseError:
-            switch error {
-            case .failedToSaveNewData:
-                viewModel = Settings.ApplyChanges.ViewModel(applyChangesErrorDescription: "Failed to save some of your data. Please try again later")
-            case .noChanges:
-                viewModel = Settings.ApplyChanges.ViewModel(applyChangesErrorDescription: "Your new details are identical to previous ones")
-            default:
-                viewModel = Settings.ApplyChanges.ViewModel(applyChangesErrorDescription: "Unknown error")
-            }
+            viewModel = Settings.ApplyChanges.ViewModel(applyChangesErrorDescription: error.errorDescription)
         default:
-            break
+            viewModel = Settings.ApplyChanges.ViewModel(applyChangesErrorDescription: nil)
         }
         
         viewController?.displayApplyChangesResult(viewModel: viewModel)

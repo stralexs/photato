@@ -32,18 +32,6 @@ protocol FirebaseUserLogic {
     func changeUserProfilePicture(_ imageData: Data, completion: @escaping (FirebaseError?) -> Void)
 }
 
-enum FirebaseError: Error {
-    case dataNotLoaded
-    case imageDataNotLoaded
-    case failedToSignUp
-    case occupiedEmail
-    case failedToSignIn
-    case failedToGetUserData
-    case failedToSaveNewData
-    case noChanges
-    case unknown
-}
-
 final class FirebaseManager: FirebaseLocationsLogic {
     private let db = Firestore.firestore()
     private let storageRef = Storage.storage().reference()

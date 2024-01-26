@@ -16,44 +16,24 @@ class LoadingPresenter: LoadingPresentationLogic {
     weak var viewController: LoadingDisplayLogic?
     
     func presentSignInResult(response: Loading.SignInUser.Response) {
-        var viewModel = Loading.SignInUser.ViewModel(signInErrorDescription: nil)
-        
+        let viewModel: Loading.SignInUser.ViewModel
         switch response.signInResult {
-        case nil:
-            break
         case let error as FirebaseError:
-            switch error {
-            case .failedToSignIn:
-                viewModel = Loading.SignInUser.ViewModel(signInErrorDescription: "Failed to sign in. Please try to re-enter your details or register")
-            case .failedToGetUserData:
-                viewModel = Loading.SignInUser.ViewModel(signInErrorDescription: "Failed to load your data. Please try again later")
-            default:
-                viewModel = Loading.SignInUser.ViewModel(signInErrorDescription: "Unknown error")
-            }
+            viewModel = Loading.SignInUser.ViewModel(signInErrorDescription: error.errorDescription)
         default:
-            break
+            viewModel = Loading.SignInUser.ViewModel(signInErrorDescription: nil)
         }
         
         viewController?.displaySignInResult(viewModel: viewModel)
     }
     
     func presentLocationsDownloadCompletion(response: Loading.DownloadLocations.Response) {
-        var viewModel = Loading.DownloadLocations.ViewModel(downloadErrorDescription: nil)
-        
+        let viewModel: Loading.DownloadLocations.ViewModel
         switch response.downloadResult {
-        case nil:
-            break
         case let error as FirebaseError:
-            switch error {
-            case .dataNotLoaded:
-                viewModel = Loading.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load locations. Please try again later")
-            case .imageDataNotLoaded:
-                viewModel = Loading.DownloadLocations.ViewModel(downloadErrorDescription: "Failed to load data. Please try again later")
-            default:
-                viewModel = Loading.DownloadLocations.ViewModel(downloadErrorDescription: "Unknown error")
-            }
+            viewModel = Loading.DownloadLocations.ViewModel(downloadErrorDescription: error.errorDescription)
         default:
-            break
+            viewModel = Loading.DownloadLocations.ViewModel(downloadErrorDescription: nil)
         }
         
         viewController?.displayLocationsDownloadResult(viewModel: viewModel)

@@ -12,11 +12,6 @@ protocol KeychainManagerLogic {
     func getPassword(for account: String) throws -> Data?
 }
 
-enum KeychainError: Error {
-    case duplicateItem
-    case unknown(status: OSStatus)
-}
-
 final class KeychainManager: KeychainManagerLogic {
     func save(password: Data, account: String) throws {
         let query: [CFString: Any] = [
