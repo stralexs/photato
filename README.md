@@ -60,7 +60,7 @@ App has no memory leaks in Leaks instrument
 - UIKit, SwiftUI
 - Code layout, SnapKit
 - MapKit, CoreLocation
-- Firebase, UserDefaults, Keychain
+- Firebase, UserDefaults, Keychain, NSCache
 - Unit tests
 - REST API, Alamofire
 - SOLID principles
