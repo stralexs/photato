@@ -15,7 +15,7 @@ final class LocationsListDisplayLogicSpy: LocationsListDisplayLogic {
     
     func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel) {
         isCalledDisplayFetchedLocations = true
-        locations = viewModel.locations
+        locations = viewModel.locationsDownloadDescription
     }
     
     func displaySearchedLocations(viewModel: LocationsList.SearchLocations.ViewModel) {

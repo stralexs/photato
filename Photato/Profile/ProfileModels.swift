@@ -12,11 +12,11 @@ enum Profile {
         struct Request {}
         
         struct Response {
-            let locations: [Location]
+            let userLocationsFetchResult: Result<[Location], FirebaseError>
         }
         
         struct ViewModel {
-            let locations: [Location]
+            let fetchResultDescription: ([Location]?, String?)
         }
     }
     

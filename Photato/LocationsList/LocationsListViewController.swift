@@ -98,8 +98,20 @@ extension LocationsListViewController {
     }
     
     func displayLocations(viewModel: LocationsList.FetchLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
+        if viewModel.locationsDownloadDescription.0 != nil {
+            DispatchQueue.main.async {
+                guard let locations = viewModel.locationsDownloadDescription.0 else { return }
+                self.locations = locations
+                self.tableView.reloadData()
+            }
+        } else {
+            guard let errorDescription = viewModel.locationsDownloadDescription.1 else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        }
     }
 }
 
@@ -124,8 +136,20 @@ extension LocationsListViewController {
     }
     
     func displayRefreshedLocations(viewModel: LocationsList.RefreshLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
+        if viewModel.locationsRefreshDescription.0 != nil {
+            DispatchQueue.main.async {
+                guard let locations = viewModel.locationsRefreshDescription.0 else { return }
+                self.locations = locations
+                self.tableView.reloadData()
+            }
+        } else {
+            guard let errorDescription = viewModel.locationsRefreshDescription.1 else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        }
     }
 }
 

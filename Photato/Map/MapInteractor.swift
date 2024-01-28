@@ -44,13 +44,31 @@ final class MapInteractor: MapBusinessLogic, MapDataStore {
     }
     
     func fetchLocations(request: Map.GetLocationsAnnotations.Request) {
-        locations = LocationsManager.shared.locations
-        let response = Map.GetLocationsAnnotations.Response(locations: locations)
-        presenter?.presentLocationsAnnotations(response: response)
+        LocationsManager.shared.provideLocations { [weak self] result in
+            let response: Map.GetLocationsAnnotations.Response
+            switch result {
+            case .success(let locations):
+                self?.locations = locations
+                response = Map.GetLocationsAnnotations.Response(locationsDownloadResult: .success(locations))
+            case .failure(let error):
+                response = Map.GetLocationsAnnotations.Response(locationsDownloadResult: .failure(error))
+            }
+            self?.presenter?.presentLocationsAnnotations(response: response)
+        }
     }
     
     func refreshLocations(request: Map.RefreshLocations.Request) {
-        locations = LocationsManager.shared.locations
+        LocationsManager.shared.provideLocations { [weak self] result in
+            let response: Map.RefreshLocations.Response
+            switch result {
+            case .success(let locations):
+                self?.locations = locations
+                response = Map.RefreshLocations.Response(locationsDownloadResult: .success(locations))
+            case .failure(let error):
+                response = Map.RefreshLocations.Response(locationsDownloadResult: .failure(error))
+            }
+            self?.presenter?.presentRefreshedLocationsAnnotations(response: response)
+        }
     }
     
     //MARK: - Initialization

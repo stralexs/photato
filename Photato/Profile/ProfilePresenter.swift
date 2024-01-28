@@ -16,7 +16,13 @@ final class ProfilePresenter: ProfilePresentationLogic {
     weak var viewController: ProfileDisplayLogic?
         
     func presentUserFavouriteLocations(response: Profile.GetUserFavouriteLocations.Response) {
-        let viewModel = Profile.GetUserFavouriteLocations.ViewModel(locations: response.locations)
+        let viewModel: Profile.GetUserFavouriteLocations.ViewModel
+        switch response.userLocationsFetchResult {
+        case .success(let locations):
+            viewModel = Profile.GetUserFavouriteLocations.ViewModel(fetchResultDescription: (locations, nil))
+        case .failure(let error):
+            viewModel = Profile.GetUserFavouriteLocations.ViewModel(fetchResultDescription: (nil, error.errorDescription))
+        }
         viewController?.displayUserFavouriteLocations(viewModel: viewModel)
     }
     

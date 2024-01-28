@@ -25,7 +25,7 @@ final class MapDisplayLogicSpy: MapDisplayLogic {
     func displayLocations(viewModel: Photato.Map.GetLocationsAnnotations.ViewModel) {
         isCalledDisplayLocations = true
         
-        viewModel.annotations.forEach { annotation in
+        viewModel.annotationsDownloadDescription.forEach { annotation in
             mapView.addAnnotation(annotation)
         }
     }

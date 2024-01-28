@@ -12,6 +12,7 @@ protocol MapPresentationLogic {
     func presentLocationServicesStatus(response: Map.CheckLocationServicesEnabled.Response)
     func presentAuthorizationStatus(response: Map.CheckAuthorizationStatus.Response)
     func presentLocationsAnnotations(response: Map.GetLocationsAnnotations.Response)
+    func presentRefreshedLocationsAnnotations(response: Map.RefreshLocations.Response)
 }
 
 final class MapPresenter: MapPresentationLogic {
@@ -30,16 +31,40 @@ final class MapPresenter: MapPresentationLogic {
     }
     
     func presentLocationsAnnotations(response: Map.GetLocationsAnnotations.Response) {
-        let locationsAnnotations = response.locations.map { location in
-            let annotation = MKPointAnnotation()
-            annotation.title = location.name
-            annotation.subtitle = location.address
-            let coordinate = CLLocationCoordinate2D(latitude: location.coordinates.latitude, longitude: location.coordinates.longitude)
-            annotation.coordinate = coordinate
-            return annotation
+        let viewModel: Map.GetLocationsAnnotations.ViewModel
+        switch response.locationsDownloadResult {
+        case .success(let locations):
+            let locationsAnnotations = locations.map { location in
+                let annotation = MKPointAnnotation()
+                annotation.title = location.name
+                annotation.subtitle = location.address
+                let coordinate = CLLocationCoordinate2D(latitude: location.coordinates.latitude, longitude: location.coordinates.longitude)
+                annotation.coordinate = coordinate
+                return annotation
+            }
+            viewModel = Map.GetLocationsAnnotations.ViewModel(annotationsDownloadDescription: (locationsAnnotations, nil))
+        case .failure(let error):
+            viewModel = Map.GetLocationsAnnotations.ViewModel(annotationsDownloadDescription: (nil, error.errorDescription))
         }
-        
-        let viewModel = Map.GetLocationsAnnotations.ViewModel(annotations: locationsAnnotations)
         viewController?.displayLocations(viewModel: viewModel)
+    }
+    
+    func presentRefreshedLocationsAnnotations(response: Map.RefreshLocations.Response) {
+        let viewModel: Map.RefreshLocations.ViewModel
+        switch response.locationsDownloadResult {
+        case .success(let locations):
+            let locationsAnnotations = locations.map { location in
+                let annotation = MKPointAnnotation()
+                annotation.title = location.name
+                annotation.subtitle = location.address
+                let coordinate = CLLocationCoordinate2D(latitude: location.coordinates.latitude, longitude: location.coordinates.longitude)
+                annotation.coordinate = coordinate
+                return annotation
+            }
+            viewModel = Map.RefreshLocations.ViewModel(annotationsDownloadDescription: (locationsAnnotations, nil))
+        case .failure(let error):
+            viewModel = Map.RefreshLocations.ViewModel(annotationsDownloadDescription: (nil, error.errorDescription))
+        }
+        viewController?.displayRefreshedLocations(viewModel: viewModel)
     }
 }

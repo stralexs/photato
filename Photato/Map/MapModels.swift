@@ -41,15 +41,23 @@ enum Map {
         struct Request {}
         
         struct Response {
-            let locations: [Location]
+            let locationsDownloadResult: Result<[Location], FirebaseError>
         }
         
         struct ViewModel {
-            let annotations: [MKAnnotation]
+            let annotationsDownloadDescription: ([MKAnnotation]?, String?)
         }
     }
     
     enum RefreshLocations {
         struct Request {}
+        
+        struct Response {
+            let locationsDownloadResult: Result<[Location], FirebaseError>
+        }
+        
+        struct ViewModel {
+            let annotationsDownloadDescription: ([MKAnnotation]?, String?)
+        }
     }
 }

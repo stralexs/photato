@@ -24,10 +24,19 @@ final class ProfileInteractor: ProfileBusinessLogic, ProfileDataStore {
     
     //MARK: - Methods
     func getUserFavouriteLocations(request: Profile.GetUserFavouriteLocations.Request) {
-        locations = worker.fetchUserFavouriteLocations().sorted { $0.name < $1.name }
-        
-        let response = Profile.GetUserFavouriteLocations.Response(locations: locations)
-        presenter?.presentUserFavouriteLocations(response: response)
+        worker.fetchUserFavouriteLocations { [weak self] result in
+            guard let self else { return }
+            let response: Profile.GetUserFavouriteLocations.Response
+            switch result {
+            case .success(let userLocations):
+                self.locations = userLocations.sorted { $0.name < $1.name }
+                response = Profile.GetUserFavouriteLocations.Response(userLocationsFetchResult: .success(self.locations))
+                self.presenter?.presentUserFavouriteLocations(response: response)
+            case .failure(let error):
+                response = Profile.GetUserFavouriteLocations.Response(userLocationsFetchResult: .failure(error))
+            }
+            self.presenter?.presentUserFavouriteLocations(response: response)
+        }
     }
     
     func fetchUserData(request: Profile.FetchUserData.Request) {

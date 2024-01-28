@@ -13,6 +13,7 @@ import OSLog
 
 protocol FirebaseLocationsLogic {
     func retrieveLocations(completion: @escaping (Result<[Location], FirebaseError>) -> Void)
+    func retrieveLocation(_ locationName: String, completion: @escaping (Result<Location, FirebaseError>) -> Void)
     func retrieveFirstImageData(for locationName: String, completion: @escaping (Result<Data, FirebaseError>) -> Void)
     func retrieveImagesCount(for locationName: String, completion: @escaping (Result<Int, FirebaseError>) -> Void)
     func retrieveAllImages(for locationName: String, completion: @escaping (Result<[Data], FirebaseError>) -> Void)
@@ -57,6 +58,28 @@ final class FirebaseManager: FirebaseLocationsLogic {
             }
             
             completion(.success(locations))
+        }
+    }
+    
+    func retrieveLocation(_ locationName: String, completion: @escaping (Result<Location, FirebaseError>) -> Void) {
+        db.collection("locations").getDocuments { [weak self] snapshot, error in
+            if let error {
+                self?.logger.error("\(error.localizedDescription)")
+                completion(.failure(.dataNotLoaded))
+            }
+            
+            guard snapshot != nil,
+                  let snapshot = snapshot else { return }
+            
+            guard let snapshotLocation = snapshot.documents.filter({ $0.get("name") as! String == locationName }).first else { completion(.failure(.dataNotLoaded)); return }
+            
+            let location = Location(name: snapshotLocation.get("name") as! String,
+                                    description: snapshotLocation.get("description") as! String,
+                                    address: snapshotLocation.get("address") as! String,
+                                    coordinates: Location.Coordinates(latitude: snapshotLocation.get("latitude") as! Double, longitude: snapshotLocation.get("longitude") as! Double),
+                                    imagesData: [])
+
+            completion(.success(location))
         }
     }
     

@@ -12,11 +12,11 @@ enum LocationsList {
         struct Request {}
         
         struct Response {
-            let locations: [Location]
+            let locatinsDownloadResult: Result<[Location], FirebaseError>
         }
         
         struct ViewModel {
-            let locations: [Location]
+            let locationsDownloadDescription: ([Location]?, String?)
         }
     }
     
@@ -38,11 +38,11 @@ enum LocationsList {
         struct Requst {}
         
         struct Response {
-            let locations: [Location]
+            let locationsRefreshResult: Result<[Location], FirebaseError>
         }
         
         struct ViewModel {
-            let locations: [Location]
+            let locationsRefreshDescription: ([Location]?, String?)
         }
     }
 }

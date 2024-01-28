@@ -259,8 +259,20 @@ extension ProfileViewController {
     }
     
     func displayUserFavouriteLocations(viewModel: Profile.GetUserFavouriteLocations.ViewModel) {
-        locations = viewModel.locations
-        tableView.reloadData()
+        if viewModel.fetchResultDescription.0 != nil {
+            DispatchQueue.main.async {
+                guard let locations = viewModel.fetchResultDescription.0 else { return }
+                self.locations = locations
+                self.tableView.reloadData()
+            }
+        } else {
+            guard let errorDescription = viewModel.fetchResultDescription.1 else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        }
     }
 }
 

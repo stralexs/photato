@@ -17,7 +17,13 @@ final class LocationsListPresenter: LocationsListPresentationLogic {
     weak var viewController: LocationsListDisplayLogic?
     
     func presentLocations(response: LocationsList.FetchLocations.Response) {
-        let viewModel = LocationsList.FetchLocations.ViewModel(locations: response.locations)
+        let viewModel: LocationsList.FetchLocations.ViewModel
+        switch response.locatinsDownloadResult {
+        case .success(let locations):
+            viewModel = LocationsList.FetchLocations.ViewModel(locationsDownloadDescription: (locations, nil))
+        case .failure(let error):
+            viewModel = LocationsList.FetchLocations.ViewModel(locationsDownloadDescription: (nil, error.errorDescription))
+        }
         viewController?.displayLocations(viewModel: viewModel)
     }
     
@@ -27,7 +33,13 @@ final class LocationsListPresenter: LocationsListPresentationLogic {
     }
     
     func presentRefreshedLocations(response: LocationsList.RefreshLocations.Response) {
-        let viewModel = LocationsList.RefreshLocations.ViewModel(locations: response.locations)
+        let viewModel: LocationsList.RefreshLocations.ViewModel
+        switch response.locationsRefreshResult {
+        case .success(let locations):
+            viewModel = LocationsList.RefreshLocations.ViewModel(locationsRefreshDescription: (locations, nil))
+        case .failure(let error):
+            viewModel = LocationsList.RefreshLocations.ViewModel(locationsRefreshDescription: (nil, error.errorDescription))
+        }
         viewController?.displayRefreshedLocations(viewModel: viewModel)
     }
 }

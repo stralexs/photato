@@ -13,6 +13,7 @@ protocol MapDisplayLogic: AnyObject {
     func displayLocationServicesStatus(viewModel: Map.CheckLocationServicesEnabled.ViewModel)
     func displayAuthorizationStatus(viewModel: Map.CheckAuthorizationStatus.ViewModel)
     func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel)
+    func displayRefreshedLocations(viewModel: Map.RefreshLocations.ViewModel)
 }
 
 final class MapViewController: UIViewController, MapDisplayLogic {
@@ -141,10 +142,19 @@ extension MapViewController {
     }
     
     func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel) {
-        DispatchQueue.main.async {
-            viewModel.annotations.forEach { [weak self] annotation in
-                self?.mapView.addAnnotation(annotation)
+        if viewModel.annotationsDownloadDescription.0 != nil {
+            DispatchQueue.main.async {
+                viewModel.annotationsDownloadDescription.0?.forEach { annotation in
+                    self.mapView.addAnnotation(annotation)
+                }
             }
+        } else {
+            guard let errorDescription = viewModel.annotationsDownloadDescription.1 else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
         }
     }
 }
@@ -154,6 +164,23 @@ extension MapViewController {
     private func refreshLocations() {
         let request = Map.RefreshLocations.Request()
         interactor?.refreshLocations(request: request)
+    }
+    
+    func displayRefreshedLocations(viewModel: Map.RefreshLocations.ViewModel) {
+        if viewModel.annotationsDownloadDescription.0 != nil {
+            DispatchQueue.main.async {
+                viewModel.annotationsDownloadDescription.0?.forEach { annotation in
+                    self.mapView.addAnnotation(annotation)
+                }
+            }
+        } else {
+            guard let errorDescription = viewModel.annotationsDownloadDescription.1 else { return }
+            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "Ok", style: .default)
+            
+            alert.addAction(okAction)
+            present(alert, animated: true)
+        }
     }
 }
 

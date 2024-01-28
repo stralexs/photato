@@ -25,23 +25,40 @@ final class LocationsListInteractor: LocationsListBusinessLogic, LocationsListDa
     
     //MARK: - Methods
     func fetchLocations(request: LocationsList.FetchLocations.Request) {
-        locations = worker.fetchLocations()
-        
-        let response = LocationsList.FetchLocations.Response(locations: locations)
-        presenter?.presentLocations(response: response)
+        worker.fetchLocations { [weak self] result in
+            let response: LocationsList.FetchLocations.Response
+            switch result {
+            case .success(let locations):
+                self?.locations = locations.sorted { $0.name < $1.name }
+                response = LocationsList.FetchLocations.Response(locatinsDownloadResult: .success(locations))
+            case .failure(let error):
+                response = LocationsList.FetchLocations.Response(locatinsDownloadResult: .failure(error))
+            }
+            self?.presenter?.presentLocations(response: response)
+        }
     }
     
     func searchLocations(request: LocationsList.SearchLocations.Request) {
-        locations = worker.searchLocations(using: request.searchText).sorted { $0.name < $1.name }
-        
-        let response = LocationsList.SearchLocations.Response(locations: locations)
-        presenter?.presentSearchedLocations(response: response)
+        worker.searchLocations(using: request.searchText) { [weak self] locations in
+            guard let self else { return }
+            self.locations = locations.sorted { $0.name < $1.name }
+            let response = LocationsList.SearchLocations.Response(locations: self.locations)
+            presenter?.presentSearchedLocations(response: response)
+        }
     }
     
     func refreshLocations(requst: LocationsList.RefreshLocations.Requst) {
-        locations = LocationsManager.shared.locations
-        let response = LocationsList.RefreshLocations.Response(locations: locations)
-        presenter?.presentRefreshedLocations(response: response)
+        worker.fetchLocations { [weak self] result in
+            let response: LocationsList.RefreshLocations.Response
+            switch result {
+            case .success(let locations):
+                self?.locations = locations.sorted { $0.name < $1.name }
+                response = LocationsList.RefreshLocations.Response(locationsRefreshResult: .success(locations))
+            case .failure(let error):
+                response = LocationsList.RefreshLocations.Response(locationsRefreshResult: .failure(error))
+            }
+            self?.presenter?.presentRefreshedLocations(response: response)
+        }
     }
     
     //MARK: - Initialization
