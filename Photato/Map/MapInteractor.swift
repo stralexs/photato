@@ -9,7 +9,7 @@ import UIKit
 
 protocol MapBusinessLogic {
     func checkLocationServicesEnabled(request: Map.CheckLocationServicesEnabled.Request)
-    func setupLocationManager(request: Map.SetupLocationManager.Request)
+    func getUserLocation(request: Map.GetUserLocation.Request)
     func checkAuthorizationStatus(request: Map.CheckAuthorizationStatus.Request)
     func fetchLocations(request: Map.GetLocationsAnnotations.Request)
     func refreshLocations(request: Map.RefreshLocations.Request)
@@ -33,8 +33,10 @@ final class MapInteractor: MapBusinessLogic, MapDataStore {
         }
     }
     
-    func setupLocationManager(request: Map.SetupLocationManager.Request) {
-        worker.setupLocationManager()
+    func getUserLocation(request: Map.GetUserLocation.Request) {
+        guard let location = worker.getUserLocation() else { return }
+        let response = Map.GetUserLocation.Response(location: location)
+        presenter?.presentUserLocation(response: response)
     }
     
     func checkAuthorizationStatus(request: Map.CheckAuthorizationStatus.Request) {

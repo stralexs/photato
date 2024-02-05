@@ -21,8 +21,16 @@ enum Map {
         }
     }
     
-    enum SetupLocationManager {
+    enum GetUserLocation {
         struct Request {}
+        
+        struct Response {
+            let location: CLLocation
+        }
+        
+        struct ViewModel {
+            let region: MKCoordinateRegion
+        }
     }
     
     enum CheckAuthorizationStatus {

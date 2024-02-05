@@ -11,6 +11,7 @@ import SnapKit
 
 protocol MapDisplayLogic: AnyObject {
     func displayLocationServicesStatus(viewModel: Map.CheckLocationServicesEnabled.ViewModel)
+    func displayUserLocation(viewModel: Map.GetUserLocation.ViewModel)
     func displayAuthorizationStatus(viewModel: Map.CheckAuthorizationStatus.ViewModel)
     func displayLocations(viewModel: Map.GetLocationsAnnotations.ViewModel)
     func displayRefreshedLocations(viewModel: Map.RefreshLocations.ViewModel)
@@ -112,8 +113,14 @@ extension MapViewController {
     // MARK: - SetupLocationManager Use case
 extension MapViewController {
     private func setupLocationManager() {
-        let request = Map.SetupLocationManager.Request()
-        interactor?.setupLocationManager(request: request)
+        let request = Map.GetUserLocation.Request()
+        interactor?.getUserLocation(request: request)
+    }
+    
+    func displayUserLocation(viewModel: Map.GetUserLocation.ViewModel) {
+        DispatchQueue.main.async {
+            self.mapView.setRegion(viewModel.region, animated: false)
+        }
     }
 }
 
@@ -149,12 +156,7 @@ extension MapViewController {
                 }
             }
         } else {
-            guard let errorDescription = viewModel.annotationsDownloadDescription.1 else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.annotationsDownloadDescription.1, message: nil, actions: [.okAction], completionHandler: nil)
         }
     }
 }
@@ -174,25 +176,13 @@ extension MapViewController {
                 }
             }
         } else {
-            guard let errorDescription = viewModel.annotationsDownloadDescription.1 else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.annotationsDownloadDescription.1, message: nil, actions: [.okAction], completionHandler: nil)
         }
     }
 }
 
     // MARK: - CLLocationManagerDelegate
 extension MapViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last?.coordinate {
-            let region = MKCoordinateRegion(center: location, latitudinalMeters: 5000, longitudinalMeters: 5000)
-            mapView.setRegion(region, animated: false)
-        }
-    }
-    
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkAthorizationStatus()
     }

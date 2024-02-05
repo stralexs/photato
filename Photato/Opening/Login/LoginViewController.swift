@@ -88,6 +88,7 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         super.viewDidLoad()
         tuneConstraints()
         tuneUI()
+        addTapGesture()
     }
     
     // MARK: - Initialization
@@ -177,6 +178,15 @@ final class LoginViewController: UIViewController, LoginDisplayLogic {
         presenter.viewController = viewController
         router.viewController = viewController
     }
+    
+    private func addTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
 
     // MARK: - Login Use case
@@ -196,12 +206,7 @@ extension LoginViewController {
         if viewModel.signInErrorDescription == nil {
             downloadLocations()
         } else {
-            guard let errorDescription = viewModel.signInErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(cancelAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.signInErrorDescription, message: nil, actions: [.okAction], completionHandler: nil)
         }
     }
 }
@@ -230,13 +235,7 @@ extension LoginViewController {
         if viewModel.downloadErrorDescription == nil {
             router?.routeToTabBarController()
         } else {
-            guard let errorDescription = viewModel.downloadErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
-            
+            presentBasicAlert(title: viewModel.downloadErrorDescription, message: nil, actions: [.okAction], completionHandler: nil)
             activityIndicator.stopAnimating()
         }
     }

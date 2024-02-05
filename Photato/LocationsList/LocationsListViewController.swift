@@ -105,12 +105,7 @@ extension LocationsListViewController {
                 self.tableView.reloadData()
             }
         } else {
-            guard let errorDescription = viewModel.locationsDownloadDescription.1 else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.locationsDownloadDescription.1, message: nil, actions: [.okAction], completionHandler: nil)
         }
     }
 }
@@ -143,12 +138,7 @@ extension LocationsListViewController {
                 self.tableView.reloadData()
             }
         } else {
-            guard let errorDescription = viewModel.locationsRefreshDescription.1 else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.locationsRefreshDescription.1, message: nil, actions: [.okAction], completionHandler: nil)
         }
     }
 }

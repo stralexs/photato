@@ -48,8 +48,8 @@ final class MapInteractorTests: XCTestCase {
     }
     
     func testIsCalledSetupLocationManager() {
-        let request = Map.SetupLocationManager.Request()
-        sut.setupLocationManager(request: request)
+        let request = Map.GetUserLocation.Request()
+        sut.getUserLocation(request: request)
         
         XCTAssertTrue(worker.isCalledSetupLocationManager)
     }

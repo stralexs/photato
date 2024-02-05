@@ -391,12 +391,7 @@ extension LocationDescriptionViewController {
                 }
             }
         } else {
-            guard let errorDescription = viewModel.downloadResultDescription.1 else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.downloadResultDescription.1, message: nil, actions: [.okAction], completionHandler: nil)
         }
     }
 }
@@ -424,9 +419,9 @@ extension LocationDescriptionViewController {
 extension LocationDescriptionViewController {
     @objc private func openLocationInMaps() {
         let alert = UIAlertController(title: "Open location in Maps?", message: nil, preferredStyle: .alert)
-        let settingsAction = UIAlertAction(title: "Yes", style: .default) { [weak self] _ in
+        let settingsAction = UIAlertAction(title: "Yes", style: .default) { _ in
             let request = LocationDescription.OpenLocationInMaps.Request()
-            self?.interactor?.openLocationInMaps(request: request)
+            self.interactor?.openLocationInMaps(request: request)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         

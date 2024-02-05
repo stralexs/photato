@@ -266,12 +266,7 @@ extension ProfileViewController {
                 self.tableView.reloadData()
             }
         } else {
-            guard let errorDescription = viewModel.fetchResultDescription.1 else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.fetchResultDescription.1, message: nil, actions: [.okAction], completionHandler: nil)
         }
     }
 }

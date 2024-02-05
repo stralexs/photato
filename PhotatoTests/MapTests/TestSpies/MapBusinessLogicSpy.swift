@@ -18,7 +18,7 @@ final class MapBusinessLogicSpy: MapBusinessLogic {
         isCalledCheckLocationServicesEnabled = true
     }
     
-    func setupLocationManager(request: Photato.Map.SetupLocationManager.Request) {
+    func setupLocationManager(request: Photato.Map.GetUserLocation.Request) {
         isCalledSetupLocationManager = true
     }
     

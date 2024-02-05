@@ -10,7 +10,7 @@ import MapKit
 
 protocol MapWorkingLogic {
     func checkLocationServicesStatus(completion: @escaping (Bool) -> Void)
-    func setupLocationManager()
+    func getUserLocation() -> CLLocation?
     func checkAuthorizationStatus() -> Bool?
 }
 
@@ -23,8 +23,10 @@ final class MapWorker: NSObject, MapWorkingLogic {
         }
     }
     
-    func setupLocationManager() {
+    func getUserLocation() -> CLLocation? {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        let location = locationManager.location
+        return location
     }
     
     func checkAuthorizationStatus() -> Bool? {

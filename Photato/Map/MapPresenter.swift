@@ -10,6 +10,7 @@ import MapKit
 
 protocol MapPresentationLogic {
     func presentLocationServicesStatus(response: Map.CheckLocationServicesEnabled.Response)
+    func presentUserLocation(response: Map.GetUserLocation.Response)
     func presentAuthorizationStatus(response: Map.CheckAuthorizationStatus.Response)
     func presentLocationsAnnotations(response: Map.GetLocationsAnnotations.Response)
     func presentRefreshedLocationsAnnotations(response: Map.RefreshLocations.Response)
@@ -22,6 +23,13 @@ final class MapPresenter: MapPresentationLogic {
         let isLocationServicesEnabled = response.isLocationServicesEnabled
         let viewModel = Map.CheckLocationServicesEnabled.ViewModel(isLocationServicesEnabled: isLocationServicesEnabled)
         viewController?.displayLocationServicesStatus(viewModel: viewModel)
+    }
+    
+    func presentUserLocation(response: Map.GetUserLocation.Response) {
+        let location = CLLocationCoordinate2D(latitude: response.location.coordinate.latitude, longitude: response.location.coordinate.longitude)
+        let region = MKCoordinateRegion(center: location, latitudinalMeters: 5000, longitudinalMeters: 5000)
+        let viewModel = Map.GetUserLocation.ViewModel(region: region)
+        viewController?.displayUserLocation(viewModel: viewModel)
     }
     
     func presentAuthorizationStatus(response: Map.CheckAuthorizationStatus.Response) {

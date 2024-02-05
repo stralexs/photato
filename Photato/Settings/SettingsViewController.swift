@@ -109,6 +109,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         getUserData()
         tuneConstraints()
         tuneUI()
+        addTapGesture()
     }
     
     // MARK: - Initialization
@@ -215,6 +216,15 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         presenter.viewController = viewController
         router.viewController = viewController
     }
+    
+    private func addTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
 
     // MARK: - GetUserData Use case
@@ -257,22 +267,12 @@ extension SettingsViewController {
     
     func displayApplyChangesResult(viewModel: Settings.ApplyChanges.ViewModel) {
         if viewModel.applyChangesErrorDescription == nil {
-            let alert = UIAlertController(title: "Changes successfully applied!", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-                self?.router?.routeToProfile(navigationController: self?.navigationController)
+            presentBasicAlert(title: "Changes successfully applied!", message: nil, actions: [.okAction]) { _ in
+                self.router?.routeToProfile(navigationController: self.navigationController)
             }
-            
-            alert.addAction(cancelAction)
-            present(alert, animated: true)
         } else {
             activityIndicator.stopAnimating()
-            
-            guard let errorDescription = viewModel.applyChangesErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: "Ok", style: .default)
-            
-            alert.addAction(cancelAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.applyChangesErrorDescription, message: nil, actions: [.okAction], completionHandler: nil)
         }
     }
 }
@@ -282,9 +282,7 @@ extension SettingsViewController {
     @objc private func exitAccount() {
         let alert = UIAlertController(title: "Are you sure want to leave your account?", message: nil, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-            self?.leaveAccount()
-        }
+        let okAction = UIAlertAction(title: "Ok", style: .default) { _ in self.leaveAccount() }
         
         alert.addAction(cancelAction)
         alert.addAction(okAction)

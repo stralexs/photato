@@ -47,8 +47,7 @@ final class LoginInteractor: LoginBusinessLogic {
     
     func signIn(request: Login.SignIn.Request) {
         firebaseManager.signInUser(request.email, request.password) { [weak self] signInError in
-            var response = Login.SignIn.Response(signInResult: nil)
-            
+            let response: Login.SignIn.Response
             switch signInError {
             case nil:
                 UserDefaults.standard.set(request.email, forKey: "userEmail")
@@ -61,13 +60,12 @@ final class LoginInteractor: LoginBusinessLogic {
                 catch let error as KeychainError {
                     switch error {
                         case .duplicateItem:
-                        response = Login.SignIn.Response(signInResult: KeychainError.duplicateItem)
                         self?.logger.error("\(error.localizedDescription)")
-                    case .unknown(let status):
-                        response = Login.SignIn.Response(signInResult: KeychainError.unknown(status: status))
+                    case .unknown(_):
                         self?.logger.error("\(error.localizedDescription)")
                     }
                 }
+                response = Login.SignIn.Response(signInResult: nil)
             case .failedToSignIn:
                 response = Login.SignIn.Response(signInResult: FirebaseError.failedToSignIn)
             case .failedToGetUserData:
@@ -82,10 +80,10 @@ final class LoginInteractor: LoginBusinessLogic {
     
     func downloadLocations(request: Login.DownloadLocations.Request) {
         LocationsManager.shared.downloadLocations { [weak self] downloadError in
-            var response = Login.DownloadLocations.Response(downloadResult: nil)
+            let response: Login.DownloadLocations.Response
             switch downloadError {
             case nil:
-                break
+                response = Login.DownloadLocations.Response(downloadResult: nil)
             case .dataNotLoaded:
                 response = Login.DownloadLocations.Response(downloadResult: FirebaseError.dataNotLoaded)
             case .imageDataNotLoaded:

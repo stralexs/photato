@@ -45,7 +45,7 @@ final class MapViewControllerTests: XCTestCase {
     }
     
     func testIsCalledSetupLocationManager() {
-        let request = Map.SetupLocationManager.Request()
+        let request = Map.GetUserLocation.Request()
         interactor.setupLocationManager(request: request)
         
         XCTAssertTrue(interactor.isCalledSetupLocationManager)

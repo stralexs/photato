@@ -59,13 +59,13 @@ final class SignUpInteractor: SignUpBusinessLogic {
     }
     
     func signUp(request: SignUp.SignUp.Request) {
-        var response = SignUp.SignUp.Response(signUpResult: nil)
         guard let imageData = request.profilePicture.pngData() else { return }
         firebaseManager.signUpUser(request.name,
                                    request.email,
                                    request.password,
                                    imageData) { [weak self] signUpError in
-                        
+            
+            let response: SignUp.SignUp.Response
             switch signUpError {
             case nil:
                 UserDefaults.standard.set(request.email, forKey: "userEmail")
@@ -82,6 +82,7 @@ final class SignUpInteractor: SignUpBusinessLogic {
                         self?.logger.error("\(error.localizedDescription)")
                     }
                 }
+                response = SignUp.SignUp.Response(signUpResult: nil)
             case .failedToSignUp:
                 response = SignUp.SignUp.Response(signUpResult: FirebaseError.failedToSignUp)
             case .occupiedEmail:
@@ -96,10 +97,10 @@ final class SignUpInteractor: SignUpBusinessLogic {
     
     func downloadLocations(request: SignUp.DownloadLocations.Request) {
         LocationsManager.shared.downloadLocations { [weak self] downloadError in
-            var response = SignUp.DownloadLocations.Response(downloadResult: nil)
+            let response: SignUp.DownloadLocations.Response
             switch downloadError {
             case nil:
-                break
+                response = SignUp.DownloadLocations.Response(downloadResult: nil)
             case .dataNotLoaded:
                 response = SignUp.DownloadLocations.Response(downloadResult: FirebaseError.dataNotLoaded)
             case .imageDataNotLoaded:
