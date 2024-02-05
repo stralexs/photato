@@ -114,14 +114,7 @@ extension LoadingViewController {
             activityIndicator.stopAnimating()
             appIconImageView.isHidden = true
             loadingLabel.isHidden = true
-            guard let errorDescription = viewModel.signInErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-                self?.router?.routeToUserValidation()
-            }
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.signInErrorDescription, message: nil, actions: [.okAction]) { _ in self.router?.routeToUserValidation() }
         }
     }
 }
@@ -137,14 +130,7 @@ extension LoadingViewController {
         if viewModel.downloadErrorDescription == nil {
             router?.routeToTabBarController()
         } else {
-            guard let errorDescription = viewModel.downloadErrorDescription else { return }
-            let alert = UIAlertController(title: "\(errorDescription)", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self] _ in
-                self?.router?.routeToUserValidation()
-            }
-            
-            alert.addAction(okAction)
-            present(alert, animated: true)
+            presentBasicAlert(title: viewModel.downloadErrorDescription, message: nil, actions: [.okAction]) { _ in self.router?.routeToUserValidation() }
         }
     }
 }

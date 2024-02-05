@@ -29,11 +29,10 @@ class LoadingInteractor: LoadingBusinessLogic {
             let password = String(decoding: passwordData ?? Data(), as: UTF8.self)
             
             firebaseManager.signInUser(userEmail, password) { [weak self] signInError in
-                var response = Loading.SignInUser.Response(signInResult: nil)
-                
+                let response: Loading.SignInUser.Response
                 switch signInError {
                 case nil:
-                    break
+                    response = Loading.SignInUser.Response(signInResult: nil)
                 case .failedToSignIn:
                     response = Loading.SignInUser.Response(signInResult: FirebaseError.failedToSignIn)
                 case .failedToGetUserData:
@@ -52,10 +51,10 @@ class LoadingInteractor: LoadingBusinessLogic {
     
     func downloadLocations(request: Loading.DownloadLocations.Request) {
         LocationsManager.shared.downloadLocations { [weak self] downloadError in
-            var response = Loading.DownloadLocations.Response(downloadResult: nil)
+            let response: Loading.DownloadLocations.Response
             switch downloadError {
             case nil:
-                break
+                response = Loading.DownloadLocations.Response(downloadResult: nil)
             case .dataNotLoaded:
                 response = Loading.DownloadLocations.Response(downloadResult: FirebaseError.dataNotLoaded)
             case .imageDataNotLoaded:

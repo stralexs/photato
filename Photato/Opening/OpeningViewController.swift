@@ -17,6 +17,7 @@ final class OpeningViewController: UIViewController, OpeningDisplayLogic {
     
     private let userValidationViewController = UserValidationViewController()
     private let loadingViewController = LoadingViewController()
+    private let networkMonitor = NetworkConnectionMonitor()
 
     // MARK: - View Controller lifecycle
     override func viewDidLoad() {
@@ -42,6 +43,8 @@ final class OpeningViewController: UIViewController, OpeningDisplayLogic {
         
         userValidationViewController.view.isHidden = true
         loadingViewController.view.isHidden = true
+        
+        networkMonitor.delegate = self
     }
     
     private func tuneUI() {
@@ -66,14 +69,17 @@ extension OpeningViewController {
     }
     
     func displayIsUserLoggedIn(viewModel: Opening.CheckIsUserLoggedIn.ViewModel) {
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async {
             let isUserLoggedIn = viewModel.isUserLoggedIn
             
             if isUserLoggedIn {
-                self?.loadingViewController.view.isHidden = false
+                self.loadingViewController.view.isHidden = false
             } else {
-                self?.userValidationViewController.view.isHidden = false
+                self.userValidationViewController.view.isHidden = false
             }
         }
     }
 }
+
+    // MARK: - NetworkConnectionStatusDelegate
+extension OpeningViewController: NetworkConnectionStatusDelegate {}

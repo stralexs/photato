@@ -34,5 +34,12 @@ class LoadingRouter: NSObject, LoadingRoutingLogic {
     
     private func navigateToTabBarController(source: LoadingViewController, destination: TabBarController) {
         source.show(destination, sender: nil)
+        
+        guard let navigationController = source.navigationController else { return }
+        var navigationArray = navigationController.viewControllers
+        let temp = navigationArray.last
+        navigationArray.removeAll()
+        navigationArray.append(temp!)
+        source.navigationController?.viewControllers = navigationArray
     }
 }

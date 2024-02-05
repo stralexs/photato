@@ -8,10 +8,12 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
+    private let networkMonitor = NetworkConnectionMonitor()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setTabBarAppearance()
-        setNavigationBar()
+        tabBarSettings()
     }
     
     private func setTabBarAppearance() {
@@ -19,10 +21,13 @@ final class TabBarController: UITabBarController {
         tabBar.unselectedItemTintColor = .tortilla
         tabBar.backgroundColor = .lightTortilla
         tabBar.backgroundImage = UIImage()
-        tabBar.shadowImage = UIImage ()
+        tabBar.shadowImage = UIImage()
     }
     
-    private func setNavigationBar() {
+    private func tabBarSettings() {
+        networkMonitor.delegate = self
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
 }
+
+extension TabBarController: NetworkConnectionStatusDelegate {}
