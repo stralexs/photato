@@ -62,7 +62,7 @@ App has no memory leaks in Leaks instrument
 - MapKit, CoreLocation
 - Firebase, UserDefaults, Keychain, NSCache
 - Unit tests
-- REST API, Alamofire
+- REST API, Alamofire, NWPathMonitor
 - SOLID principles
 - GCD, async/await
 - SPM
